@@ -29,6 +29,14 @@ Permission has been granted to release this port under the WDL/IPlug license:
 #include <cmath>
 #include <cstdint>
 
+#ifdef ARDUINO
+#define fmax fmax
+#define fmin fmin
+#else
+#define fmax std::fmax
+#define fmin std::fmin
+#endif
+
 const double TWO_PI = 2 * M_PI;
 
 template<typename T>
@@ -208,8 +216,7 @@ double PolyBLEP::tri() const {
 }
 
 double PolyBLEP::tri2() const {
-    double pulseWidth = std::fmax(0.0001, std::fmin(0.9999, this->pulseWidth));
-
+    double pulseWidth = fmax(0.0001, fmin(0.9999, this->pulseWidth));
     double t1 = t + 0.5 * pulseWidth;
     t1 -= bitwiseOrZero(t1);
 
@@ -261,8 +268,7 @@ double PolyBLEP::trap() const {
     } else if (y > 1) {
         y = 2 - y;
     }
-    y = std::fmax(-1, std::fmin(1, 2 * y));
-
+    y = fmax(-1, fmin(1, 2 * y));
     double t1 = t + 0.125;
     t1 -= bitwiseOrZero(t1);
 
@@ -285,7 +291,7 @@ double PolyBLEP::trap() const {
 }
 
 double PolyBLEP::trap2() const {
-    double pulseWidth = std::fmin(0.9999, this->pulseWidth);
+    double pulseWidth = fmin(0.9999, this->pulseWidth);
     double scale = 1 / (1 - pulseWidth);
 
     double y = 4 * t;
@@ -294,8 +300,7 @@ double PolyBLEP::trap2() const {
     } else if (y > 1) {
         y = 2 - y;
     }
-    y = std::fmax(-1, std::fmin(1, scale * y));
-
+    y = fmax(-1, fmin(1, scale * y));
     double t1 = t + 0.25 - 0.25 * pulseWidth;
     t1 -= bitwiseOrZero(t1);
 

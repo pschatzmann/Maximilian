@@ -49,6 +49,13 @@
 #endif
 #include <numeric>
 
+#ifdef ARDUINO
+#include <limits>
+#undef min
+#undef max
+#undef PI
+#endif
+
 using namespace std;
 #ifndef PI
 #define PI 3.1415926535897932384626433832795
@@ -377,7 +384,7 @@ public:
     double onChanged(double input, double tolerance)
     {
         double changed = 0;
-        if (abs(input - previousValue) > tolerance)
+        if (fabs(input - previousValue) > tolerance)
         {
             changed = 1;
         }

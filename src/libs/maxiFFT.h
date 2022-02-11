@@ -40,6 +40,9 @@
 #include "stddef.h"
 #include <vector>
 
+// forward declaration
+class maxiConvolve;
+
 class maxiFFT {
 
 public:
@@ -81,6 +84,7 @@ private:
   float recalc;
   std::vector<float> & magsToDB();
 
+  friend maxiConvolve; // to avoid compile error for access to bins
 };
 
 class maxiIFFT {
