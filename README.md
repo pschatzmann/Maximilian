@@ -84,3 +84,17 @@ You can install the ofxMaxim addon by copying the ofxMaxim/ofxMaxim folder into 
 Important: when using Maximilian on OSX, link against the Accelerate framework.
 
 
+### Installation in Arduino
+
+You can download the library as zip and call include Library -> zip library. Or you can git clone this project into the Arduino libraries folder e.g. with
+
+```
+cd  ~/Documents/Arduino/libraries
+git clone pschatzmann/Maximilian.git
+```
+
+I recommend to use git because you can easily update to the latest version just by executing the ```git pull``` command in the project folder. 
+
+To output any sound I recommend to use the [Arduino Audio Tools](https://github.com/pschatzmann/arduino-audio-tools) Library.
+
+
