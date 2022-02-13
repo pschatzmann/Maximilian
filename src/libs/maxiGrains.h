@@ -3,7 +3,7 @@
 #ifndef _MAXI_GRAINS_H
 #define _MAXI_GRAINS_H
 #include "../maximilian.h"
-#if defined(__APPLE_CC__)
+#if defined(__APPLE_CC__) && !defined(ARDUINO)
 #include "accelerate/accelerate.h"
 //Mac users can uncommment the line below to use Apple's accelerate framework for calculating grains. This gives ~300% speed improvement and better sound quality, but doesn't work well on all machines.
 //#define MAXIGRAINFAST
@@ -89,8 +89,8 @@ struct gaussianWinFunctor {
 	}
 };
 
-
-template<typename F>
+// Renamend T to TFunc because of compile errors on ESP32
+template<typename TFunc>
 class maxiGrainWindowCache {
 public:
 	unsigned int cacheSize;
@@ -116,7 +116,7 @@ public:
 		if (NULL == cache[length]) {
 			cache[length] = (double*)malloc(length * sizeof(double));
 			for(int i=0; i < length; i++) {
-				cache[length][i] = F()(length, i);
+				cache[length][i] = TFunc()(length, i);
 			}
 		}
 		return cache[length];
