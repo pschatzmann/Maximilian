@@ -1,0 +1,146 @@
+\hypertarget{classmaxi_sample}{}\doxysection{maxi\+Sample Class Reference}
+\label{classmaxi_sample}\index{maxiSample@{maxiSample}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classmaxi_sample_a9b32955d8d70bd946b74919ac2703c56}\label{classmaxi_sample_a9b32955d8d70bd946b74919ac2703c56}} 
+long {\bfseries get\+Length} ()
+\item 
+\mbox{\Hypertarget{classmaxi_sample_aec72b1120c5d696825cdd848da0a5271}\label{classmaxi_sample_aec72b1120c5d696825cdd848da0a5271}} 
+{\bfseries DECLARE\+\_\+\+F64\+\_\+\+ARRAY} (amplitudes)
+\item 
+\mbox{\Hypertarget{classmaxi_sample_a3be61f10965fbca8bc2440c5b22c1daa}\label{classmaxi_sample_a3be61f10965fbca8bc2440c5b22c1daa}} 
+\mbox{\hyperlink{classmaxi_sample}{maxi\+Sample}} \& {\bfseries operator=} (const \mbox{\hyperlink{classmaxi_sample}{maxi\+Sample}} \&source)
+\item 
+\mbox{\Hypertarget{classmaxi_sample_a68c12e14649369d0657eca87a2a2929f}\label{classmaxi_sample_a68c12e14649369d0657eca87a2a2929f}} 
+bool {\bfseries load} (string file\+Name, int channel=0)
+\item 
+\mbox{\Hypertarget{classmaxi_sample_a74b554b7101576bfda87485ebc23bf50}\label{classmaxi_sample_a74b554b7101576bfda87485ebc23bf50}} 
+bool {\bfseries save} ()
+\item 
+\mbox{\Hypertarget{classmaxi_sample_ae28feb485fe1c5cd3d9303b9a610e3f3}\label{classmaxi_sample_ae28feb485fe1c5cd3d9303b9a610e3f3}} 
+bool {\bfseries save} (string filename)
+\item 
+\mbox{\Hypertarget{classmaxi_sample_a5ae72dd472aff40f3fa420670acc48cf}\label{classmaxi_sample_a5ae72dd472aff40f3fa420670acc48cf}} 
+bool {\bfseries read} ()
+\item 
+\mbox{\Hypertarget{classmaxi_sample_a87e0ccbe82846d466057f5387d40074c}\label{classmaxi_sample_a87e0ccbe82846d466057f5387d40074c}} 
+string {\bfseries get\+Summary} ()
+\item 
+\mbox{\Hypertarget{classmaxi_sample_acad0809020e1e4a4856e286c423fcdc1}\label{classmaxi_sample_acad0809020e1e4a4856e286c423fcdc1}} 
+bool {\bfseries is\+Ready} ()
+\item 
+\mbox{\Hypertarget{classmaxi_sample_a121b20a694166102d3d1f56b47e22816}\label{classmaxi_sample_a121b20a694166102d3d1f56b47e22816}} 
+void {\bfseries set\+Sample} (DOUBLEARRAY\+\_\+\+REF \+\_\+sample\+Data)
+\item 
+\mbox{\Hypertarget{classmaxi_sample_a64a0821a036614d095496aed6d674521}\label{classmaxi_sample_a64a0821a036614d095496aed6d674521}} 
+void {\bfseries set\+Sample\+And\+Rate} (DOUBLEARRAY\+\_\+\+REF \+\_\+sample\+Data, int sample\+Rate)
+\item 
+\mbox{\Hypertarget{classmaxi_sample_aec108418582368d630ef47d25f9fefea}\label{classmaxi_sample_aec108418582368d630ef47d25f9fefea}} 
+void {\bfseries clear} ()
+\item 
+\mbox{\Hypertarget{classmaxi_sample_a4c47dacfbb6514804501968dca4f0293}\label{classmaxi_sample_a4c47dacfbb6514804501968dca4f0293}} 
+void {\bfseries trigger} ()
+\item 
+\mbox{\Hypertarget{classmaxi_sample_acb43b87dab432c7667ce91b0f2410d0c}\label{classmaxi_sample_acb43b87dab432c7667ce91b0f2410d0c}} 
+void {\bfseries loop\+Record} (double new\+Sample, const bool record\+Enabled, const double record\+Mix, double start, double end)
+\item 
+\mbox{\Hypertarget{classmaxi_sample_a16e38d5c8b2b900c63b33faa5cb18748}\label{classmaxi_sample_a16e38d5c8b2b900c63b33faa5cb18748}} 
+void {\bfseries reset} ()
+\item 
+\mbox{\Hypertarget{classmaxi_sample_a6b55dc845a7c469f694a05f284608a08}\label{classmaxi_sample_a6b55dc845a7c469f694a05f284608a08}} 
+double {\bfseries play} ()
+\item 
+\mbox{\Hypertarget{classmaxi_sample_a4f9b1bc00af98f9d11178ac8cfc87c11}\label{classmaxi_sample_a4f9b1bc00af98f9d11178ac8cfc87c11}} 
+double {\bfseries play\+Loop} (double start, double end)
+\item 
+\mbox{\Hypertarget{classmaxi_sample_ae9acd1c13f043387c395422dfe074ddb}\label{classmaxi_sample_ae9acd1c13f043387c395422dfe074ddb}} 
+double {\bfseries play\+Once} ()
+\item 
+\mbox{\Hypertarget{classmaxi_sample_addba352aea15b361b2c134088868e162}\label{classmaxi_sample_addba352aea15b361b2c134088868e162}} 
+double {\bfseries play\+On\+ZX} (double trigger)
+\item 
+\mbox{\Hypertarget{classmaxi_sample_aabdceda1434c6b9fffa5ca67127685ea}\label{classmaxi_sample_aabdceda1434c6b9fffa5ca67127685ea}} 
+double {\bfseries play\+On\+ZXAt\+Speed} (double trig, double speed)
+\item 
+\mbox{\Hypertarget{classmaxi_sample_acee703cdfa24a665698dc48be1295b07}\label{classmaxi_sample_acee703cdfa24a665698dc48be1295b07}} 
+double {\bfseries play\+On\+ZXAt\+Speed\+From\+Offset} (double trig, double speed, double offset)
+\item 
+\mbox{\Hypertarget{classmaxi_sample_a09b70b7f207dfd889c27f07dc1499b39}\label{classmaxi_sample_a09b70b7f207dfd889c27f07dc1499b39}} 
+double {\bfseries play\+On\+ZXAt\+Speed\+Between\+Points} (double trig, double speed, double offset, double length)
+\item 
+\mbox{\Hypertarget{classmaxi_sample_a0d58b0c957296ba0d8b06535616c1630}\label{classmaxi_sample_a0d58b0c957296ba0d8b06535616c1630}} 
+double {\bfseries loop\+Set\+Pos\+On\+ZX} (double trigger, double position)
+\item 
+\mbox{\Hypertarget{classmaxi_sample_ae2b6fbd44eae6df6b59461b96997cf9d}\label{classmaxi_sample_ae2b6fbd44eae6df6b59461b96997cf9d}} 
+double {\bfseries play\+Once\+At\+Speed} (double speed)
+\item 
+\mbox{\Hypertarget{classmaxi_sample_a678ec42067934e9db35a5c68f8d5ab13}\label{classmaxi_sample_a678ec42067934e9db35a5c68f8d5ab13}} 
+void {\bfseries set\+Position} (double new\+Pos)
+\item 
+\mbox{\Hypertarget{classmaxi_sample_aea817557fc69ae5541b56ab8415f1664}\label{classmaxi_sample_aea817557fc69ae5541b56ab8415f1664}} 
+double {\bfseries play\+Until} (double end)
+\item 
+\mbox{\Hypertarget{classmaxi_sample_a69b3dc2950e4068fa66e709b4566b8ff}\label{classmaxi_sample_a69b3dc2950e4068fa66e709b4566b8ff}} 
+double {\bfseries play\+Until\+At\+Speed} (double end, double speed)
+\item 
+\mbox{\Hypertarget{classmaxi_sample_ae5e0e29a78a0a614cda56c8b18c502b9}\label{classmaxi_sample_ae5e0e29a78a0a614cda56c8b18c502b9}} 
+double {\bfseries play\+At\+Speed} (double speed)
+\item 
+\mbox{\Hypertarget{classmaxi_sample_a01ee0f3bd478bf1d68d5eef95eedaa0e}\label{classmaxi_sample_a01ee0f3bd478bf1d68d5eef95eedaa0e}} 
+double {\bfseries play\+At\+Speed\+Between\+Points\+From\+Pos} (double frequency, double start, double end, double pos)
+\item 
+\mbox{\Hypertarget{classmaxi_sample_a3c98528d31b07ef965cc35b2de854c3d}\label{classmaxi_sample_a3c98528d31b07ef965cc35b2de854c3d}} 
+double {\bfseries play\+At\+Speed\+Between\+Points} (double frequency, double start, double end)
+\item 
+\mbox{\Hypertarget{classmaxi_sample_a9fc13e53377f8c656353d76792030c71}\label{classmaxi_sample_a9fc13e53377f8c656353d76792030c71}} 
+double {\bfseries play4} (double frequency, double start, double end)
+\item 
+\mbox{\Hypertarget{classmaxi_sample_a05feb902469c2e54f5fa5086b9247609}\label{classmaxi_sample_a05feb902469c2e54f5fa5086b9247609}} 
+void {\bfseries normalise} (double max\+Level)
+\item 
+\mbox{\Hypertarget{classmaxi_sample_a63dadfb8b26acae6b002469223b3728c}\label{classmaxi_sample_a63dadfb8b26acae6b002469223b3728c}} 
+void {\bfseries auto\+Trim} (float alpha, float threshold, bool trim\+Start, bool trim\+End)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classmaxi_sample_a99fb2bf280a25c41e8b51a2860647006}\label{classmaxi_sample_a99fb2bf280a25c41e8b51a2860647006}} 
+short {\bfseries my\+Channels}
+\item 
+\mbox{\Hypertarget{classmaxi_sample_ac8cd71a84e9d90cc83f7329198b23a6b}\label{classmaxi_sample_ac8cd71a84e9d90cc83f7329198b23a6b}} 
+int {\bfseries my\+Sample\+Rate}
+\item 
+\mbox{\Hypertarget{classmaxi_sample_a72f77e93cf35980c670df4958a3060ea}\label{classmaxi_sample_a72f77e93cf35980c670df4958a3060ea}} 
+short {\bfseries my\+Bits\+Per\+Sample}
+\item 
+\mbox{\Hypertarget{classmaxi_sample_a6ba07a4f7d16c379b338a48957607be7}\label{classmaxi_sample_a6ba07a4f7d16c379b338a48957607be7}} 
+\mbox{\hyperlink{classmaxi_trigger}{maxi\+Trigger}} {\bfseries zx\+Trig}
+\item 
+\mbox{\Hypertarget{classmaxi_sample_afbd4773536cd475c185b57298d8d7d37}\label{classmaxi_sample_afbd4773536cd475c185b57298d8d7d37}} 
+string {\bfseries my\+Path}
+\item 
+\mbox{\Hypertarget{classmaxi_sample_a52fdca32370225bbb107abf305c3d218}\label{classmaxi_sample_a52fdca32370225bbb107abf305c3d218}} 
+int {\bfseries my\+Chunk\+Size}
+\item 
+\mbox{\Hypertarget{classmaxi_sample_aa04500fba26e55532b2526cead9977b9}\label{classmaxi_sample_aa04500fba26e55532b2526cead9977b9}} 
+int {\bfseries my\+Sub\+Chunk1\+Size}
+\item 
+\mbox{\Hypertarget{classmaxi_sample_a76f276a805f0fb3059a86cff1c801272}\label{classmaxi_sample_a76f276a805f0fb3059a86cff1c801272}} 
+int {\bfseries read\+Channel}
+\item 
+\mbox{\Hypertarget{classmaxi_sample_a80276db62c1f0148acf94f1e2bb2bfe4}\label{classmaxi_sample_a80276db62c1f0148acf94f1e2bb2bfe4}} 
+short {\bfseries my\+Format}
+\item 
+\mbox{\Hypertarget{classmaxi_sample_a8eeb094db9eb5a915cc75345ea00b2c6}\label{classmaxi_sample_a8eeb094db9eb5a915cc75345ea00b2c6}} 
+int {\bfseries my\+Byte\+Rate}
+\item 
+\mbox{\Hypertarget{classmaxi_sample_a7eb38f0af4b6fed630991b09a1513d64}\label{classmaxi_sample_a7eb38f0af4b6fed630991b09a1513d64}} 
+short {\bfseries my\+Block\+Align}
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/maximilian.\+h\item 
+src/maximilian.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,74 @@
+\label{index_md_README}%
+\Hypertarget{index_md_README}%
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{  \_\_\_\_\_ \_\_\_\_\_ \_\_\_   \_\_ \_  \_\_\_\_\_  \_\_ \_\_   \_\_ \_\_\_\_  \_\_\_\_}
+\DoxyCodeLine{ /     \(\backslash\)\(\backslash\)\_   \(\backslash\)\(\backslash\)  \(\backslash\)/  /  |/     \(\backslash\)|  |  | |  \(\backslash\)\_   \(\backslash\)/    \(\backslash\)}
+\DoxyCodeLine{|  Y Y  \(\backslash\)/ /\_ \(\backslash\)>    <|  |  Y Y  \(\backslash\)  |  |\_|  |/ /\_ \(\backslash\)  Y  \(\backslash\)}
+\DoxyCodeLine{|\_\_|\_|  (\_\_\_  /\_\_/\(\backslash\)\_\_\(\backslash\)\_\_|\_\_|\_|  /\_\_|\_\_\_\_/\_\_(\_\_\_  /\_\_|  /}
+\DoxyCodeLine{      \(\backslash\)/    \(\backslash\)/                \(\backslash\)/               \(\backslash\)/    \(\backslash\)/}
+
+\end{DoxyCode}
+  \href{https://github.com/mimic-sussex/eppEditor/blob/master/LICENSE}{\texttt{ }}
+
+~\newline
+\hypertarget{index_autotoc_md0}{}\doxysubsection{What\textquotesingle{}s Maximilian?}\label{index_autotoc_md0}
+Maximilian is a cross-\/platform and multi-\/target audio synthesis and signal processing library. It was written in C++ and provides bindings to Javascript. It\textquotesingle{}s compatible with native implementations for Mac\+OS, Windows, Linux and i\+OS systems, as well as client-\/side browser-\/based applications. The main features are\+:
+
+
+\begin{DoxyItemize}
+\item sample playback, recording and looping
+\item support for WAV and OGG files.
+\item a selection of oscillators and filters
+\item enveloping
+\item multichannel mixing for 1, 2, 4 and 8 channel setups
+\item controller mapping functions
+\item effects including delay, distortion, chorus, flanging
+\item granular synthesis, including time and pitch stretching
+\item atom synthesis
+\item real-\/time music information retrieval functions\+: spectrum analysis, spectral features, octave analysis, Bark scale analysis, and MFCCs
+\item example projects for Windows and Mac\+OS, susing command line and Open\+Frameworks environments
+\item example projects for Firefox and Chromium-\/based browsers using the Web Audio API Script\+Processor\+Node (deprecated!)
+\item example projects for Chromium-\/based browsers using the Web Audio API Audio\+Worklet (e.\+g. Chrome, Brave, Edge, Opera, Vivaldi)
+\end{DoxyItemize}\hypertarget{index_autotoc_md1}{}\doxysubsection{Arduino}\label{index_autotoc_md1}
+You can download the library as zip and call include Library -\/$>$ zip library. Or you can git clone this project into the Arduino libraries folder e.\+g. with
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{cd  \string~/Documents/Arduino/libraries}
+\DoxyCodeLine{git clone pschatzmann/Maximilian.git}
+
+\end{DoxyCode}
+
+
+I recommend to use git because you can easily update to the latest version just by executing the {\ttfamily git pull} command in the project folder.
+
+To output any sound I recommend to use the \href{https://github.com/pschatzmann/arduino-audio-tools}{\texttt{ Arduino Audio Tools}} Library with the corresponding \href{https://github.com/pschatzmann/arduino-audio-tools/tree/main/examples/examples-maximilian}{\texttt{ examples}}.\hypertarget{index_autotoc_md2}{}\doxysubsection{Other Platforms}\label{index_autotoc_md2}
+\hypertarget{index_autotoc_md3}{}\doxysubsubsection{Basic Examples}\label{index_autotoc_md3}
+You can choose between using RTAudio and Port\+Audio drivers in player.\+h by uncommenting the appropriate line. To use Port\+Audio, you will need to compile the port\+Audio library from \href{http://www.portaudio.com/}{\texttt{ http\+://www.\+portaudio.\+com/}} and link it with your executable.
+
+Examples demonstrating different features can be found in the maximilian\+\_\+examples folder. To try them, replace the contents of main.\+cpp with the contents of a tutorial file and compile.\hypertarget{index_autotoc_md4}{}\doxysubsubsection{Web Audio}\label{index_autotoc_md4}
+A transpiled javascript version of the library is included in this repository, for both Script Processor Nodes and Audio\+Worklets. Try this out at (\href{https://mimicproject.com/guides/maximJS}{\texttt{ https\+://mimicproject.\+com/guides/maxim\+JS}}).\hypertarget{index_autotoc_md5}{}\doxysubsubsection{Mac OS XCode Project}\label{index_autotoc_md5}
+You can run the examples using the \textquotesingle{}maximilian\+Test\textquotesingle{} XCode 3 project provided.\hypertarget{index_autotoc_md6}{}\doxysubsubsection{MS Windows Visual Studio Project}\label{index_autotoc_md6}
+This is in the maximilian\+Test\+Windows\+VS2010 folder. You will need to install the DirectX SDK, so that the program can use Direct\+Sound.\hypertarget{index_autotoc_md7}{}\doxysubsubsection{Command Line Compilation in Mac OS}\label{index_autotoc_md7}
+\begin{quote}
+g++ -\/Wall -\/D\+\_\+\+\_\+\+MACOSX\+\_\+\+CORE\+\_\+\+\_\+ -\/o maximilian main.\+cpp Rt\+Audio.\+cpp player.\+cpp maximilian.\+cpp -\/framework Core\+Audio -\/framework Core\+Foundation -\/lpthread \end{quote}
+\begin{quote}
+./maximilian \end{quote}
+\hypertarget{index_autotoc_md8}{}\doxysubsubsection{Command Line Compilation in Linux}\label{index_autotoc_md8}
+With OSS\+: \begin{quote}
+g++ -\/Wall -\/D\+\_\+\+\_\+\+LINUX\+\_\+\+OSS\+\_\+\+\_\+ -\/o maximilian main.\+cpp Rt\+Audio.\+cpp player.\+cpp maximilian.\+cpp -\/lpthread \end{quote}
+With ALSA\+: \begin{quote}
+g++ -\/Wall -\/D\+\_\+\+\_\+\+LINUX\+\_\+\+ALSA\+\_\+\+\_\+ -\/o maximilian main.\+cpp Rt\+Audio.\+cpp player.\+cpp maximilian.\+cpp -\/lasound -\/lpthread \end{quote}
+With Jack\+: \begin{quote}
+g++ -\/Wall -\/D\+\_\+\+\_\+\+UNIX\+\_\+\+JACK\+\_\+\+\_\+ -\/o maximilian main.\+cpp Rt\+Audio.\+cpp player.\+cpp maximilian.\+cpp {\ttfamily pkg-\/config -\/-\/cflags -\/-\/libs jack} -\/lpthread \end{quote}
+then\+: \begin{quote}
+./maximilian \end{quote}
+\hypertarget{index_autotoc_md9}{}\doxysubsubsection{Open\+Frameworks Project}\label{index_autotoc_md9}
+Maximilian works well with the Open\+Frameworks C++ creative coding toolkit (\href{http://www.openframeworks.cc}{\texttt{ http\+://www.\+openframeworks.\+cc}}).
+
+In the ofx\+Maxim directory you will find examples to run in Windows, OSX and i\+OS, including FFT analysis and granular synthesis.
+
+You can install the ofx\+Maxim addon by copying the ofx\+Maxim/ofx\+Maxim folder into your openframeworks addons directory.
+
+Important\+: when using Maximilian on OSX, link against the Accelerate framework. 

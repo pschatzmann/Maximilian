@@ -1,0 +1,49 @@
+\hypertarget{classmaxi_f_f_t_adaptor}{}\doxysection{maxi\+FFTAdaptor Class Reference}
+\label{classmaxi_f_f_t_adaptor}\index{maxiFFTAdaptor@{maxiFFTAdaptor}}
+Inheritance diagram for maxi\+FFTAdaptor\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classmaxi_f_f_t_adaptor}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classmaxi_f_f_t_adaptor_a8b761d757e7f0f029166ccfa8ff6b647}\label{classmaxi_f_f_t_adaptor_a8b761d757e7f0f029166ccfa8ff6b647}} 
+void {\bfseries setup} (int fft\+Size, int hop\+Size, int window\+Size)
+\item 
+\mbox{\Hypertarget{classmaxi_f_f_t_adaptor_aac48c3047968ce9c3a3d71abb3e51995}\label{classmaxi_f_f_t_adaptor_aac48c3047968ce9c3a3d71abb3e51995}} 
+bool {\bfseries process} (float value, fft\+Modes mode=maxi\+FFT\+::\+WITH\+\_\+\+POLAR\+\_\+\+CONVERSION)
+\item 
+\mbox{\Hypertarget{classmaxi_f_f_t_adaptor_abc431fb732e65c622a53066926522aba}\label{classmaxi_f_f_t_adaptor_abc431fb732e65c622a53066926522aba}} 
+int {\bfseries get\+Num\+Bins} ()
+\item 
+\mbox{\Hypertarget{classmaxi_f_f_t_adaptor_a848d588714ffd190a541d1880d86efce}\label{classmaxi_f_f_t_adaptor_a848d588714ffd190a541d1880d86efce}} 
+int {\bfseries get\+FFTSize} ()
+\item 
+\mbox{\Hypertarget{classmaxi_f_f_t_adaptor_aefc387fe4883a287a03ac686ae1cc438}\label{classmaxi_f_f_t_adaptor_aefc387fe4883a287a03ac686ae1cc438}} 
+int {\bfseries get\+Hop\+Size} ()
+\item 
+\mbox{\Hypertarget{classmaxi_f_f_t_adaptor_acedcba24c9c518fd111be0f5690b2a79}\label{classmaxi_f_f_t_adaptor_acedcba24c9c518fd111be0f5690b2a79}} 
+int {\bfseries get\+Window\+Size} ()
+\item 
+\mbox{\Hypertarget{classmaxi_f_f_t_adaptor_a9f1754c7ffa9cef5b21234256e23743f}\label{classmaxi_f_f_t_adaptor_a9f1754c7ffa9cef5b21234256e23743f}} 
+float {\bfseries spectral\+Flatness} ()
+\item 
+\mbox{\Hypertarget{classmaxi_f_f_t_adaptor_a5ed797f65e121314f6f9ef382bf552a7}\label{classmaxi_f_f_t_adaptor_a5ed797f65e121314f6f9ef382bf552a7}} 
+float {\bfseries spectral\+Centroid} ()
+\item 
+\mbox{\Hypertarget{classmaxi_f_f_t_adaptor_a10c4eda09b3fa35e01107e30466ae60d}\label{classmaxi_f_f_t_adaptor_a10c4eda09b3fa35e01107e30466ae60d}} 
+emscripten\+::val {\bfseries get\+Magnitudes\+As\+JSArray} ()
+\item 
+\mbox{\Hypertarget{classmaxi_f_f_t_adaptor_ab3ab5f80153ba5afdba42c0f43a90b5f}\label{classmaxi_f_f_t_adaptor_ab3ab5f80153ba5afdba42c0f43a90b5f}} 
+emscripten\+::val {\bfseries get\+Magnitudes\+DBAs\+JSArray} ()
+\item 
+\mbox{\Hypertarget{classmaxi_f_f_t_adaptor_a5d97bc31779e6de6fb68051dab70111d}\label{classmaxi_f_f_t_adaptor_a5d97bc31779e6de6fb68051dab70111d}} 
+emscripten\+::val {\bfseries get\+Phases\+As\+JSArray} ()
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/maximilian.\+embind.\+cpp\end{DoxyCompactItemize}

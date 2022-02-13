@@ -1,0 +1,74 @@
+\hypertarget{classmaxi_dyn}{}\doxysection{maxi\+Dyn Class Reference}
+\label{classmaxi_dyn}\index{maxiDyn@{maxiDyn}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classmaxi_dyn_a40c4eef32a09a12abbc066a4a19c9e52}\label{classmaxi_dyn_a40c4eef32a09a12abbc066a4a19c9e52}} 
+double {\bfseries gate} (double input, double threshold=0.\+9, long holdtime=1, double attack=1, double release=0.\+9995)
+\item 
+\mbox{\Hypertarget{classmaxi_dyn_ad34f0fc0d6ebfe5caa076f9e622c2ad9}\label{classmaxi_dyn_ad34f0fc0d6ebfe5caa076f9e622c2ad9}} 
+double {\bfseries compressor} (double input, double ratio, double threshold=0.\+9, double attack=1, double release=0.\+9995)
+\item 
+\mbox{\Hypertarget{classmaxi_dyn_a7fa5ef9a00df9d3b8f99cc4336b6c041}\label{classmaxi_dyn_a7fa5ef9a00df9d3b8f99cc4336b6c041}} 
+double {\bfseries compress} (double input)
+\item 
+\mbox{\Hypertarget{classmaxi_dyn_aff78c7e4424d8a474270f8a8bcbb01c2}\label{classmaxi_dyn_aff78c7e4424d8a474270f8a8bcbb01c2}} 
+void {\bfseries set\+Attack} (double attack\+MS)
+\item 
+\mbox{\Hypertarget{classmaxi_dyn_a5cb8377f070a1c29009bb2f5e10a372d}\label{classmaxi_dyn_a5cb8377f070a1c29009bb2f5e10a372d}} 
+void {\bfseries set\+Release} (double release\+MS)
+\item 
+\mbox{\Hypertarget{classmaxi_dyn_a9fa27ebd698d7c741db1ddbd1d7b4e90}\label{classmaxi_dyn_a9fa27ebd698d7c741db1ddbd1d7b4e90}} 
+void {\bfseries set\+Threshold} (double thresholdI)
+\item 
+\mbox{\Hypertarget{classmaxi_dyn_ab69d59318562559b868248b1193c6e82}\label{classmaxi_dyn_ab69d59318562559b868248b1193c6e82}} 
+void {\bfseries set\+Ratio} (double ratioF)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classmaxi_dyn_ac18496e4bbb8691802101b12ece823f1}\label{classmaxi_dyn_ac18496e4bbb8691802101b12ece823f1}} 
+double {\bfseries input}
+\item 
+\mbox{\Hypertarget{classmaxi_dyn_a06df3bde7ece70eac59c205bd46bf62c}\label{classmaxi_dyn_a06df3bde7ece70eac59c205bd46bf62c}} 
+double {\bfseries ratio}
+\item 
+\mbox{\Hypertarget{classmaxi_dyn_a81216e6d0a4212f7242b8c465b4e67f8}\label{classmaxi_dyn_a81216e6d0a4212f7242b8c465b4e67f8}} 
+double {\bfseries current\+Ratio}
+\item 
+\mbox{\Hypertarget{classmaxi_dyn_a32ffc5f358b627b0fad8fc098a76a169}\label{classmaxi_dyn_a32ffc5f358b627b0fad8fc098a76a169}} 
+double {\bfseries threshold}
+\item 
+\mbox{\Hypertarget{classmaxi_dyn_adb1fb3ac6bfe330643128d23fdbc3fed}\label{classmaxi_dyn_adb1fb3ac6bfe330643128d23fdbc3fed}} 
+double {\bfseries output}
+\item 
+\mbox{\Hypertarget{classmaxi_dyn_a4282a8f291138001bb334c0939adc0ff}\label{classmaxi_dyn_a4282a8f291138001bb334c0939adc0ff}} 
+double {\bfseries attack}
+\item 
+\mbox{\Hypertarget{classmaxi_dyn_a75d938b7e8b97556f6098650399d7207}\label{classmaxi_dyn_a75d938b7e8b97556f6098650399d7207}} 
+double {\bfseries release}
+\item 
+\mbox{\Hypertarget{classmaxi_dyn_a81c3c6b469fcdd47ad259b18b951f966}\label{classmaxi_dyn_a81c3c6b469fcdd47ad259b18b951f966}} 
+double {\bfseries amplitude}
+\item 
+\mbox{\Hypertarget{classmaxi_dyn_ac6a24b910a95158776b476bc05f8ccf0}\label{classmaxi_dyn_ac6a24b910a95158776b476bc05f8ccf0}} 
+long {\bfseries holdtime}
+\item 
+\mbox{\Hypertarget{classmaxi_dyn_a50bdb8c0ccbe2cb57bfe65385cdfedcf}\label{classmaxi_dyn_a50bdb8c0ccbe2cb57bfe65385cdfedcf}} 
+long {\bfseries holdcount}
+\item 
+\mbox{\Hypertarget{classmaxi_dyn_ade5e29a80c73a7ed4721ac4ba1914c6a}\label{classmaxi_dyn_ade5e29a80c73a7ed4721ac4ba1914c6a}} 
+int {\bfseries attackphase}
+\item 
+\mbox{\Hypertarget{classmaxi_dyn_a48be4be04a614eb05076917689bfd7d4}\label{classmaxi_dyn_a48be4be04a614eb05076917689bfd7d4}} 
+int {\bfseries holdphase}
+\item 
+\mbox{\Hypertarget{classmaxi_dyn_a315b692cdcf4b312c68bb97b1f91bccf}\label{classmaxi_dyn_a315b692cdcf4b312c68bb97b1f91bccf}} 
+int {\bfseries releasephase}
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/maximilian.\+h\item 
+src/maximilian.\+cpp\end{DoxyCompactItemize}
