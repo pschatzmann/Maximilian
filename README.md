@@ -28,6 +28,10 @@ Maximilian is a cross-platform and multi-target audio synthesis and signal proce
 - example projects for Firefox and Chromium-based browsers using the Web Audio API ScriptProcessorNode (deprecated!)
 - example projects for Chromium-based browsers using the Web Audio API AudioWorklet (e.g. Chrome, Brave, Edge, Opera, Vivaldi)
 
+## Class Documentation
+
+The [generated class documentation](https://pschatzmann.github.io/Maximilian/doc/html/index.html) can be found here.
+
 ## Arduino
 
 You can download the library as zip and call include Library -> zip library. Or you can git clone this project into the Arduino libraries folder e.g. with
@@ -40,6 +44,7 @@ git clone pschatzmann/Maximilian.git
 I recommend to use git because you can easily update to the latest version just by executing the ```git pull``` command in the project folder. 
 
 To output any sound I recommend to use the [Arduino Audio Tools](https://github.com/pschatzmann/arduino-audio-tools) Library with the corresponding [examples](https://github.com/pschatzmann/arduino-audio-tools/tree/main/examples/examples-maximilian).
+
 
 ## Other Platforms
 
