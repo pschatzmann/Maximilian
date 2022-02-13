@@ -10,7 +10,7 @@
 
 <br />
 
-### What's Maximilian?
+## What's Maximilian?
 
 Maximilian is a cross-platform and multi-target audio synthesis and signal processing library. It was written in C++ and provides bindings to Javascript. It's compatible with native implementations for MacOS, Windows, Linux and iOS systems, as well as client-side browser-based applications. The main features are:
 
@@ -28,6 +28,20 @@ Maximilian is a cross-platform and multi-target audio synthesis and signal proce
 - example projects for Firefox and Chromium-based browsers using the Web Audio API ScriptProcessorNode (deprecated!)
 - example projects for Chromium-based browsers using the Web Audio API AudioWorklet (e.g. Chrome, Brave, Edge, Opera, Vivaldi)
 
+## Arduino
+
+You can download the library as zip and call include Library -> zip library. Or you can git clone this project into the Arduino libraries folder e.g. with
+
+```
+cd  ~/Documents/Arduino/libraries
+git clone pschatzmann/Maximilian.git
+```
+
+I recommend to use git because you can easily update to the latest version just by executing the ```git pull``` command in the project folder. 
+
+To output any sound I recommend to use the [Arduino Audio Tools](https://github.com/pschatzmann/arduino-audio-tools) Library with the corresponding [examples](https://github.com/pschatzmann/arduino-audio-tools/tree/main/examples/examples-maximilian).
+
+## Other Platforms
 
 ### Basic Examples
 
@@ -72,7 +86,6 @@ then:
 > ./maximilian
 
 
-
 ### OpenFrameworks Project
 
 Maximilian works well with the OpenFrameworks C++ creative coding toolkit (http://www.openframeworks.cc).
@@ -83,18 +96,5 @@ You can install the ofxMaxim addon by copying the ofxMaxim/ofxMaxim folder into 
 
 Important: when using Maximilian on OSX, link against the Accelerate framework.
 
-
-### Installation in Arduino
-
-You can download the library as zip and call include Library -> zip library. Or you can git clone this project into the Arduino libraries folder e.g. with
-
-```
-cd  ~/Documents/Arduino/libraries
-git clone pschatzmann/Maximilian.git
-```
-
-I recommend to use git because you can easily update to the latest version just by executing the ```git pull``` command in the project folder. 
-
-To output any sound I recommend to use the [Arduino Audio Tools](https://github.com/pschatzmann/arduino-audio-tools) Library with the corresponding [examples](https://github.com/pschatzmann/arduino-audio-tools/tree/main/examples/examples-maximilian).
 
 
