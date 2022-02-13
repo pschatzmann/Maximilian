@@ -30,7 +30,7 @@ Maximilian is a cross-platform and multi-target audio synthesis and signal proce
 
 ## Class Documentation
 
-The [generated class documentation](https://pschatzmann.github.io/Maximilian/doc/html/index.html) can be found here.
+The [generated class documentation](https://pschatzmann.github.io/Maximilian/doc/html/annotated.html) can be found here.
 
 ## Arduino
 
