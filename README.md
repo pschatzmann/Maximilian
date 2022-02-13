@@ -95,6 +95,6 @@ git clone pschatzmann/Maximilian.git
 
 I recommend to use git because you can easily update to the latest version just by executing the ```git pull``` command in the project folder. 
 
-To output any sound I recommend to use the [Arduino Audio Tools](https://github.com/pschatzmann/arduino-audio-tools) Library.
+To output any sound I recommend to use the [Arduino Audio Tools](https://github.com/pschatzmann/arduino-audio-tools) Library with the corresponding [examples](https://github.com/pschatzmann/arduino-audio-tools/tree/main/examples/examples-maximilian).
 
 
