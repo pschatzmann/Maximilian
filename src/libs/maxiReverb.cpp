@@ -10,13 +10,13 @@ maxiReverbFilters::maxiReverbFilters()
     delay_line.resize(44100, 0);
 }
 
-double maxiReverbFilters::twopoint(double input)
+maxi_float_t maxiReverbFilters::twopoint(maxi_float_t input)
 {
     a = 0.5 * (input + a);
     return a;
 }
 
-double maxiReverbFilters::comb1(double input,double size)
+maxi_float_t maxiReverbFilters::comb1(maxi_float_t input,maxi_float_t size)
 {
     delay_size = size;
     output = delay_line[delay_index];
@@ -26,7 +26,7 @@ double maxiReverbFilters::comb1(double input,double size)
 }
 
 
-double maxiReverbFilters::combff(double input, double size)
+maxi_float_t maxiReverbFilters::combff(maxi_float_t input, maxi_float_t size)
 {
     delay_size = size;
     output = input + delay_line[delay_index];
@@ -35,7 +35,7 @@ double maxiReverbFilters::combff(double input, double size)
     return output;
 }
 
-double maxiReverbFilters::combfb(double input, double size, double fb)
+maxi_float_t maxiReverbFilters::combfb(maxi_float_t input, maxi_float_t size, maxi_float_t fb)
 {
     // holding delay size allows me to tap line
     delay_size = size;
@@ -45,7 +45,7 @@ double maxiReverbFilters::combfb(double input, double size, double fb)
     return output;
 }
 
-double maxiReverbFilters::lpcombfb(double input, double size, double fb, double cutoff)
+maxi_float_t maxiReverbFilters::lpcombfb(maxi_float_t input, maxi_float_t size, maxi_float_t fb, maxi_float_t cutoff)
 {
     // used for freeverb emulation
     // low pass between delay output + feedback
@@ -58,7 +58,7 @@ double maxiReverbFilters::lpcombfb(double input, double size, double fb, double 
     
 }
 
-double maxiReverbFilters::allpass(double input,double size)
+maxi_float_t maxiReverbFilters::allpass(maxi_float_t input,maxi_float_t size)
 {
     delay_size = size;
     input += delay_line[delay_index] * gain_cof;
@@ -69,7 +69,7 @@ double maxiReverbFilters::allpass(double input,double size)
     return output;
 }
 
-double maxiReverbFilters::allpass(double input,double size,double fb)
+maxi_float_t maxiReverbFilters::allpass(maxi_float_t input,maxi_float_t size,maxi_float_t fb)
 {
     delay_size = size;
     input += delay_line[delay_index] * fb;
@@ -79,7 +79,7 @@ double maxiReverbFilters::allpass(double input,double size,double fb)
     return output;
 }
 
-double maxiReverbFilters::allpasstap(double input,double size,int tap)
+maxi_float_t maxiReverbFilters::allpasstap(maxi_float_t input,maxi_float_t size,int tap)
 {
     delay_size = size;
     input += delay_line[delay_index] * gain_cof;
@@ -95,7 +95,7 @@ double maxiReverbFilters::allpasstap(double input,double size,int tap)
     return output;
 }
 
-double maxiReverbFilters::gettap(int tap)
+maxi_float_t maxiReverbFilters::gettap(int tap)
 {
     int t = delay_index + tap;
     if(t > delay_size -1){
@@ -105,7 +105,7 @@ double maxiReverbFilters::gettap(int tap)
     return output;
 }
 
-double maxiReverbFilters::onetap(double input, double size)
+maxi_float_t maxiReverbFilters::onetap(maxi_float_t input, maxi_float_t size)
 {
     delay_size = size;
     output = delay_line[delay_index];
@@ -114,7 +114,7 @@ double maxiReverbFilters::onetap(double input, double size)
     return output;
 }
 
-double maxiReverbFilters::tapd(double input,double size, double * taps,int numtaps)
+maxi_float_t maxiReverbFilters::tapd(maxi_float_t input,maxi_float_t size, maxi_float_t * taps,int numtaps)
 {
     output = 0.0;
     delay_size = size;
@@ -131,7 +131,7 @@ double maxiReverbFilters::tapd(double input,double size, double * taps,int numta
     return output;
 }
 
-double maxiReverbFilters::tapdwgain(double input,double size, double * taps,int numtaps,double * gain)
+maxi_float_t maxiReverbFilters::tapdwgain(maxi_float_t input,maxi_float_t size, maxi_float_t * taps,int numtaps,maxi_float_t * gain)
 {
     output = 0.0;
     delay_size = size;
@@ -148,7 +148,7 @@ double maxiReverbFilters::tapdwgain(double input,double size, double * taps,int 
     return output;
 }
 
-double maxiReverbFilters::tapdpos(double input,int size, int * taps,int numtaps)
+maxi_float_t maxiReverbFilters::tapdpos(maxi_float_t input,int size, int * taps,int numtaps)
 {
     output = 0.0;
     delay_size = size;
@@ -166,7 +166,7 @@ double maxiReverbFilters::tapdpos(double input,int size, int * taps,int numtaps)
 
 maxiReverbBase::maxiReverbBase()
 {    
-    int dblsize = sizeof(double);
+    int dblsize = sizeof(maxi_float_t);
     int numfilterssize = dblsize * numfilters;
     
     // Initialize all necessary memory
@@ -208,25 +208,25 @@ maxiReverbBase::maxiReverbBase()
 }
 
 
-double maxiReverbBase::apcombcombo(double input, double gain_coef)
+maxi_float_t maxiReverbBase::apcombcombo(maxi_float_t input, maxi_float_t gain_coef)
 {
     // Implementation of Schroeders first Reverb structure
     // input -> 8 parrallel comb filters -> 4 serial combs -> output + input
     // http://www.music.miami.edu/programs/mue/mue2003/research/jfrenette/chapter_2/chapter_2.html
     // earlyref mimics early reflections, 3 taps
-    double t = earlyref.tapdwgain(input, tapdellength, taps, 3, tapsgain);
-    double combresult = parallelcomb(t,0,4);
-    double allpassresult = serialallpass(combresult,0, 2);
+    maxi_float_t t = earlyref.tapdwgain(input, tapdellength, taps, 3, tapsgain);
+    maxi_float_t combresult = parallelcomb(t,0,4);
+    maxi_float_t allpassresult = serialallpass(combresult,0, 2);
     output =  allpassresult * gain_coef ;
     return output + t;
     //return output;
 }
 
 
-double maxiReverbBase::serialallpass(double input,int firstfilter, int numfilters)
+maxi_float_t maxiReverbBase::serialallpass(maxi_float_t input,int firstfilter, int numfilters)
 {
     //output = input;
-    double t = input;
+    maxi_float_t t = input;
     limitnumfilters(&numfilters);
     for(int i = 0; i < numfilters; i++){
         t = fArrayAllP[i].allpass(t,fbap[i]);
@@ -235,10 +235,10 @@ double maxiReverbBase::serialallpass(double input,int firstfilter, int numfilter
     return output;
 }
 
-double maxiReverbBase::serialallpass(double input,int firstfilter, int numfilters,double feedback)
+maxi_float_t maxiReverbBase::serialallpass(maxi_float_t input,int firstfilter, int numfilters,maxi_float_t feedback)
 {
     //output = input;
-    double t = input;
+    maxi_float_t t = input;
     limitnumfilters(&numfilters);
     for(int i = 0; i < numfilters; i++){
         t = fArrayAllP[i].allpass(t,fbap[i],feedback);
@@ -247,7 +247,7 @@ double maxiReverbBase::serialallpass(double input,int firstfilter, int numfilter
     return output;
 }
 
-double maxiReverbBase::parallelcomb(double input,int firstfilter, int numfilters)
+maxi_float_t maxiReverbBase::parallelcomb(maxi_float_t input,int firstfilter, int numfilters)
 {
     // set to prime nums
     accumulator = 0.0;
@@ -258,7 +258,7 @@ double maxiReverbBase::parallelcomb(double input,int firstfilter, int numfilters
     return accumulator;
 }
 
-double maxiReverbBase::parallellpcomb(double input,int firstfilter,int numfilters)
+maxi_float_t maxiReverbBase::parallellpcomb(maxi_float_t input,int firstfilter,int numfilters)
 {
     // set to prime nums
     accumulator = 0.0;
@@ -279,7 +279,7 @@ void maxiReverbBase::limitnumfilters(int * num)
     }
 }
 
-void maxiReverbBase::setcombtimesms(double *times, int numset)
+void maxiReverbBase::setcombtimesms(maxi_float_t *times, int numset)
 {
     limitnumfilters(&numset);
     for(int i = 0; i < numset; i++){
@@ -295,7 +295,7 @@ void maxiReverbBase::setcombtimes(int *times, int numset)
     }
 }
 
-void maxiReverbBase::setcombfeedback(double *feedback, int numset)
+void maxiReverbBase::setcombfeedback(maxi_float_t *feedback, int numset)
 {
     limitnumfilters(&numset);
     for(int i = 0 ; i < numset; i++){
@@ -303,7 +303,7 @@ void maxiReverbBase::setcombfeedback(double *feedback, int numset)
     }
 }
 
-void maxiReverbBase::setlpcombcutoff(double *cutoff,int numset)
+void maxiReverbBase::setlpcombcutoff(maxi_float_t *cutoff,int numset)
 {
     limitnumfilters(&numset);
     for(int i = 0 ; i < numset; i++){
@@ -311,7 +311,7 @@ void maxiReverbBase::setlpcombcutoff(double *cutoff,int numset)
     }
 }
 
-void maxiReverbBase::setlpcombcutoffall(double cutoff)
+void maxiReverbBase::setlpcombcutoffall(maxi_float_t cutoff)
 {
     if(cutoff >1.0) cutoff = 1.0;
     if(cutoff < 0 ) cutoff = 0.0;
@@ -321,7 +321,7 @@ void maxiReverbBase::setlpcombcutoffall(double cutoff)
     }
 }
 
-void maxiReverbBase::setaptimesms(double *times, int numset)
+void maxiReverbBase::setaptimesms(maxi_float_t *times, int numset)
 {
     limitnumfilters(&numset);
     for(int i = 0; i < numset; i++){
@@ -339,18 +339,18 @@ void maxiReverbBase::setaptimes(int *times, int numset)
 }
 
 
-int maxiReverbBase::mstodellength(double ms)
+int maxiReverbBase::mstodellength(maxi_float_t ms)
 {
     return (int)(numsamplesms * ms);
 }
 
 
-void maxiReverbBase::setcombweights(double *weights, int numset)
+void maxiReverbBase::setcombweights(maxi_float_t *weights, int numset)
 {
     setweights(weights,numset,combgainweight);
 }
 
-void maxiReverbBase::setcombweightsall(double feedback)
+void maxiReverbBase::setcombweightsall(maxi_float_t feedback)
 {
     // can expand this
     if(feedback > 1.0) feedback = 1.0;
@@ -359,12 +359,12 @@ void maxiReverbBase::setcombweightsall(double feedback)
         combgainweight[i] = feedback;
     }
 }
-void maxiReverbBase::setapweights(double *weights, int numset)
+void maxiReverbBase::setapweights(maxi_float_t *weights, int numset)
 {
     setweights(weights, numset, apgainweight);
 }
 
-void maxiReverbBase::setweights(double *weights, int numset,double * filter)
+void maxiReverbBase::setweights(maxi_float_t *weights, int numset,maxi_float_t * filter)
 {
     // used 2.16 from miami
     limitnumfilters(&numset);
@@ -379,28 +379,28 @@ void maxiReverbBase::setweights(double *weights, int numset,double * filter)
 maxiSatReverb::maxiSatReverb() : maxiReverbBase() {
     int ctimes[4] = {778,901,1011,1123};
     setcombtimes(ctimes, 4);
-    double cgain[4] = {0.805,0.827,0.783,0.764};
+    maxi_float_t cgain[4] = {0.805,0.827,0.783,0.764};
     setcombweights(cgain, 4);
     int atimes[3] = {125,42,12};
     setaptimes(atimes, 3);
-    double again[3] = {0.7,0.7,0.7};
+    maxi_float_t again[3] = {0.7,0.7,0.7};
     setapweights(again, 3);
 }
 
-double maxiSatReverb::play(double input)
+maxi_float_t maxiSatReverb::play(maxi_float_t input)
 {
     // Structure created by Chowning (1971) : https://ccrma.stanford.edu/~jos/pasp/Example_Schroeder_Reverberators.html
     // 4 parallel combs -> 3 serial all pass
-    double a = parallelcomb(input,0, 4);
-    double b = serialallpass(a,0, 3);
+    maxi_float_t a = parallelcomb(input,0, 4);
+    maxi_float_t b = serialallpass(a,0, 3);
     return b;
 }
 
-double* maxiSatReverb::playStereo(double input)
+maxi_float_t* maxiSatReverb::playStereo(maxi_float_t input)
 {
     // same as above but with stereo widening
-    double a = parallelcomb(input,0, 4);
-    double b = serialallpass(a,0, 3);
+    maxi_float_t a = parallelcomb(input,0, 4);
+    maxi_float_t b = serialallpass(a,0, 3);
     stereooutput[0] = b;
     stereooutput[1] = -b;
     return stereooutput;
@@ -411,8 +411,8 @@ double* maxiSatReverb::playStereo(double input)
 maxiFreeVerb::maxiFreeVerb() : maxiReverbBase() {
     int ctimes[8] = {1557,1617,1491,1422,1277,1356,1188,1116};
     setcombtimes(ctimes, 8);
-    double cgain[8];
-    double cutoff[8];
+    maxi_float_t cgain[8];
+    maxi_float_t cutoff[8];
     for(int i = 0 ; i < 8; i++){
         cgain[i] = 0.84;
         cutoff[i] = 0.2;
@@ -421,27 +421,27 @@ maxiFreeVerb::maxiFreeVerb() : maxiReverbBase() {
     setlpcombcutoff(cutoff, 8);
     int atimes[4] = {225,556,441,341};
     setaptimes(atimes, 4);
-    double again[4] = {0.5,0.5,0.5,0.5};
+    maxi_float_t again[4] = {0.5,0.5,0.5,0.5};
     setapweights(again, 4);    
 }
 
-double maxiFreeVerb::play(double input)
+maxi_float_t maxiFreeVerb::play(maxi_float_t input)
 {
     // structure created by Shroeder/Moorer
     // https://ccrma.stanford.edu/~jos/pasp/Freeverb.html
     // delay lengths/ feedback amount etc adapted from this page
-    double a = parallellpcomb(input,0, 8);
-    double b = serialallpass(a,0, 4);
+    maxi_float_t a = parallellpcomb(input,0, 8);
+    maxi_float_t b = serialallpass(a,0, 4);
     return b;
 }
 
-double maxiFreeVerb::play(double input,double roomsize,double absorbtion)
+maxi_float_t maxiFreeVerb::play(maxi_float_t input,maxi_float_t roomsize,maxi_float_t absorbtion)
 {
     // extends controllable freeverb parameters
     setcombweightsall((roomsize*0.10) + 0.84);
     setlpcombcutoffall(absorbtion);
-    double a = parallellpcomb(input,0, 8);
-    double b = serialallpass(a,0, 44);
+    maxi_float_t a = parallellpcomb(input,0, 8);
+    maxi_float_t b = serialallpass(a,0, 44);
     return b;
 }
 
@@ -457,8 +457,8 @@ maxiFreeVerbStereo::maxiFreeVerbStereo() : maxiReverbBase() {
         ctimes[i] = ctimes[i-(num_combs/2)] + stereospread;
     }
     setcombtimes(ctimes, num_combs);
-    double cgain[num_combs];
-    double cutoff[num_combs];
+    maxi_float_t cgain[num_combs];
+    maxi_float_t cutoff[num_combs];
     for(int i = 0 ; i < num_combs; i++){
         cgain[i] = 0.84;
         cutoff[i] = 0.2;
@@ -470,19 +470,19 @@ maxiFreeVerbStereo::maxiFreeVerbStereo() : maxiReverbBase() {
         atimes[i] = atimes[i-(num_ap/2)] + stereospread;
     }
     setaptimes(atimes, num_ap);
-    double again[num_ap] = {0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5};
+    maxi_float_t again[num_ap] = {0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5};
     setapweights(again, num_ap);    
 }
 
-double* maxiFreeVerbStereo::playStereo(double input, double roomsize, double absorbtion)
+maxi_float_t* maxiFreeVerbStereo::playStereo(maxi_float_t input, maxi_float_t roomsize, maxi_float_t absorbtion)
 {
     // Two seperate freeverb implens, each with different feedback/delay/filter lengths
     setcombweightsall((roomsize*0.10) + 0.84);
     setlpcombcutoffall(absorbtion);
-    double l1 = parallelcomb(input, 0, 8);
-    double l2 = serialallpass(l1,0, 4);
-    double r1 = parallelcomb(input, 8, 8);
-    double r2 = serialallpass(r1,4,4);
+    maxi_float_t l1 = parallelcomb(input, 0, 8);
+    maxi_float_t l2 = serialallpass(l1,0, 4);
+    maxi_float_t r1 = parallelcomb(input, 8, 8);
+    maxi_float_t r2 = serialallpass(r1,4,4);
     
     stereooutput[0] = l2;
     stereooutput[1] = r2;
@@ -493,9 +493,9 @@ double* maxiFreeVerbStereo::playStereo(double input, double roomsize, double abs
 //////////////////////////////////////////////////////////////////////////////
 
 maxiDattaroReverb::maxiDattaroReverb() : maxiReverbBase() {
-    memset(dattorogains,0,sizeof(double)*4);
+    memset(dattorogains,0,sizeof(maxi_float_t)*4);
     memset(dattarotapspos,0,sizeof(int)*numdattarotappos);
-    memset(dattorotap,0,sizeof(double)*numdattarotaps);
+    memset(dattorotap,0,sizeof(maxi_float_t)*numdattarotaps);
     memset(dattarofixdellengths,0,sizeof(int)*4);
     memset(maxideltimes,0,sizeof(int)*4);
     sigl = 0.0;
@@ -523,7 +523,7 @@ maxiDattaroReverb::maxiDattaroReverb() : maxiReverbBase() {
     dattarofixdellengths[4] = 3100;
     // set gains
     const int numdattarogains = 5;
-    double presetgains[numdattarogains] = { 0.75,0.625,0.7,0.5,0.3 };
+    maxi_float_t presetgains[numdattarogains] = { 0.75,0.625,0.7,0.5,0.3 };
     //    int presetgains[numdattarogains] = { 0.999,0.9999,0.7,0.5,0.99999999 };
     for(int i = 0 ; i < numdattarogains; i++){
         dattorogains[i] = presetgains[i];
@@ -539,7 +539,7 @@ maxiDattaroReverb::maxiDattaroReverb() : maxiReverbBase() {
     }    
 }
 
-double* maxiDattaroReverb::playStereo(double input) {
+maxi_float_t* maxiDattaroReverb::playStereo(maxi_float_t input) {
     // implementation of reverb designed by Jon Dattoro
     // https://ccrma.stanford.edu/~dattorro/EffectDesignPart1.pdf
     // Sigificantly more complex than the previous examples.
@@ -557,12 +557,12 @@ double* maxiDattaroReverb::playStereo(double input) {
     // All above params adapated from the paper and subjected to further tuning
     // from myself.
     
-    double a = maxiDelays[4].onetap(input, dattarofixdellengths[4]);
+    maxi_float_t a = maxiDelays[4].onetap(input, dattarofixdellengths[4]);
     
-    double b = fArrayLP[0].lopass(input, 0.8);
-    double c = serialallpass(b, 0, 2,dattorogains[0]);
-    double d = serialallpass(c, 2, 2,dattorogains[1]);
-    double tsigl = sigl;
+    maxi_float_t b = fArrayLP[0].lopass(input, 0.8);
+    maxi_float_t c = serialallpass(b, 0, 2,dattorogains[0]);
+    maxi_float_t d = serialallpass(c, 2, 2,dattorogains[1]);
+    maxi_float_t tsigl = sigl;
     
     sigl = d + dattorogains[4] * sigr ;
     sigr = d + dattorogains[4] * tsigl ;

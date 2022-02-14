@@ -35,6 +35,7 @@
 
 //#define _NO_VDSP  //set this if you don't want to use apple's vDSP fft functions
 
+#include "../maximilian_types.h"
 
 #include "fft.h"
 #include "stddef.h"
@@ -136,7 +137,7 @@ public:
 	float linearEQIntercept; // the base linear scaling used at the first averaging bin
 	// the formula is:  spectrum[i] * (linearEQIntercept + i * linearEQSlope)
 	// so.. note that clever use of it can also provide a "gain" control of sorts
-	// (fe: set intercept to 2f and slope to 0f to double gain)
+	// (fe: set intercept to 2f and slope to 0f to maxi_float_t gain)
 
 	void setup(float samplingRate, int nBandsInTheFFT, int nAveragesPerOctave);
 

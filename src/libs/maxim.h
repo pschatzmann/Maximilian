@@ -41,7 +41,7 @@
 #include "maxiAtoms.h"
 
 
-//typedef maxiSignal vector<double>;
+//typedef maxiSignal vector<maxi_float_t>;
 //
 //class maxiBase {
 //    virtual maxiSignal play() = {};
@@ -49,9 +49,9 @@
 //
 //class ofMaxiSine : public maxiBase {
 //    maxiOsc osc;
-//    double freq;
+//    maxi_float_t freq;
 //    
-//    void update(double freq) {
+//    void update(maxi_float_t freq) {
 //        freq = freq;
 //    }
 //    void play() {
@@ -65,13 +65,13 @@
 //        //do something?
 //    };
 //    
-//    double play() {
+//    maxi_float_t play() {
 //        return rand() / (float)RAND_MAX;
 //    }
 //};
 //
 //class maxiAnotherUGen : public maxiBase {
-//    maxiBase* update(double param1, bool param2);
+//    maxiBase* update(maxi_float_t param1, bool param2);
 //};
 //
 //class maxiYetAnotherUGen : public maxiBase {
@@ -79,7 +79,7 @@
 //};
 //
 //void maxiProcess(maxiSignal &signal, maxiBase *ugen) {
-//    double val = ugen->play();
+//    maxi_float_t val = ugen->play();
 //    for(int i=0; i < signal.size(); i++) {
 //        signal[i] = val;
 //    }

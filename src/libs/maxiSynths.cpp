@@ -20,7 +20,7 @@ maxiKick::maxiKick(){
 
 };
 
-double maxiKick::play(){
+maxi_float_t maxiKick::play(){
 
     envOut=envelope.adsr(1.,envelope.trigger);
 
@@ -72,13 +72,13 @@ double maxiKick::play(){
     }
 };
 
-void maxiKick::setRelease(double release) {
+void maxiKick::setRelease(maxi_float_t release) {
 
     envelope.setRelease(release);
 
 }
 
-// void maxiKick::setPitch(double newPitch) {
+// void maxiKick::setPitch(maxi_float_t newPitch) {
 //
 //     pitch=newPitch;
 //
@@ -102,7 +102,7 @@ maxiSnare::maxiSnare(){
 
 };
 
-double maxiSnare::play(){
+maxi_float_t maxiSnare::play(){
 
     envOut=envelope.adsr(1.,envelope.trigger);
 
@@ -155,13 +155,13 @@ double maxiSnare::play(){
 
 };
 
-void maxiSnare::setRelease(double release) {
+void maxiSnare::setRelease(maxi_float_t release) {
 
     envelope.setRelease(release);
 
 }
 
-void maxiSnare::setPitch(double newPitch) {
+void maxiSnare::setPitch(maxi_float_t newPitch) {
 
     pitch=newPitch;
 
@@ -187,7 +187,7 @@ maxiHats::maxiHats(){
 
 };
 
-double maxiHats::play(){
+maxi_float_t maxiHats::play(){
 
     envOut=envelope.adsr(1.,envelope.trigger);
 
@@ -240,13 +240,13 @@ double maxiHats::play(){
 
 };
 
-void maxiHats::setRelease(double release) {
+void maxiHats::setRelease(maxi_float_t release) {
 
     envelope.setRelease(release);
 
 }
 
-void maxiHats::setPitch(double newPitch) {
+void maxiHats::setPitch(maxi_float_t newPitch) {
 
     pitch=newPitch;
 
@@ -287,7 +287,7 @@ void maxiSampler::setNumVoices(int numVoices) {
 
 }
 
-double maxiSampler::play() {
+maxi_float_t maxiSampler::play() {
 
     output=0;
 
@@ -328,7 +328,7 @@ void maxiSampler::load(string inFile, bool setall) {
 
 }
 
-void maxiSampler::setPitch(double pitchIn, bool setall) {
+void maxiSampler::setPitch(maxi_float_t pitchIn, bool setall) {
 
     if (setall) {
         for (int i=0;i<voices;i++) {
@@ -345,7 +345,7 @@ void maxiSampler::setPitch(double pitchIn, bool setall) {
 
 }
 
-void maxiSampler::midiNoteOn(double pitchIn, double velocity, bool setall) {
+void maxiSampler::midiNoteOn(maxi_float_t pitchIn, maxi_float_t velocity, bool setall) {
 
     if (setall) {
         for (int i=0;i<voices;i++) {
@@ -363,7 +363,7 @@ void maxiSampler::midiNoteOn(double pitchIn, double velocity, bool setall) {
 
 }
 
-void maxiSampler::midiNoteOff(double pitchIn, double velocity, bool setall) {
+void maxiSampler::midiNoteOff(maxi_float_t pitchIn, maxi_float_t velocity, bool setall) {
 
 
         for (int i=0;i<voices;i++){
@@ -378,7 +378,7 @@ void maxiSampler::midiNoteOff(double pitchIn, double velocity, bool setall) {
 }
 
 
-void maxiSampler::setAttack(double attackD, bool setall) {
+void maxiSampler::setAttack(maxi_float_t attackD, bool setall) {
 
     if (setall) {
 
@@ -398,7 +398,7 @@ void maxiSampler::setAttack(double attackD, bool setall) {
 
 }
 
-void maxiSampler::setDecay(double decayD, bool setall) {
+void maxiSampler::setDecay(maxi_float_t decayD, bool setall) {
 
     if (setall) {
 
@@ -418,7 +418,7 @@ void maxiSampler::setDecay(double decayD, bool setall) {
 
 }
 
-void maxiSampler::setSustain(double sustainD, bool setall) {
+void maxiSampler::setSustain(maxi_float_t sustainD, bool setall) {
 
     if (setall) {
 
@@ -438,7 +438,7 @@ void maxiSampler::setSustain(double sustainD, bool setall) {
 
 }
 
-void maxiSampler::setRelease(double releaseD, bool setall) {
+void maxiSampler::setRelease(maxi_float_t releaseD, bool setall) {
 
     if (setall) {
 
@@ -458,7 +458,7 @@ void maxiSampler::setRelease(double releaseD, bool setall) {
 
 }
 
-void maxiSampler::setPosition(double positionD, bool setall){
+void maxiSampler::setPosition(maxi_float_t positionD, bool setall){
 
     if (setall) {
 

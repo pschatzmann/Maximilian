@@ -33,7 +33,7 @@ inline void maxiCollider::createGabor(flArr &atom, const float freq, const float
 //	float gausDivisor = (-2.0 * kurtotis * kurtotis);
 //    float phase =-1.0;
     
-    double *env = maxiCollider::envCache.getWindow(length);
+    maxi_float_t *env = maxiCollider::envCache.getWindow(length);
 #ifdef __APPLE_CC__	    
     vDSP_vdpsp(env, 1, &atom[0], 1, length);
 #else    

@@ -20,41 +20,41 @@
 class maxiKick {
 public:
     maxiKick();
-    double play();
+    maxi_float_t play();
     void trigger();
-    // void setPitch(double pitch);
-    void setRelease(double releaseD);
+    // void setPitch(maxi_float_t pitch);
+    void setRelease(maxi_float_t releaseD);
 
-    void setPitch(double v) {pitch = v;}
-    double getPitch() const {return pitch;}
-    void setDistortion(double v) {distortion = v;}
-    double getDistortion() const {return distortion;}
-    void setCutoff(double v) {cutoff = v;}
-    double getCutoff()  const{return cutoff;}
-    void setResonance(double v) {resonance = v;}
-    double getResonance() const {return resonance;}
+    void setPitch(maxi_float_t v) {pitch = v;}
+    maxi_float_t getPitch() const {return pitch;}
+    void setDistortion(maxi_float_t v) {distortion = v;}
+    maxi_float_t getDistortion() const {return distortion;}
+    void setCutoff(maxi_float_t v) {cutoff = v;}
+    maxi_float_t getCutoff()  const{return cutoff;}
+    void setResonance(maxi_float_t v) {resonance = v;}
+    maxi_float_t getResonance() const {return resonance;}
 
     void setUseDistortion(bool v) {useDistortion = v;}
-    double getUseDistortion()  const {return useDistortion;}
+    maxi_float_t getUseDistortion()  const {return useDistortion;}
     void setUseLimiter(bool v) {useLimiter = v;}
-    double getUseLimiter()  const {return useLimiter;}
+    maxi_float_t getUseLimiter()  const {return useLimiter;}
     void setUseFilter(bool v) {useFilter = v;}
-    double getUseFilter()  const {return useFilter;}
+    maxi_float_t getUseFilter()  const {return useFilter;}
 
 
   private:
-    double pitch;
-    double output = 0 ;
-    double outputD =0 ;
-    double envOut;
+    maxi_float_t pitch;
+    maxi_float_t output = 0 ;
+    maxi_float_t outputD =0 ;
+    maxi_float_t envOut;
     bool useDistortion = false;
     bool useLimiter = false;
     bool useFilter = false;
-    double distortion = 0;
+    maxi_float_t distortion = 0;
     bool inverse = false;
-    double cutoff;
-    double resonance;
-    double gain = 1;
+    maxi_float_t cutoff;
+    maxi_float_t resonance;
+    maxi_float_t gain = 1;
     maxiOsc kick;
     maxiEnv envelope;
     maxiDistortion distort;
@@ -64,22 +64,22 @@ public:
 class maxiSnare {
 public:
     maxiSnare();
-    double play();
-    void setPitch(double pitch);
-    void setRelease(double releaseD);
+    maxi_float_t play();
+    void setPitch(maxi_float_t pitch);
+    void setRelease(maxi_float_t releaseD);
     void trigger();
-    double pitch;
-    double output = 0 ;
-    double outputD = 0 ;
-    double envOut;
+    maxi_float_t pitch;
+    maxi_float_t output = 0 ;
+    maxi_float_t outputD = 0 ;
+    maxi_float_t envOut;
     bool useDistortion = false;
     bool useLimiter = false;
     bool useFilter = true;
-    double distortion = 0;
+    maxi_float_t distortion = 0;
     bool inverse = false;
-    double cutoff;
-    double resonance;
-    double gain = 1;
+    maxi_float_t cutoff;
+    maxi_float_t resonance;
+    maxi_float_t gain = 1;
     maxiOsc tone;
     maxiOsc noise;
     maxiEnv envelope;
@@ -94,22 +94,22 @@ class maxiHats {
 
 public:
     maxiHats();
-    double play();
-    void setPitch(double pitch);
-    void setRelease(double releaseD);
+    maxi_float_t play();
+    void setPitch(maxi_float_t pitch);
+    void setRelease(maxi_float_t releaseD);
     void trigger();
-    double pitch;
-    double output = 0;
-    double outputD = 0;
-    double envOut;
+    maxi_float_t pitch;
+    maxi_float_t output = 0;
+    maxi_float_t outputD = 0;
+    maxi_float_t envOut;
     bool useDistortion = false;
     bool useLimiter = false;
     bool useFilter = false;
-    double distortion = 0;
+    maxi_float_t distortion = 0;
     bool inverse = false;
-    double cutoff;
-    double resonance;
-    double gain = 1;
+    maxi_float_t cutoff;
+    maxi_float_t resonance;
+    maxi_float_t gain = 1;
     maxiOsc tone;
     maxiOsc noise;
     maxiEnv envelope;
@@ -138,34 +138,34 @@ class maxiSampler {
 
 public:
     maxiSampler();
-    double play();
-    void setPitch(double pitch, bool setall=false);
-    void midiNoteOn(double pitch, double velocity, bool setall=false);
-    void midiNoteOff(double pitch, double velocity, bool setall=false);
-    void setAttack(double attackD,bool setall=true);
-    void setDecay(double decayD,bool setall=true);
-    void setSustain(double sustainD,bool setall=true);
-    void setRelease(double releaseD,bool setall=true);
-    void setPosition(double positionD,bool setall=true);
+    maxi_float_t play();
+    void setPitch(maxi_float_t pitch, bool setall=false);
+    void midiNoteOn(maxi_float_t pitch, maxi_float_t velocity, bool setall=false);
+    void midiNoteOff(maxi_float_t pitch, maxi_float_t velocity, bool setall=false);
+    void setAttack(maxi_float_t attackD,bool setall=true);
+    void setDecay(maxi_float_t decayD,bool setall=true);
+    void setSustain(maxi_float_t sustainD,bool setall=true);
+    void setRelease(maxi_float_t releaseD,bool setall=true);
+    void setPosition(maxi_float_t positionD,bool setall=true);
     void load(string inFile,bool setall=true);
     void setNumVoices(int numVoices);
-    double position;
+    maxi_float_t position;
     void trigger();
-    double pitch[32];
+    maxi_float_t pitch[32];
     int originalPitch=67;
-    double outputs[32];
-    double outputD = 0;
-    double envOut[32];
-    double envOutGain[32];
-    double output;
+    maxi_float_t outputs[32];
+    maxi_float_t outputD = 0;
+    maxi_float_t envOut[32];
+    maxi_float_t envOutGain[32];
+    maxi_float_t output;
     bool useDistortion = false;
     bool useLimiter = false;
     bool useFilter = false;
-    double distortion = 0;
+    maxi_float_t distortion = 0;
     bool inverse = false;
-    double cutoff;
-    double resonance;
-    double gain = 1;
+    maxi_float_t cutoff;
+    maxi_float_t resonance;
+    maxi_float_t gain = 1;
     int voices;
     int currentVoice=0;
     convert mtof;

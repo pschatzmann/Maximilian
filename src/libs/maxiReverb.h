@@ -42,30 +42,30 @@
 class maxiReverbFilters{
 public:
     maxiReverbFilters();
-    double twopoint(double input);
-    double comb1(double input,double size);
-    double combff(double input,double size);
-    double combfb(double input,double size,double fb);
-    double lpcombfb(double input,double size,double fb, double cutoff);
+    maxi_float_t twopoint(maxi_float_t input);
+    maxi_float_t comb1(maxi_float_t input,maxi_float_t size);
+    maxi_float_t combff(maxi_float_t input,maxi_float_t size);
+    maxi_float_t combfb(maxi_float_t input,maxi_float_t size,maxi_float_t fb);
+    maxi_float_t lpcombfb(maxi_float_t input,maxi_float_t size,maxi_float_t fb, maxi_float_t cutoff);
 
-    double allpass(double input,double size);
-    double allpass(double input,double size,double fback);
-    double allpasstap(double input,double size,int tap);
+    maxi_float_t allpass(maxi_float_t input,maxi_float_t size);
+    maxi_float_t allpass(maxi_float_t input,maxi_float_t size,maxi_float_t fback);
+    maxi_float_t allpasstap(maxi_float_t input,maxi_float_t size,int tap);
     void setlength(int length);
-    double onetap(double input,double size);
-    double tapd(double input,double size, double * taps,int numtaps);
-    double tapdwgain(double input,double size, double * taps,int numtaps,double * gain);
-    double tapdpos(double input,int size, int * taps,int numtaps);
-    double gettap(int tap);
+    maxi_float_t onetap(maxi_float_t input,maxi_float_t size);
+    maxi_float_t tapd(maxi_float_t input,maxi_float_t size, maxi_float_t * taps,int numtaps);
+    maxi_float_t tapdwgain(maxi_float_t input,maxi_float_t size, maxi_float_t * taps,int numtaps,maxi_float_t * gain);
+    maxi_float_t tapdpos(maxi_float_t input,int size, int * taps,int numtaps);
+    maxi_float_t gettap(int tap);
 
 private:
-    std::valarray<double> delay_line;
-    double a;
+    std::valarray<maxi_float_t> delay_line;
+    maxi_float_t a;
     int delay_index;
     int delay_size;
-    double output;
-    double feedback;
-    double gain_cof;
+    maxi_float_t output;
+    maxi_float_t feedback;
+    maxi_float_t gain_cof;
 
     maxiFilter mf;
 
@@ -77,25 +77,25 @@ public:
     maxiReverbBase();
 
 protected:
-    double parallellpcomb(double input,int firstfilter,int numfilters);
-    void setcombtimesms(double times[],int numset);
-    void setaptimesms(double times[],int numset);
-    double serialallpass(double input,int firstfilter,int numfilters);
-    double serialallpass(double input,int firstfilter,int numfilters,double fb);
-    double parallelcomb(double input,int firstfilter, int numfilters);
-    double apcombcombo(double input,double gain_coef);
+    maxi_float_t parallellpcomb(maxi_float_t input,int firstfilter,int numfilters);
+    void setcombtimesms(maxi_float_t times[],int numset);
+    void setaptimesms(maxi_float_t times[],int numset);
+    maxi_float_t serialallpass(maxi_float_t input,int firstfilter,int numfilters);
+    maxi_float_t serialallpass(maxi_float_t input,int firstfilter,int numfilters,maxi_float_t fb);
+    maxi_float_t parallelcomb(maxi_float_t input,int firstfilter, int numfilters);
+    maxi_float_t apcombcombo(maxi_float_t input,maxi_float_t gain_coef);
 
-    double fbsignal[8];
-    void setweights(double weights[],int numset,double *filter);
-    int mstodellength(double ms);
+    maxi_float_t fbsignal[8];
+    void setweights(maxi_float_t weights[],int numset,maxi_float_t *filter);
+    int mstodellength(maxi_float_t ms);
     void setcombtimes(int times[],int numset);
     void setaptimes(int times[],int numset);
-    void setcombweights(double weights[],int numset);
-    void setcombweightsall(double feedback);
-    void setapweights(double weights[],int numset);
-    void setlpcombcutoff(double *cutoff, int numset);
-    void setlpcombcutoffall(double cutoff);
-    void setcombfeedback(double *feedback,int numset);
+    void setcombweights(maxi_float_t weights[],int numset);
+    void setcombweightsall(maxi_float_t feedback);
+    void setapweights(maxi_float_t weights[],int numset);
+    void setlpcombcutoff(maxi_float_t *cutoff, int numset);
+    void setlpcombcutoffall(maxi_float_t cutoff);
+    void setcombfeedback(maxi_float_t *feedback,int numset);
     void limitnumfilters(int * num);
 
     static int const numfilters = 32;
@@ -104,20 +104,20 @@ protected:
     maxiFilter fArrayLP[numfilters];
 
 
-    double fbcomb[numfilters];
-    double fbap[numfilters];
-    double combgainweight[numfilters];
-    double apgainweight[numfilters];
-    double lpcombcutoff[numfilters];
-    double feedbackcombfb[numfilters];
-    double output;
-    double stereooutput[2];
-    double accumulator;
+    maxi_float_t fbcomb[numfilters];
+    maxi_float_t fbap[numfilters];
+    maxi_float_t combgainweight[numfilters];
+    maxi_float_t apgainweight[numfilters];
+    maxi_float_t lpcombcutoff[numfilters];
+    maxi_float_t feedbackcombfb[numfilters];
+    maxi_float_t output;
+    maxi_float_t stereooutput[2];
+    maxi_float_t accumulator;
     float numsamplesms;
 
     maxiReverbFilters earlyref;
-    double taps[numfilters];
-    double tapsgain[numfilters];
+    maxi_float_t taps[numfilters];
+    maxi_float_t tapsgain[numfilters];
     int numtaps;
     int tapdellength;
 };
@@ -125,39 +125,39 @@ protected:
 class maxiSatReverb : private maxiReverbBase {
 public:
     maxiSatReverb();
-    double play(double input);
-    double* playStereo(double input);
+    maxi_float_t play(maxi_float_t input);
+    maxi_float_t* playStereo(maxi_float_t input);
 
 };
 
 class maxiFreeVerb : private maxiReverbBase {
 public:
     maxiFreeVerb();
-    double play(double input);
-    double play(double input,double roomsize,double absorbtion);
+    maxi_float_t play(maxi_float_t input);
+    maxi_float_t play(maxi_float_t input,maxi_float_t roomsize,maxi_float_t absorbtion);
 };
 
 class maxiFreeVerbStereo : private maxiReverbBase {
 public:
     maxiFreeVerbStereo();
-    double* playStereo(double input,double roomsize,double absorbtion);
+    maxi_float_t* playStereo(maxi_float_t input,maxi_float_t roomsize,maxi_float_t absorbtion);
 };
 
 class maxiDattaroReverb : private maxiReverbBase {
 public:
     maxiDattaroReverb();
-    double* playStereo(double input);
+    maxi_float_t* playStereo(maxi_float_t input);
 private:
     maxiReverbFilters maxiDelays[9];
     static const int numdattarotappos = 14;
     static const int numdattarotaps = 14;
 
     int dattarotapspos[numdattarotappos];
-    double dattorotap[numdattarotaps];
+    maxi_float_t dattorotap[numdattarotaps];
     int maxideltimes[4];
-    double dattorogains[5];
+    maxi_float_t dattorogains[5];
     int dattarofixdellengths[5];
-    double sigl,sigr;
+    maxi_float_t sigl,sigr;
 
 };
 

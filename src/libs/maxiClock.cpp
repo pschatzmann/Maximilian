@@ -28,7 +28,7 @@ void maxiClock::ticker() {
 }
 
 
-void maxiClock::setTempo(double bpmIn) {
+void maxiClock::setTempo(maxi_float_t bpmIn) {
 
     bpm=bpmIn;
     bps=(bpm/60.)*ticks;

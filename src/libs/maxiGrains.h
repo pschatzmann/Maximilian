@@ -16,46 +16,46 @@ typedef unsigned long ulong;
 //window functions from http://en.wikipedia.org/wiki/Window_function#High-_and_moderate-resolution_windows
 
 struct hannWinFunctor {
-	inline double operator()(ulong windowLength, ulong windowPos) {
+	inline maxi_float_t operator()(ulong windowLength, ulong windowPos) {
 		return 0.5 * (1.0 - cos((2.0 * PI * windowPos) / (windowLength - 1)));
 	}
 };
 
 //this window can produce clicks
 struct hammingWinFunctor {
-	inline double operator()(ulong windowLength, ulong windowPos) {
+	inline maxi_float_t operator()(ulong windowLength, ulong windowPos) {
 		return 0.54 - (0.46 * cos((2.0 * PI * windowPos) / (windowLength - 1)));
 	}
 };
 
 
 struct cosineWinFunctor {
-	inline double operator()(ulong windowLength, ulong windowPos) {
+	inline maxi_float_t operator()(ulong windowLength, ulong windowPos) {
 		return sin((PI * windowPos) / (windowLength - 1));
 	}
 };
 
 struct rectWinFunctor {
-	inline double operator()(ulong windowLength, ulong windowPos) {
+	inline maxi_float_t operator()(ulong windowLength, ulong windowPos) {
 		return 1;
 	}
 };
 
 struct triangleWinFunctor {
-	inline double operator()(ulong windowLength, ulong windowPos) {
+	inline maxi_float_t operator()(ulong windowLength, ulong windowPos) {
 		return (2.0 / (windowLength-1.0)) * (((windowLength-1.0)/2.0) - fabs(windowPos - ((windowLength-1.0)/2.0)));
 	}
 };
 
 struct triangleNZWinFunctor {
 	//non zero end points
-	inline double operator()(ulong windowLength, ulong windowPos) {
+	inline maxi_float_t operator()(ulong windowLength, ulong windowPos) {
 		return (2.0 / windowLength) * ((windowLength/2.0) - fabs(windowPos - ((windowLength-1.0)/2.0)));
 	}
 };
 
 struct blackmanHarrisWinFunctor {
-	inline double operator()(ulong windowLength, ulong windowPos) {
+	inline maxi_float_t operator()(ulong windowLength, ulong windowPos) {
 		return 0.35875 -
 		(0.48829 * cos((2 * PI * windowPos) / (windowLength-1))) +
 		(0.14128 * cos((4 * PI * windowPos) / (windowLength-1))) +
@@ -64,7 +64,7 @@ struct blackmanHarrisWinFunctor {
 };
 
 struct blackmanNutallWinFunctor {
-	inline double operator()(ulong windowLength, ulong windowPos) {
+	inline maxi_float_t operator()(ulong windowLength, ulong windowPos) {
 		return 0.3635819 -
 		(0.4891775 * cos((2 * PI * windowPos) / (windowLength-1))) +
 		(0.1365995 * cos((4 * PI * windowPos) / (windowLength-1))) +
@@ -73,18 +73,18 @@ struct blackmanNutallWinFunctor {
 };
 
 struct gaussianWinFunctor {
-    double gausDivisor;
+    maxi_float_t gausDivisor;
     gaussianWinFunctor() {
         init(0.3);
     }
-    gaussianWinFunctor(double kurtosis) {
+    gaussianWinFunctor(maxi_float_t kurtosis) {
         init(kurtosis);
     }
-    void init(double kurtosis) {
+    void init(maxi_float_t kurtosis) {
         gausDivisor = (-2.0 * kurtosis * kurtosis);
     }
-	inline double operator()(ulong windowLength, ulong windowPos) {
-        double phase = ((windowPos / (double) windowLength) - 0.5) * 2.0;
+	inline maxi_float_t operator()(ulong windowLength, ulong windowPos) {
+        maxi_float_t phase = ((windowPos / (maxi_float_t) windowLength) - 0.5) * 2.0;
         return exp((phase * phase) / gausDivisor);
 	}
 };
@@ -97,7 +97,7 @@ public:
 
 	maxiGrainWindowCache() {
 		cacheSize = maxiSettings::sampleRate / 2.0; //allocate mem for up to 500ms grains
-		cache = (double**)malloc(cacheSize * sizeof(double*));
+		cache = (maxi_float_t**)malloc(cacheSize * sizeof(maxi_float_t*));
 		for(int i=0; i < cacheSize; i++) {
 			cache[i] = NULL;
 		}
@@ -112,9 +112,9 @@ public:
         free(cache);
 	}
 
-	double* getWindow(const unsigned int length) {
+	maxi_float_t* getWindow(const unsigned int length) {
 		if (NULL == cache[length]) {
-			cache[length] = (double*)malloc(length * sizeof(double));
+			cache[length] = (maxi_float_t*)malloc(length * sizeof(maxi_float_t));
 			for(int i=0; i < length; i++) {
 				cache[length][i] = TFunc()(length, i);
 			}
@@ -123,13 +123,13 @@ public:
 	}
 
 private:
-	double** cache;
+	maxi_float_t** cache;
 
 };
 
 class maxiGrainBase {
 public:
-    virtual double play()=0;
+    virtual maxi_float_t play()=0;
     virtual ~maxiGrainBase() {}
 	bool finished;
 };
@@ -138,31 +138,31 @@ template<typename F>
 class maxiGrain : public maxiGrainBase {
 public:
 	maxiSample *sample;
-    double pos;
-	double dur;
+    maxi_float_t pos;
+	maxi_float_t dur;
 	unsigned long sampleStartPos;
 	unsigned long sampleIdx;
 	unsigned long sampleDur;
 	unsigned long sampleEndPos;
-	double freq;
-	double speed;
-	double inc;
-	double frequency;
-	double* window;
-    double* buffer;
+	maxi_float_t freq;
+	maxi_float_t speed;
+	maxi_float_t inc;
+	maxi_float_t frequency;
+	maxi_float_t* window;
+    maxi_float_t* buffer;
 #if defined(__APPLE_CC__) && defined(MAXIGRAINFAST)
-	double* grainSamples;
+	maxi_float_t* grainSamples;
 #endif
 	/*
 	 position between 0.0 and 1.0
 	 duration in seconds
 	 */
-	maxiGrain(maxiSample *sample, const double position, const double duration, const double speed, maxiGrainWindowCache<F> *windowCache) :sample(sample), pos(position), dur(duration), speed(speed)
+	maxiGrain(maxiSample *sample, const maxi_float_t position, const maxi_float_t duration, const maxi_float_t speed, maxiGrainWindowCache<F> *windowCache) :sample(sample), pos(position), dur(duration), speed(speed)
 	{
         buffer = &sample->amplitudes[0];
 //        buffer = sample->temp;
 		sampleStartPos = sample->getLength() * pos;
-		sampleDur = dur * (double)sample->mySampleRate;
+		sampleDur = dur * (maxi_float_t)sample->mySampleRate;
 		sampleDurMinusOne = sampleDur - 1;
 		sampleIdx = 0;
 		finished = 0;
@@ -182,16 +182,16 @@ public:
 
 #if defined(__APPLE_CC__) && defined(MAXIGRAINFAST)
 		//premake the grain using fast vector functions, and quadratic interpolation
-		double *sourceData = (double*)malloc(sampleDur * sizeof(double));
+		maxi_float_t *sourceData = (maxi_float_t*)malloc(sampleDur * sizeof(maxi_float_t));
 		short* buffer = (short *)sample->temp.data();
-		//convert sample to double data
+		//convert sample to maxi_float_t data
 		vDSP_vflt16D(buffer + sampleStartPos, 1, sourceData, 1, min(sampleDur, sample->length - sampleStartPos));
 		//todo: wraping code
 
-		grainSamples = (double*)malloc(sampleDur * sizeof(double));
+		grainSamples = (maxi_float_t*)malloc(sampleDur * sizeof(maxi_float_t));
 		//make list of interpolation indexes
-		double* interpIndexes = (double*)malloc(sampleDur * sizeof(double));
-		double interpPos = sampleStartPos;
+		maxi_float_t* interpIndexes = (maxi_float_t*)malloc(sampleDur * sizeof(maxi_float_t));
+		maxi_float_t interpPos = sampleStartPos;
 		for(int i=0; i < sampleDur; i++) {
 			interpIndexes[i] = interpPos - sampleStartPos;
 			interpPos += fabs(inc);
@@ -200,7 +200,7 @@ public:
 		if (frequency < 0) {
 			vDSP_vrvrsD(grainSamples,1, sampleDur);
 		}
-		static double divFactor = 32767.0;
+		static maxi_float_t divFactor = 32767.0;
 		vDSP_vsdivD(grainSamples, 1, &divFactor, grainSamples, 1, sampleDur);
 		vDSP_vmulD(grainSamples, 1, window, 1, grainSamples, 1, sampleDur);
 		delete sourceData, interpIndexes;
@@ -213,14 +213,14 @@ public:
 #endif
 	}
 
-	inline double play() {
-		double output = 0.0;
+	inline maxi_float_t play() {
+		maxi_float_t output = 0.0;
 		if (!finished) {
 #if defined(__APPLE_CC__) && defined(MAXIGRAINFAST)
 			output = grainSamples[sampleIdx];
 #else
 			envValue = window[sampleIdx];
-			double remainder;
+			maxi_float_t remainder;
             pos += inc;
             if (pos >= sample->getLength())
                 pos -= sample->getLength();
@@ -234,7 +234,7 @@ public:
             if (b >= sample->getLength()) {
                 b = 0;
             }
-            output = (double) ((1-remainder) * buffer[a] +
+            output = (maxi_float_t) ((1-remainder) * buffer[a] +
                                remainder * buffer[b]);//linear interpolation
 			output *= envValue;
 #endif
@@ -246,7 +246,7 @@ public:
 
 protected:
 	maxiGrain();
-	double envValue;
+	maxi_float_t envValue;
 	ulong sampleDurMinusOne;
 };
 
@@ -267,8 +267,8 @@ public:
 		grains.push_back(g);
 	}
 
-	inline double play() {
-		double total = 0.0;
+	inline maxi_float_t play() {
+		maxi_float_t total = 0.0;
         grainList::iterator it = grains.begin();
 		while(it != grains.end()) {
 			total += (*it)->play();
@@ -286,13 +286,13 @@ public:
 template<typename F>
 class maxiTimeStretch {
 protected:
-    double position;
+    maxi_float_t position;
 public:
 	maxiSample *sample;
 	maxiGrainPlayer *grainPlayer;
 	maxiGrainWindowCache<F> windowCache;
-	double randomOffset;
-    double looper;
+	maxi_float_t randomOffset;
+    maxi_float_t looper;
 
 	maxiTimeStretch(){
 		position=0;
@@ -323,31 +323,31 @@ public:
 		grainPlayer = new maxiGrainPlayer(sample);
 	}
 
-    double getNormalisedPosition() {
-        return position / (double) sample->getLength();
+    maxi_float_t getNormalisedPosition() {
+        return position / (maxi_float_t) sample->getLength();
     }
 
-    double getPosition() {
+    maxi_float_t getPosition() {
         return position;
     }
 
-    void setPosition(double pos) {
+    void setPosition(maxi_float_t pos) {
         position = pos * sample->getLength();
         position = maxiMap::clamp(position, 0, sample->getLength()-1);
     }
 
 
 	//play at a speed
-    inline double play(double speed=1, double grainLength=0.05, int overlaps=2, double posMod=0) {
+    inline maxi_float_t play(maxi_float_t speed=1, maxi_float_t grainLength=0.05, int overlaps=2, maxi_float_t posMod=0) {
 		position = position + speed;
         looper++;
 		if (position > sample->getLength()) position-= sample->getLength();
 		if (position < 0) position += sample->getLength();
-		double cycleLength = grainLength * maxiSettings::sampleRate  / overlaps;
+		maxi_float_t cycleLength = grainLength * maxiSettings::sampleRate  / overlaps;
         if (looper > cycleLength + randomOffset) {
             looper -= (cycleLength + randomOffset);
 			speed = (speed > 0 ? 1 : -1);
-			maxiGrain<F> *g = new maxiGrain<F>(sample, max(min(1.0,(position / sample->getLength()) + posMod),0.0), grainLength, speed, &windowCache);
+			maxiGrain<F> *g = new maxiGrain<F>(sample, max(min((maxi_float_t)1.0,(maxi_float_t)(position / sample->getLength()) + posMod),(maxi_float_t)0.0), grainLength, speed, &windowCache);
 			grainPlayer->addGrain(g);
 			randomOffset = rand() % 10;
 		}
@@ -356,11 +356,11 @@ public:
 
 
     //provide your own position iteration
-	inline double playAtPosition(double pos, double grainLength, int overlaps) {
+	inline maxi_float_t playAtPosition(maxi_float_t pos, maxi_float_t grainLength, int overlaps) {
 		looper++;
 		pos *= sample->getLength();
 		if (0 == floor(fmod(looper, grainLength * maxiSettings::sampleRate / overlaps))) {
-			maxiGrain<F> *g = new maxiGrain<F>(sample, max(min(1.0,(pos / sample->getLength())),0.0), grainLength, 1, &windowCache);
+			maxiGrain<F> *g = new maxiGrain<F>(sample, max(min((maxi_float_t)1.0,(pos / sample->getLength())),(maxi_float_t)0.0), grainLength, 1, &windowCache);
 			grainPlayer->addGrain(g);
 		}
 		return grainPlayer->play();
@@ -374,12 +374,12 @@ public:
 template<typename F>
 class maxiPitchShift {
 public:
-	double position;
+	maxi_float_t position;
 	long cycles;
 	maxiSample *sample;
 	maxiGrainPlayer *grainPlayer;
 	maxiGrainWindowCache<F> windowCache;
-	double randomOffset;
+	maxi_float_t randomOffset;
 
 	maxiPitchShift(){
 		position=0;
@@ -409,18 +409,18 @@ public:
 		grainPlayer = new maxiGrainPlayer(sample);
 	}
 
-	double play(double speed, double grainLength, int overlaps, double posMod=0.0) {
+	maxi_float_t play(maxi_float_t speed, maxi_float_t grainLength, int overlaps, maxi_float_t posMod=0.0) {
 		position = position + 1;
 		cycles++;
 		if (position > sample->getLength()) position=0;
 		if (position < 0) position = sample->getLength();
-		double cycleLength = grainLength * maxiSettings::sampleRate  / overlaps;
-		double cycleMod = fmod(cycles, cycleLength + randomOffset);
+		maxi_float_t cycleLength = grainLength * maxiSettings::sampleRate  / overlaps;
+		maxi_float_t cycleMod = fmod(cycles, cycleLength + randomOffset);
 		if (0 == floor(cycleMod)) {
 			//			cout << cycleMod << endl;
 			//speed = (speed > 0 ? 1 : -1);
 			speed = speed - ((cycleMod / cycleLength) * 0.1);
-			maxiGrain<F> *g = new maxiGrain<F>(sample, max(min(1.0,(position / sample->getLength()) + posMod),0.0), grainLength, speed, &windowCache);
+			maxiGrain<F> *g = new maxiGrain<F>(sample, max(min((maxi_float_t)1.0,(position / sample->getLength()) + posMod),(maxi_float_t)0.0), grainLength, speed, &windowCache);
 			grainPlayer->addGrain(g);
 			//			cout << grainPlayer->grains.size() << endl;
 			//			randomOffset = rand() % 10;
@@ -437,13 +437,13 @@ public:
 template<typename F>
 class maxiStretch {
 public:
-	double position;
+	maxi_float_t position;
 	maxiSample *sample;
 	maxiGrainPlayer *grainPlayer;
 	maxiGrainWindowCache<F> windowCache;
-	double randomOffset;
+	maxi_float_t randomOffset;
     unsigned  long loopStart, loopEnd, loopLength;
-    double looper;
+    maxi_float_t looper;
 
 	maxiStretch(){
         randomOffset=0;
@@ -477,25 +477,25 @@ public:
         looper = 0;
 	}
 
-    double getNormalisedPosition() {
-        return position / (double) sample->getLength();
+    maxi_float_t getNormalisedPosition() {
+        return position / (maxi_float_t) sample->getLength();
     }
 
-    double getPosition() {
+    maxi_float_t getPosition() {
         return position;
     }
 
-    void setPosition(double pos) {
+    void setPosition(maxi_float_t pos) {
         position = pos * sample->getLength();
         position = maxiMap::clamp(position, 0, sample->getLength()-1);
     }
 
-    void setLoopStart(double val) {
+    void setLoopStart(maxi_float_t val) {
         loopStart = val * sample->getLength();
         loopLength = loopEnd - loopStart;
     }
 
-    void setLoopEnd(double val) {
+    void setLoopEnd(maxi_float_t val) {
         loopEnd = val * sample->getLength();
         loopLength = loopEnd - loopStart;
     }
@@ -509,16 +509,16 @@ public:
     }
 
 
-	inline double play(double pitchstretch=1, double timestretch=1, double grainLength=0.05, int overlaps=2, double posMod=0.0) {
+	inline maxi_float_t play(maxi_float_t pitchstretch=1, maxi_float_t timestretch=1, maxi_float_t grainLength=0.05, int overlaps=2, maxi_float_t posMod=0.0) {
         if (sample != NULL) {
             position = position + (1 * timestretch);
             looper++;
             if (position >= loopEnd) position-= loopLength;
             if (position < loopStart) position += loopLength;
-            double cycleLength = grainLength * maxiSettings::sampleRate  / overlaps;
+            maxi_float_t cycleLength = grainLength * maxiSettings::sampleRate  / overlaps;
             if (looper > cycleLength + randomOffset) {
                 looper -= (cycleLength + randomOffset);
-                maxiGrain<F> *g = new maxiGrain<F>(sample, max(min(1.0,(position / sample->getLength()) + posMod),0.0), grainLength, pitchstretch, &windowCache);
+                maxiGrain<F> *g = new maxiGrain<F>(sample, max(min((maxi_float_t)1.0,(position / sample->getLength()) + posMod),(maxi_float_t)0.0), grainLength, pitchstretch, &windowCache);
                 grainPlayer->addGrain(g);
                 randomOffset = rand() % 10;
             }
@@ -528,11 +528,11 @@ public:
         }
 	}
 
-    inline double playAtPosition(double pitchstretch=1, double pos=0, double grainLength=0.05, int overlaps=2) {
+    inline maxi_float_t playAtPosition(maxi_float_t pitchstretch=1, maxi_float_t pos=0, maxi_float_t grainLength=0.05, int overlaps=2) {
         looper++;
         pos *= sample->getLength();
         if (0 == floor(fmod(looper, grainLength * maxiSettings::sampleRate / overlaps))) {
-            maxiGrain<F> *g = new maxiGrain<F>(sample, max(min(1.0,(pos / sample->getLength())),0.0), grainLength, pitchstretch, &windowCache);
+            maxiGrain<F> *g = new maxiGrain<F>(sample, max(min((maxi_float_t)1.0,(pos / sample->getLength())),(maxi_float_t)0.0), grainLength, pitchstretch, &windowCache);
             grainPlayer->addGrain(g);
         }
         return grainPlayer->play();

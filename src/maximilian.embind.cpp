@@ -24,7 +24,7 @@
 class vectorTools
 {
 public:
-	static void clearVectorDbl(vector<double> &vecIn)
+	static void clearVectorDbl(vector<maxi_float_t> &vecIn)
 	{
 		vecIn.clear();
 	}
@@ -39,7 +39,7 @@ using namespace emscripten;
 EMSCRIPTEN_BINDINGS(my_module)
 {
 	register_vector<int>("VectorInt");
-	register_vector<double>("VectorDouble");
+	register_vector<maxi_float_t>("Vectormaxi_number_t");
 	register_vector<char>("VectorChar");
 	register_vector<unsigned char>("VectorUChar");
 	register_vector<float>("VectorFloat");
@@ -73,8 +73,8 @@ EMSCRIPTEN_BINDINGS(my_module)
 // #endif
 // 			.function("sinewave", &maxiOsc::sinewave)
 // 			.function("coswave", &maxiOsc::coswave)
-// 			.function("phasor", select_overload<double(double)>(&maxiOsc::phasor))
-// 			.function("phasor", select_overload<double(double, double, double)>(&maxiOsc::phasor))
+// 			.function("phasor", select_overload<maxi_float_t(maxi_float_t)>(&maxiOsc::phasor))
+// 			.function("phasor", select_overload<maxi_float_t(maxi_float_t, maxi_float_t, maxi_float_t)>(&maxiOsc::phasor))
 // 			.function("saw", &maxiOsc::saw)
 // 			.function("triangle", &maxiOsc::triangle)
 // 			.function("square", &maxiOsc::square)
@@ -110,8 +110,8 @@ EMSCRIPTEN_BINDINGS(my_module)
 // #else
 // 			.constructor<>()
 // #endif
-// 			.function("dl", select_overload<double(double, int, double)>(&maxiDelayline::dl))
-// 			.function("dl", select_overload<double(double, int, double, int)>(&maxiDelayline::dl));
+// 			.function("dl", select_overload<maxi_float_t(maxi_float_t, int, maxi_float_t)>(&maxiDelayline::dl))
+// 			.function("dl", select_overload<maxi_float_t(maxi_float_t, int, maxi_float_t, int)>(&maxiDelayline::dl));
 
 	// MAXI FILTER
 // 	class_<maxiFilter>("maxiFilter")
@@ -157,24 +157,24 @@ EMSCRIPTEN_BINDINGS(my_module)
 		;
 
 	class_<maxiXFade>("maxiXFade")
-	.class_function("xfade", select_overload<vector<double> (vector<double> &, vector<double> &, double)>(&maxiXFade::xfade))
-	.class_function("xfade", select_overload<double(double, double, double)>(&maxiXFade::xfade))
+	.class_function("xfade", select_overload<vector<maxi_float_t> (vector<maxi_float_t> &, vector<maxi_float_t> &, maxi_float_t)>(&maxiXFade::xfade))
+	.class_function("xfade", select_overload<maxi_float_t(maxi_float_t, maxi_float_t, maxi_float_t)>(&maxiXFade::xfade))
 		;
 
-	class_<maxiLagExp<double>>("maxiLagExp")
+	class_<maxiLagExp<maxi_float_t>>("maxiLagExp")
 #ifdef SPN
 			// not sure how to override constructors with smart_ptr
-			.smart_ptr_constructor("shared_ptr<maxiLagExp<double>>", &std::make_shared<maxiLagExp<double>>, allow_raw_pointers())
-	//	.smart_ptr_constructor("shared_ptr<maxiLagExp<double>>",&std::make_shared<maxiLagExp<double>>)
+			.smart_ptr_constructor("shared_ptr<maxiLagExp<maxi_float_t>>", &std::make_shared<maxiLagExp<maxi_float_t>>, allow_raw_pointers())
+	//	.smart_ptr_constructor("shared_ptr<maxiLagExp<maxi_float_t>>",&std::make_shared<maxiLagExp<maxi_float_t>>)
 #else
 			.constructor<>()
 #endif
-			.function("init", &maxiLagExp<double>::init)
-			.function("addSample", &maxiLagExp<double>::addSample)
-			.function("value", &maxiLagExp<double>::value)
-			.property("alpha", &maxiLagExp<double>::getAlpha, &maxiLagExp<double>::setAlpha)
-			.property("alphaReciprocal", &maxiLagExp<double>::getAlphaReciprocal, &maxiLagExp<double>::setAlphaReciprocal)
-			.property("val", &maxiLagExp<double>::value, &maxiLagExp<double>::setVal);
+			.function("init", &maxiLagExp<maxi_float_t>::init)
+			.function("addSample", &maxiLagExp<maxi_float_t>::addSample)
+			.function("value", &maxiLagExp<maxi_float_t>::value)
+			.property("alpha", &maxiLagExp<maxi_float_t>::getAlpha, &maxiLagExp<maxi_float_t>::setAlpha)
+			.property("alphaReciprocal", &maxiLagExp<maxi_float_t>::getAlphaReciprocal, &maxiLagExp<maxi_float_t>::setAlphaReciprocal)
+			.property("val", &maxiLagExp<maxi_float_t>::value, &maxiLagExp<maxi_float_t>::setVal);
 
 
 // 	// MAXI SAMPLE
@@ -187,22 +187,22 @@ EMSCRIPTEN_BINDINGS(my_module)
 // 			//	.property("length", &maxiSample::getLength, &maxiSample::setLength) // no work???
 // 			.function("getLength", &maxiSample::getLength)
 // 			//	.function("setSample", &maxiSample::setSample)
-// 			.function("setSample", select_overload<void(vector<double> &)>(&maxiSample::setSample))
-// 			.function("setSample", select_overload<void(vector<double> &, int)>(&maxiSample::setSample))
+// 			.function("setSample", select_overload<void(vector<maxi_float_t> &)>(&maxiSample::setSample))
+// 			.function("setSample", select_overload<void(vector<maxi_float_t> &, int)>(&maxiSample::setSample))
 // 			.function("setSampleFromOggBlob", &maxiSample::setSampleFromOggBlob)
 // 			//	.function("getSummary", &maxiSample::getSummary)
 // 			.function("isReady", &maxiSample::isReady)
-// 			.function("playOnce", select_overload<double()>(&maxiSample::playOnce))
-// 			.function("playOnce", select_overload<double(double)>(&maxiSample::playOnce))
-// 			.function("playOnZX", select_overload<double(double)>(&maxiSample::playOnZX))
-// 			.function("playOnZX", select_overload<double(double,double)>(&maxiSample::playOnZX))
-// 			.function("playOnZX", select_overload<double(double,double,double)>(&maxiSample::playOnZX))
-// 			.function("playOnZX", select_overload<double(double,double,double,double)>(&maxiSample::playOnZX))
-// 			.function("playUntil", select_overload<double(double)>(&maxiSample::playUntil))
-// 			.function("playUntil", select_overload<double(double,double)>(&maxiSample::playUntil))
-// 			.function("play", select_overload<double()>(&maxiSample::play))
-// 			.function("play", select_overload<double(double)>(&maxiSample::play))
-// 			.function("play", select_overload<double(double, double, double)>(&maxiSample::play))
+// 			.function("playOnce", select_overload<maxi_float_t()>(&maxiSample::playOnce))
+// 			.function("playOnce", select_overload<maxi_float_t(maxi_float_t)>(&maxiSample::playOnce))
+// 			.function("playOnZX", select_overload<maxi_float_t(maxi_float_t)>(&maxiSample::playOnZX))
+// 			.function("playOnZX", select_overload<maxi_float_t(maxi_float_t,maxi_float_t)>(&maxiSample::playOnZX))
+// 			.function("playOnZX", select_overload<maxi_float_t(maxi_float_t,maxi_float_t,maxi_float_t)>(&maxiSample::playOnZX))
+// 			.function("playOnZX", select_overload<maxi_float_t(maxi_float_t,maxi_float_t,maxi_float_t,maxi_float_t)>(&maxiSample::playOnZX))
+// 			.function("playUntil", select_overload<maxi_float_t(maxi_float_t)>(&maxiSample::playUntil))
+// 			.function("playUntil", select_overload<maxi_float_t(maxi_float_t,maxi_float_t)>(&maxiSample::playUntil))
+// 			.function("play", select_overload<maxi_float_t()>(&maxiSample::play))
+// 			.function("play", select_overload<maxi_float_t(maxi_float_t)>(&maxiSample::play))
+// 			.function("play", select_overload<maxi_float_t(maxi_float_t, maxi_float_t, maxi_float_t)>(&maxiSample::play))
 // 			.function("play4", &maxiSample::play4)
 // 			.function("trigger", &maxiSample::trigger)
 // 			.function("clear", &maxiSample::clear)
@@ -253,8 +253,8 @@ EMSCRIPTEN_BINDINGS(my_module)
 #endif
 			.function("ar", &maxiEnv::ar)
 			//	.function("adsr", &maxiEnv::adsr)
-			.function("adsr", select_overload<double(double, double, double, double, double, long, int)>(&maxiEnv::adsr))
-			.function("adsr", select_overload<double(double, int)>(&maxiEnv::adsr))
+			.function("adsr", select_overload<maxi_float_t(maxi_float_t, maxi_float_t, maxi_float_t, maxi_float_t, maxi_float_t, long, int)>(&maxiEnv::adsr))
+			.function("adsr", select_overload<maxi_float_t(maxi_float_t, int)>(&maxiEnv::adsr))
 			.function("setAttack", &maxiEnv::setAttack)
 			.function("setRelease", &maxiEnv::setRelease)
 			.function("setDecay", &maxiEnv::setDecay)
@@ -329,13 +329,13 @@ class_<maxiSampleAndHold>("maxiSampleAndHold")
 			.function("chorus", &maxiChorus::chorus);
 
 	// MAXI ENVELOPE FOLLOWER
-	//	class_<maxiEnvelopeFollowerType<double>>("maxiEnvelopeFollower")
+	//	class_<maxiEnvelopeFollowerType<maxi_float_t>>("maxiEnvelopeFollower")
 	//	//	.constructor<>()
-	//	.smart_ptr_constructor("shared_ptr<maxiEnvelopeFollower>",&std::make_shared<maxiEnvelopeFollowerType<double>>)
-	//	.function("setAttack", &maxiEnvelopeFollowerType<double>::setAttack<double>)
-	//	.function("setRelease", &maxiEnvelopeFollowerType<double>::setRelease)
-	//	.function("play", &maxiEnvelopeFollowerType<double>::play)
-	//	.function("reset", &maxiEnvelopeFollowerType<double>::reset)
+	//	.smart_ptr_constructor("shared_ptr<maxiEnvelopeFollower>",&std::make_shared<maxiEnvelopeFollowerType<maxi_float_t>>)
+	//	.function("setAttack", &maxiEnvelopeFollowerType<maxi_float_t>::setAttack<maxi_float_t>)
+	//	.function("setRelease", &maxiEnvelopeFollowerType<maxi_float_t>::setRelease)
+	//	.function("play", &maxiEnvelopeFollowerType<maxi_float_t>::play)
+	//	.function("reset", &maxiEnvelopeFollowerType<maxi_float_t>::reset)
 	//	;
 
 	// MAXI DC BLOCKER
@@ -652,7 +652,7 @@ EMSCRIPTEN_BINDINGS(maxiVerb) {
 	#else
 		.constructor<>()
 	#endif
-	.function("play", select_overload<double(double, double, double)>(&maxiFreeVerb::play))
+	.function("play", select_overload<maxi_float_t(maxi_float_t, maxi_float_t, maxi_float_t)>(&maxiFreeVerb::play))
 	;
 };
 
@@ -712,7 +712,7 @@ public:
 		data1Vec = vector<float>(fftSize/2);
 		data2Vec = vector<float>(fftSize/2);
 	}
-  float process(double trig, const emscripten::val& data1, const emscripten::val& data2, fftModes mode = maxiIFFT::SPECTRUM) {
+  float process(maxi_float_t trig, const emscripten::val& data1, const emscripten::val& data2, fftModes mode = maxiIFFT::SPECTRUM) {
 		if (trig) {
 			data1Vec = vecFromJSArray<float>(data1);
 			data2Vec = vecFromJSArray<float>(data2);
@@ -726,14 +726,14 @@ private:
 class maxiMFCCAdaptor : public maxiMFCC {
 public:
 
-	void setup(unsigned int numBins, unsigned int numFilters, unsigned int numCoeffs, double minFreq, double maxFreq) {
+	void setup(unsigned int numBins, unsigned int numFilters, unsigned int numCoeffs, maxi_float_t minFreq, maxi_float_t maxFreq) {
 		maxiMFCC::setup(numBins, numFilters, numCoeffs, minFreq, maxFreq);
 	}
 
 	emscripten::val mfcc(const emscripten::val& powerSpectrum) {
 		auto spectrumVector = vecFromJSArray<float>(powerSpectrum);
-		vector<double> coeffs = maxiMFCC::mfcc(spectrumVector);
-		return getJSArray<double>(coeffs);
+		vector<maxi_float_t> coeffs = maxiMFCC::mfcc(spectrumVector);
+		return getJSArray<maxi_float_t>(coeffs);
 	}
 
 };

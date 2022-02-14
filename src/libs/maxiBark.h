@@ -9,6 +9,7 @@
 
 #pragma once
 //#pragma pack(16)
+#include "../maximilian_types.h"
 
 #include "maxiFFT.h"
 #include <math.h>
@@ -22,11 +23,11 @@
 using namespace std;
 
 //convert to Bark scale (Zwicker, 1961)
-inline double hzToBark(double hz) {
+inline maxi_float_t hzToBark(maxi_float_t hz) {
     return 13.0*atan(hz/1315.8) + 3.5*atan(pow((hz/7518.0),2));
 }
 
-inline double binToHz(unsigned int bin, unsigned int sR, unsigned int bS) {
+inline maxi_float_t binToHz(unsigned int bin, unsigned int sR, unsigned int bS) {
     return bin*sR/bS;
 }
 
@@ -61,9 +62,9 @@ public:
         bbLimits[NUM_BARK_BANDS] = specSize-1;
     };
     
-    double* specificLoudness(float* normalisedSpectrum) {
+    maxi_float_t* specificLoudness(float* normalisedSpectrum) {
         for (int i = 0; i < NUM_BARK_BANDS; i++){
-            double sum = 0;
+            maxi_float_t sum = 0;
             for (int j = bbLimits[i] ; j < bbLimits[i+1] ; j++) {
                 
                 sum += normalisedSpectrum[j];
@@ -74,9 +75,9 @@ public:
         return specific;
     };
     
-    double* relativeLoudness(float* normalisedSpectrum) {
+    maxi_float_t* relativeLoudness(float* normalisedSpectrum) {
         for (int i = 0; i < NUM_BARK_BANDS; i++){
-            double sum = 0;
+            maxi_float_t sum = 0;
             for (int j = bbLimits[i] ; j < bbLimits[i+1] ; j++) {
                 
                 sum += normalisedSpectrum[j];
@@ -84,7 +85,7 @@ public:
             specific[i] = pow(sum,0.23);
         }
         
-        double max = 0;
+        maxi_float_t max = 0;
         for (int i = 0; i < NUM_BARK_BANDS; i++){
             if (specific[i] > max) max = specific[i];
         }
@@ -96,9 +97,9 @@ public:
         return relative;
     };
     
-    double* totalLoudness(float* normalisedSpectrum) {
+    maxi_float_t* totalLoudness(float* normalisedSpectrum) {
         for (int i = 0; i < NUM_BARK_BANDS; i++){
-            double sum = 0;
+            maxi_float_t sum = 0;
             for (int j = bbLimits[i] ; j < bbLimits[i+1] ; j++) {
                 
                 sum += normalisedSpectrum[j];
@@ -118,14 +119,14 @@ public:
 private:
     int bbLimits[24];
     unsigned int sampleRate, bufferSize, specSize;
-    double barkScale[2048];
-    double specific[24];
-    double relative[24];
-    double total[1];
+    maxi_float_t barkScale[2048];
+    maxi_float_t specific[24];
+    maxi_float_t relative[24];
+    maxi_float_t total[1];
     
 };
 
-typedef maxiBarkScaleAnalyser<double> maxiBark;
+typedef maxiBarkScaleAnalyser<maxi_float_t> maxiBark;
 
 
 

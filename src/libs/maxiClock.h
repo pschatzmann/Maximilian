@@ -5,14 +5,14 @@ class maxiClock  {
 public:
   maxiClock();
   void ticker();
-  void setTempo(double bpm);
+  void setTempo(maxi_float_t bpm);
   void setTicksPerBeat(int ticksPerBeat);
   maxiOsc timer;
   int currentCount;
   int lastCount;
   int playHead;
-  double bps;
-  double bpm;
+  maxi_float_t bps;
+  maxi_float_t bpm;
   int ticks;
   bool tick;
 
@@ -29,8 +29,8 @@ public:
   int getCurrentCount() const { return currentCount; }
   int getLastCount() const { return lastCount; }
   int getPlayHead() const { return playHead; }
-  double getBps() const { return bps; }
-  double getBpm() const { return bpm; }
+  maxi_float_t getBps() const { return bps; }
+  maxi_float_t getBpm() const { return bpm; }
   bool getTick() const { return tick; }
   int getTicks() const { return ticks; }
   int isTick() const { return tick; }
