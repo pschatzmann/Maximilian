@@ -28,9 +28,10 @@ Maximilian is a cross-platform and multi-target audio synthesis and signal proce
 - example projects for Firefox and Chromium-based browsers using the Web Audio API ScriptProcessorNode (deprecated!)
 - example projects for Chromium-based browsers using the Web Audio API AudioWorklet (e.g. Chrome, Brave, Edge, Opera, Vivaldi)
 
-## Class Documentation
+## Documentation
 
 The [generated class documentation](https://pschatzmann.github.io/Maximilian/doc/html/annotated.html) can be found here.
+Further information is available in the [Wiki](https://github.com/pschatzmann/Maximilian/wiki)
 
 ## Arduino
 
