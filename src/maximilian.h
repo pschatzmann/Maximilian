@@ -81,6 +81,12 @@ inline vector<maxi_float_t> convertArrayFromJS(maxi_number_tARRAY_REF x)
 
 #define NORMALISE_ARRAY_TYPE(invar, outvar) vector<maxi_float_t> outvar = convertArrayFromJS(invar);
 
+#elif defined(USE_MAXVECTOR)
+
+#define maxi_number_tARRAY_REF maxi_vector &
+#define maxi_number_tARRAY maxi_vector
+#define NORMALISE_ARRAY_TYPE(invar, outvar) maxi_vector outvar; outvar.normalize(invar);
+
 #else
 
 #define maxi_number_tARRAY_REF vector<maxi_float_t> &
@@ -436,6 +442,12 @@ private:
 #define F64_ARRAY_SETFROM(to,from) to = new client::Float64Array(from);
 #define F64_ARRAY_CLEAR(x) x->fill(0);
 #define F64_ARRAY_AT(x,i) (*x)[i]
+#elif defined(USE_MAXVECTOR)
+#define DECLARE_F64_ARRAY(x) maxi_vector x;
+#define F64_ARRAY_SIZE(x) x.size()
+#define F64_ARRAY_SETFROM(to,from) to.set(from);
+#define F64_ARRAY_CLEAR(x) x.clear();
+#define F64_ARRAY_AT(x,i) x[i]
 #else
 #define DECLARE_F64_ARRAY(x) std::vector<maxi_float_t> x;
 #define F64_ARRAY_SIZE(x) x.size()
