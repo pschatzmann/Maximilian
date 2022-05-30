@@ -62,13 +62,13 @@ public:
 		this->sampleRate = maxiSettings::sampleRate;
 		this->numBins = numBins;
 		melFilters = NULL;
-		melBands = (T*) malloc(sizeof(T) * numFilters);
-    coeffs.resize(numCoeffs,0);
+		melBands = (T*) maxi_malloc(sizeof(T) * numFilters);
+        coeffs.resize(numCoeffs,0);
 #ifdef __APPLE_CC__
-		doubleSpec = (T*)malloc(sizeof(T) * numBins);
+		doubleSpec = (T*) maxi_malloc(sizeof(T) * numBins);
 #endif
 		//create new matrix
-		dctMatrix = (T*)malloc(sizeof(T) * numCoeffs * numFilters);
+		dctMatrix = (T*) maxi_malloc(sizeof(T) * numCoeffs * numFilters);
 
 		calcMelFilterBank(sampleRate, numBins);
 		createDCTCoeffs();
@@ -77,7 +77,7 @@ public:
 	vector<T>& mfcc(vector<float>& powerSpectrum) {
 		melFilterAndLogSquare(powerSpectrum.data());
 		dct(coeffs.data());
-    return coeffs;
+    	return coeffs;
 	}
 
 private:
@@ -133,7 +133,7 @@ private:
 
 		dMel = (maxMel - minMel) / (numFilters + 2 - 1);
 
-		T *filtPos = (T*) malloc(sizeof(double) * (numFilters + 2));
+		T *filtPos = (T*) maxi_malloc(sizeof(double) * (numFilters + 2));
 
 		// first generate an array of start and end freqs for each triangle
 		mel = minMel;
@@ -144,7 +144,7 @@ private:
 			mel += dMel;
 		}
 		// now generate the coefficients for the mag spectrum
-		melFilters = (T*) malloc(sizeof(T) * numFilters * numValidBins);
+		melFilters = (T*) maxi_malloc(sizeof(T) * numFilters * numValidBins);
 
 		for (int filter = 1; filter < numFilters; filter++) {
 			for (int bin=0;bin<numValidBins;bin++) {
@@ -202,10 +202,7 @@ private:
 
 	}
 
-
-
 };
-
 
 
 typedef maxiMFCCAnalyser<double> maxiMFCC;

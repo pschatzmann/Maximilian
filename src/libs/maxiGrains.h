@@ -2,6 +2,7 @@
 
 #ifndef _MAXI_GRAINS_H
 #define _MAXI_GRAINS_H
+#include "maxiMalloc.h"
 #include "../maximilian.h"
 #if defined(__APPLE_CC__) && !defined(ARDUINO)
 #include "accelerate/accelerate.h"
@@ -97,7 +98,7 @@ public:
 
 	maxiGrainWindowCache() {
 		cacheSize = maxiSettings::sampleRate / 2.0; //allocate mem for up to 500ms grains
-		cache = (maxi_float_t**)malloc(cacheSize * sizeof(maxi_float_t*));
+		cache = (maxi_float_t**) maxi_malloc(cacheSize * sizeof(maxi_float_t*));
 		for(int i=0; i < cacheSize; i++) {
 			cache[i] = NULL;
 		}
@@ -114,7 +115,7 @@ public:
 
 	maxi_float_t* getWindow(const unsigned int length) {
 		if (NULL == cache[length]) {
-			cache[length] = (maxi_float_t*)malloc(length * sizeof(maxi_float_t));
+			cache[length] = (maxi_float_t*) maxi_malloc(length * sizeof(maxi_float_t));
 			for(int i=0; i < length; i++) {
 				cache[length][i] = TFunc()(length, i);
 			}
@@ -182,15 +183,15 @@ public:
 
 #if defined(__APPLE_CC__) && defined(MAXIGRAINFAST)
 		//premake the grain using fast vector functions, and quadratic interpolation
-		maxi_float_t *sourceData = (maxi_float_t*)malloc(sampleDur * sizeof(maxi_float_t));
+		maxi_float_t *sourceData = (maxi_float_t*) maxi_malloc(sampleDur * sizeof(maxi_float_t));
 		short* buffer = (short *)sample->temp.data();
 		//convert sample to maxi_float_t data
 		vDSP_vflt16D(buffer + sampleStartPos, 1, sourceData, 1, min(sampleDur, sample->length - sampleStartPos));
 		//todo: wraping code
 
-		grainSamples = (maxi_float_t*)malloc(sampleDur * sizeof(maxi_float_t));
+		grainSamples = (maxi_float_t*) maxi_malloc(sampleDur * sizeof(maxi_float_t));
 		//make list of interpolation indexes
-		maxi_float_t* interpIndexes = (maxi_float_t*)malloc(sampleDur * sizeof(maxi_float_t));
+		maxi_float_t* interpIndexes = (maxi_float_t*) maxi_malloc(sampleDur * sizeof(maxi_float_t));
 		maxi_float_t interpPos = sampleStartPos;
 		for(int i=0; i < sampleDur; i++) {
 			interpIndexes[i] = interpPos - sampleStartPos;

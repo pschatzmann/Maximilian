@@ -88,13 +88,13 @@ void InitFFT()
 {
     //	gFFTBitTable = new int *[MaxFastBits];
 	//use malloc for 16 byte alignment
-	gFFTBitTable = (int**) malloc(MaxFastBits * sizeof(int*));
+	gFFTBitTable = (int**) maxi_malloc(MaxFastBits * sizeof(int*));
 	
 	int len = 2;
 	for (int b = 1; b <= MaxFastBits; b++) {
 		
         //		gFFTBitTable[b - 1] = new int[len];
-		gFFTBitTable[b - 1] = (int*) malloc(len * sizeof(int));
+		gFFTBitTable[b - 1] = (int*) maxi_malloc(len * sizeof(int));
 		
 		for (int i = 0; i < len; i++)
 			gFFTBitTable[b - 1][i] = ReverseBits(i, b);
@@ -232,8 +232,8 @@ void RealFFT(int NumSamples, float *RealIn, float *RealOut, float *ImagOut)
 	
 	float theta = M_PI / Half;
 	
-	float *tmpReal = (float*) malloc(Half * sizeof(float));
-	float *tmpImag = (float*) malloc(Half * sizeof(float));
+	float *tmpReal = (float*) maxi_malloc(Half * sizeof(float));
+	float *tmpImag = (float*) maxi_malloc(Half * sizeof(float));
 	
 	for (i = 0; i < Half; i++) {
 		tmpReal[i] = RealIn[2 * i];
@@ -456,7 +456,7 @@ void fft::setup(int fftSize) {
 ////        printf("\nFFT_Setup failed to allocate enough memory  for"
 ////               "the real FFT.\n");
 ////    }
-////    //    polar = (float *) malloc(n * sizeof(float));
+////    //    polar = (float *) maxi_malloc(n * sizeof(float));
 ////    polar = other.polar;
 ////#endif
 //}

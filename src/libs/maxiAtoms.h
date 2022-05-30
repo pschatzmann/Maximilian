@@ -14,7 +14,6 @@
 #include <vector>
 #include "maxiGrains.h"
 
-
 using namespace std;
 
 typedef vector<float> flArr;

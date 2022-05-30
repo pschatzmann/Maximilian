@@ -39,9 +39,9 @@
 #include "maxiMFCC.h"
 #include "maxiBark.h"
 #include "maxiAtoms.h"
+#include "maxiMalloc.h"
 
-
-//typedef maxiSignal vector<maxi_float_t>;
+//typede#f maxiSignal vector<maxi_float_t>;
 //
 //class maxiBase {
 //    virtual maxiSignal play() = {};

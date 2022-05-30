@@ -49,6 +49,7 @@
 #include <algorithm>
 #endif
 #include <numeric>
+#include "libs/maxiMalloc.h"
 
 using namespace std;
 #ifndef PI
@@ -216,12 +217,16 @@ class CHEERP_EXPORT maxiDelayline
     maxi_float_t startphase;
     maxi_float_t endphase;
     maxi_float_t output;
-    maxi_float_t memory[88200 * 2];
+//    maxi_float_t memory[88200 * 2];
+    maxi_float_t *memory=nullptr;
+    const int memory_size = 88200; 
 
 public:
     maxiDelayline();
+    ~maxiDelayline() { if(memory!=nullptr) free(memory);}
     maxi_float_t dl(maxi_float_t input, int size, maxi_float_t feedback);
     maxi_float_t dlFromPosition(maxi_float_t input, int size, maxi_float_t feedback, int position); //renamed to avoid overrides
+    void setupMemory();
 };
 
 class CHEERP_EXPORT maxiFilter

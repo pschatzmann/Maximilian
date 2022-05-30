@@ -1984,7 +1984,7 @@ void inverse_mdct_slow(float *buffer, int n)
 {
    int i,j;
    int n2 = n >> 1;
-   float *x = (float *) malloc(sizeof(*x) * n2);
+   float *x = (float *) maxi_malloc(sizeof(*x) * n2);
    memcpy(x, buffer, sizeof(*x) * n2);
    for (i=0; i < n; ++i) {
       float acc = 0;
@@ -2008,7 +2008,7 @@ void inverse_mdct_slow(float *buffer, int n, vorb *f, int blocktype)
    float mcos[16384];
    int i,j;
    int n2 = n >> 1, nmask = (n << 2) -1;
-   float *x = (float *) malloc(sizeof(*x) * n2);
+   float *x = (float *) maxi_malloc(sizeof(*x) * n2);
    memcpy(x, buffer, sizeof(*x) * n2);
    for (i=0; i < 4*n; ++i)
       mcos[i] = (float) cos(M_PI / 2 * i / n);
@@ -4933,7 +4933,7 @@ int stb_vorbis_decode_filename(char *filename, int *channels, short **output)
    *channels = v->channels;
    offset = data_len = 0;
    total = limit;
-   data = (short *) malloc(total * sizeof(*data));
+   data = (short *) maxi_malloc(total * sizeof(*data));
    if (data == NULL) {
       stb_vorbis_close(v);
       return -2;
@@ -4970,7 +4970,7 @@ int stb_vorbis_decode_memory(uint8 *mem, int len, int *channels, short **output)
    *channels = v->channels;
    offset = data_len = 0;
    total = limit;
-   data = (short *) malloc(total * sizeof(*data));
+   data = (short *) maxi_malloc(total * sizeof(*data));
    if (data == NULL) {
       stb_vorbis_close(v);
       return -2;
