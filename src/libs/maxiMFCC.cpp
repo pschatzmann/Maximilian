@@ -9,6 +9,7 @@
 
 #include "maxiMFCC.h"
 
+
 #ifdef __APPLE_CC__
 template <>
 void maxiMFCCAnalyser<double>::dct(double *mfccs) {
@@ -25,16 +26,16 @@ void maxiMFCCAnalyser<float>::dct(float *mfccs) {
 }
 #endif
 
-template <>
-void maxiMFCCAnalyser<double>::melFilterAndLogSquare(float* powerSpectrum) {
-#ifdef __APPLE_CC__
-	//conv to double
-	vDSP_vspdp(powerSpectrum, 1, doubleSpec, 1, numBins);
-	//	vDSP_mmulD(doubleSpec, 1, melFilters, 1, melBands, 1, 1, 42, 512);
-	vDSP_mmulD(doubleSpec, 1, melFilters, 1, melBands, 1, 1, numFilters, numBins);
-#endif
-	melFilterAndLogSq_Part2(powerSpectrum);
-}
+// template <>
+// void maxiMFCCAnalyser<double>::melFilterAndLogSquare(float* powerSpectrum) {
+// #ifdef __APPLE_CC__
+// 	//conv to double
+// 	vDSP_vspdp(powerSpectrum, 1, doubleSpec, 1, numBins);
+// 	//	vDSP_mmulD(doubleSpec, 1, melFilters, 1, melBands, 1, 1, 42, 512);
+// 	vDSP_mmulD(doubleSpec, 1, melFilters, 1, melBands, 1, 1, numFilters, numBins);
+// #endif
+// 	melFilterAndLogSq_Part2(powerSpectrum);
+// }
 
 
 template <>
@@ -50,7 +51,7 @@ void maxiMFCCAnalyser<T>::melFilterAndLogSq_Part2(float *powerSpectrum) {
 #ifdef __APPLE_CC__
 #else
 	for (unsigned int filter = 0;filter < numFilters;filter++) {
-		melBands[filter] = 0.0;
+		melBands[filter] = 0.0f;
 		for (unsigned int bin=0;bin<numBins;bin++) {
 			//			int idx = (numBins * filter) + bin;
 			int idx = filter + (bin * numFilters);
@@ -61,7 +62,7 @@ void maxiMFCCAnalyser<T>::melFilterAndLogSq_Part2(float *powerSpectrum) {
 #endif
 	for(unsigned int filter=0; filter < numFilters; filter++) {
 		// log the square
-		melBands[filter] = melBands[filter] > 0.000001 ? log(melBands[filter] * melBands[filter]) : 0.0;
+		melBands[filter] = melBands[filter] > 0.000001f ? log(melBands[filter] * melBands[filter]) : 0.0f;
 	}
 }
 

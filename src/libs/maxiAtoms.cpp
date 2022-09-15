@@ -30,7 +30,7 @@ inline void maxiCollider::createGabor(flArr &atom, const float freq, const float
     flArr sine;
     sine.resize(length);
     
-//	float gausDivisor = (-2.0 * kurtotis * kurtotis);
+//	float gausDivisor = (-2.0f * kurtotis * kurtotis);
 //    float phase =-1.0;
     
     maxi_float_t *env = maxiCollider::envCache.getWindow(length);
@@ -57,13 +57,13 @@ inline void maxiCollider::createGabor(flArr &atom, const float freq, const float
     
 	float cycleLen = sampleRate / freq;
 	float maxPhase = length / cycleLen;
-	float inc = 1.0 / length;
+	float inc = 1.0f / length;
 
 	
 #ifdef __APPLE_CC__	
     flArr interpConstants;
     interpConstants.resize(length);
-    float phase = 0.0;
+    float phase = 0.0f;
     vDSP_vramp(&phase, &inc, &interpConstants[0], 1, length);
     vDSP_vsmsa(&interpConstants[0], 1, &maxPhase, &startPhase, &interpConstants[0], 1, length);
     float waveTableLength = 512;
@@ -208,7 +208,7 @@ void maxiAtomBookPlayer::play(maxiAtomBook &book, maxiAccelerator &atomStream, f
 		maxiGaborAtom *atom = (maxiGaborAtom*) book.atoms[atomIdx];
 		while(atom->position < (idx + bufferSize) % book.numSamples) {
 			flArr atomData;
-			maxiCollider::createGabor(atomData, maxiMap::linlin(atom->frequency, 0.0, 1.0, 20, 20000), 44100, atom->length, atom->phase, 0.3, atom->amp / 40.0);
+			maxiCollider::createGabor(atomData, maxiMap::linlin(atom->frequency, 0.0, 1.0, 20, 20000), 44100, atom->length, atom->phase, 0.3, atom->amp / 40.0f);
 			atomStream.addAtom(atomData, loopedSamplePos - atom->position);		
 			atomIdx++;
 			if (book.atoms.size() == atomIdx)

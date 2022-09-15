@@ -208,7 +208,7 @@ void play(maxi_float_t *channels);//run dac!
 
 maxiOsc::maxiOsc(){
 	//When you create an oscillator, the constructor sets the phase of the oscillator to 0.
-	phase = 0.0;
+	phase = 0.0f;
 }
 
 maxi_float_t maxiOsc::noise() {
@@ -228,8 +228,8 @@ void maxiOsc::phaseReset(maxi_float_t phaseIn) {
 maxi_float_t maxiOsc::sinewave(maxi_float_t frequency) {
 	//This is a sinewave oscillator
 	output=sin (phase*(TWOPI));
-	if ( phase >= 1.0 ) phase -= 1.0;
-	phase += (1./(maxiSettings::sampleRate/(frequency)));
+	if ( phase >= 1.0f ) phase -= 1.0;
+	phase += (1.f/(maxiSettings::sampleRate/(frequency)));
 	return(output);
 
 }
@@ -238,7 +238,7 @@ maxi_float_t maxiOsc::sinebuf4(maxi_float_t frequency) {
 	//This is a sinewave oscillator that uses 4 point interpolation on a 514 point buffer
 	maxi_float_t remainder;
 	maxi_float_t a,b,c,d,a1,a2,a3;
-	phase += 512./(maxiSettings::sampleRate/(frequency));
+	phase += 512.f/(maxiSettings::sampleRate/(frequency));
 	if ( phase >= 511 ) phase -=512;
 	remainder = phase - floor(phase);
 
@@ -257,7 +257,7 @@ maxi_float_t maxiOsc::sinebuf4(maxi_float_t frequency) {
 	}
 
 	a1 = 0.5f * (c - a);
-	a2 = a - 2.5 * b + 2.f * c - 0.5f * d;
+	a2 = a - 2.5f * b + 2.f * c - 0.5f * d;
 	a3 = 0.5f * (d - a) + 1.5f * (b - c);
 	output = maxi_float_t (((a3 * remainder + a2) * remainder + a1) * remainder + b);
 	return(output);
@@ -266,7 +266,7 @@ maxi_float_t maxiOsc::sinebuf4(maxi_float_t frequency) {
 maxi_float_t maxiOsc::sinebuf(maxi_float_t frequency) { //specify the frequency of the oscillator in Hz / cps etc.
 											//This is a sinewave oscillator that uses linear interpolation on a 514 point buffer
 	maxi_float_t remainder;
-	phase += 512./(maxiSettings::sampleRate/(frequency*chandiv));
+	phase += 512.f/(maxiSettings::sampleRate/(frequency*chandiv));
 	if ( phase >= 511 ) phase -=512;
 	remainder = phase - floor(phase);
 	output = (maxi_float_t) ((1-remainder) * sineBuffer[1+ (long) phase] + remainder * sineBuffer[2+(long) phase]);
@@ -276,8 +276,8 @@ maxi_float_t maxiOsc::sinebuf(maxi_float_t frequency) { //specify the frequency 
 maxi_float_t maxiOsc::coswave(maxi_float_t frequency) {
 	//This is a cosine oscillator
 	output=cos (phase*(TWOPI));
-	if ( phase >= 1.0 ) phase -= 1.0;
-	phase += (1./(maxiSettings::sampleRate/(frequency)));
+	if ( phase >= 1.0f ) phase -= 1.0;
+	phase += (1.f/(maxiSettings::sampleRate/(frequency)));
 	return(output);
 
 }
@@ -285,35 +285,35 @@ maxi_float_t maxiOsc::coswave(maxi_float_t frequency) {
 maxi_float_t maxiOsc::phasor(maxi_float_t frequency) {
 	//This produces a floating point linear ramp between 0 and 1 at the desired frequency
 	output=phase;
-	if ( phase >= 1.0 ) phase -= 1.0;
-	phase += (1./(maxiSettings::sampleRate/(frequency)));
+	if ( phase >= 1.0f ) phase -= 1.0;
+	phase += (1.f/(maxiSettings::sampleRate/(frequency)));
 	return(output);
 }
 
 maxi_float_t maxiOsc::square(maxi_float_t frequency) {
 	//This is a square wave
-	if (phase<0.5) output=-1;
-	if (phase>0.5) output=1;
-	if ( phase >= 1.0 ) phase -= 1.0;
-	phase += (1./(maxiSettings::sampleRate/(frequency)));
+	if (phase<0.5f) output=-1;
+	if (phase>0.5f) output=1;
+	if ( phase >= 1.0f ) phase -= 1.0;
+	phase += (1.f/(maxiSettings::sampleRate/(frequency)));
 	return(output);
 }
 
 maxi_float_t maxiOsc::pulse(maxi_float_t frequency, maxi_float_t duty) {
 	//This is a pulse generator that creates a signal between -1 and 1.
-	if (duty<0.) duty=0;
-	if (duty>1.) duty=1;
-	if ( phase >= 1.0 ) phase -= 1.0;
-	phase += (1./(maxiSettings::sampleRate/(frequency)));
+	if (duty<0.f) duty=0;
+	if (duty>1.f) duty=1;
+	if ( phase >= 1.0f ) phase -= 1.0;
+	phase += (1.f/(maxiSettings::sampleRate/(frequency)));
 	if (phase<duty) output=-1.;
 	if (phase>duty) output=1.;
 	return(output);
 }
 maxi_float_t maxiOsc::impulse(maxi_float_t frequency) {
     //this is an impulse generator
-    if ( phase >= 1.0 ) phase -= 1.0;
-    maxi_float_t phaseInc = (1./(maxiSettings::sampleRate/(frequency)));
-    maxi_float_t output = phase < phaseInc ? 1.0 : 0.0;
+    if ( phase >= 1.0f ) phase -= 1.0;
+    maxi_float_t phaseInc = (1.f/(maxiSettings::sampleRate/(frequency)));
+    maxi_float_t output = phase < phaseInc ? 1.0f : 0.0f;
     phase += phaseInc;
     return output;
 }
@@ -333,22 +333,22 @@ maxi_float_t maxiOsc::phasorBetween(maxi_float_t frequency, maxi_float_t startph
 maxi_float_t maxiOsc::saw(maxi_float_t frequency) {
 	//Sawtooth generator. This is like a phasor but goes between -1 and 1
 	output=phase;
-	if ( phase >= 1.0 ) phase -= 2.0;
-	phase += (1./(maxiSettings::sampleRate/(frequency))) * 2.0;
+	if ( phase >= 1.0f ) phase -= 2.0f;
+	phase += (1.f/(maxiSettings::sampleRate/(frequency))) * 2.0f;
 	return(output);
 
 }
 
 maxi_float_t maxiOsc::sawn(maxi_float_t frequency) {
 	//Bandlimited sawtooth generator. Woohoo.
-	if ( phase >= 0.5 ) phase -= 1.0;
-	phase += (1./(maxiSettings::sampleRate/(frequency)));
-	maxi_float_t temp=(8820.22/frequency)*phase;
-	if (temp<-0.5) {
-		temp=-0.5;
+	if ( phase >= 0.5f ) phase -= 1.0;
+	phase += (1.f/(maxiSettings::sampleRate/(frequency)));
+	maxi_float_t temp=(8820.22f/frequency)*phase;
+	if (temp<-0.5f) {
+		temp=-0.5f;
 	}
-	if (temp>0.5) {
-		temp=0.5;
+	if (temp>0.5f) {
+		temp=0.5f;
 	}
 	temp*=1000.0f;
 	temp+=500.0f;
@@ -365,12 +365,12 @@ maxi_float_t maxiOsc::rect(maxi_float_t frequency, maxi_float_t duty) {
 
 maxi_float_t maxiOsc::triangle(maxi_float_t frequency) {
 	//This is a triangle wave.
-	if ( phase >= 1.0 ) phase -= 1.0;
-	phase += (1./(maxiSettings::sampleRate/(frequency)));
-	if (phase <= 0.5 ) {
-		output =(phase - 0.25) * 4;
+	if ( phase >= 1.0f ) phase -= 1.0;
+	phase += (1.f/(maxiSettings::sampleRate/(frequency)));
+	if (phase <= 0.5f ) {
+		output =(phase - 0.25f) * 4;
 	} else {
-		output =((1.0-phase) - 0.25) * 4;
+		output =((1.0f-phase) - 0.25f) * 4;
 	}
 	return(output);
 
@@ -382,12 +382,12 @@ maxi_float_t maxiEnvelope::line(int numberofsegments,std::vector<maxi_float_t>& 
 	//This is a basic multi-segment ramp generator that you can use for more or less anything.
 	//However, it's not that intuitive.
 	if (isPlaying==1) {//only make a sound once you've been triggered
-		period=4./(segments[valindex+1]*0.0044);
+		period=4.f/(segments[valindex+1]*0.0044f);
 		nextval=segments[valindex+2];
 		currentval=segments[valindex];
-		if (currentval-amplitude > 0.0000001 && valindex < numberofsegments) {
+		if (currentval-amplitude > 0.0000001f && valindex < numberofsegments) {
 			amplitude += ((currentval-startval)/(maxiSettings::sampleRate/period));
-		} else if (currentval-amplitude < -0.0000001 && valindex < numberofsegments) {
+		} else if (currentval-amplitude < -0.0000001f && valindex < numberofsegments) {
 			amplitude -= (((currentval-startval)*(-1))/(maxiSettings::sampleRate/period));
 		} else if (valindex >numberofsegments-1) {
 			valindex=numberofsegments-2;
@@ -435,7 +435,7 @@ maxi_float_t maxiDelayline::dl(maxi_float_t input, int size, maxi_float_t feedba
 		phase = 0;
 	}
 	output=memory[phase];
-	memory[phase]=(memory[phase]*feedback)+(input*feedback)*0.5;
+	memory[phase]=(memory[phase]*feedback)+(input*feedback)*0.5f;
 	phase+=1;
 	return(output);
 
@@ -470,10 +470,10 @@ maxi_float_t maxiFilter::lores(maxi_float_t input,maxi_float_t cutoff1, maxi_flo
 	cutoff=cutoff1;
 	if (cutoff<10) cutoff=10;
 	if (cutoff>(maxiSettings::sampleRate)) cutoff=(maxiSettings::sampleRate);
-	if (resonance<1.) resonance = 1.;
+	if (resonance<1.f) resonance = 1.;
 	z=cos(TWOPI*cutoff/maxiSettings::sampleRate);
 	c=2-2*z;
-	maxi_float_t r=(sqrt(2.0)*sqrt(-pow((z-1.0),3.0))+resonance*(z-1))/(resonance*(z-1));
+	maxi_float_t r=(sqrt(2.0f)*sqrt(-pow((z-1.0f),3.0f))+resonance*(z-1))/(resonance*(z-1));
 	x=x+(input-y)*c;
 	y=y+x;
 	x=x*r;
@@ -486,10 +486,10 @@ maxi_float_t maxiFilter::hires(maxi_float_t input,maxi_float_t cutoff1, maxi_flo
 	cutoff=cutoff1;
 	if (cutoff<10) cutoff=10;
 	if (cutoff>(maxiSettings::sampleRate)) cutoff=(maxiSettings::sampleRate);
-	if (resonance<1.) resonance = 1.;
+	if (resonance<1.f) resonance = 1.;
 	z=cos(TWOPI*cutoff/maxiSettings::sampleRate);
 	c=2-2*z;
-	maxi_float_t r=(sqrt(2.0)*sqrt(-pow((z-1.0),3.0))+resonance*(z-1))/(resonance*(z-1));
+	maxi_float_t r=(sqrt(2.0f)*sqrt(-pow((z-1.0f),3.0f))+resonance*(z-1))/(resonance*(z-1));
 	x=x+(input-y)*c;
 	y=y+x;
 	x=x*r;
@@ -500,10 +500,10 @@ maxi_float_t maxiFilter::hires(maxi_float_t input,maxi_float_t cutoff1, maxi_flo
 //This works a bit. Needs attention.
 maxi_float_t maxiFilter::bandpass(maxi_float_t input,maxi_float_t cutoff1, maxi_float_t resonance) {
 	cutoff=cutoff1;
-	if (cutoff>(maxiSettings::sampleRate*0.5)) cutoff=(maxiSettings::sampleRate*0.5);
-	if (resonance>=1.) resonance=0.999999;
+	if (cutoff>(maxiSettings::sampleRate*0.5f)) cutoff=(maxiSettings::sampleRate*0.5f);
+	if (resonance>=1.f) resonance=0.999999;
 	z=cos(TWOPI*cutoff/maxiSettings::sampleRate);
-	inputs[0] = (1-resonance)*(sqrt(resonance*(resonance-4.0*pow(z,2.0)+2.0)+1));
+	inputs[0] = (1.0f-resonance)*(sqrt(resonance*(resonance-4.0f*pow(z,2.0f)+2.0f)+1));
 	inputs[1] = 2*z*resonance;
 	inputs[2] = pow((resonance*-1),2);
 
@@ -517,7 +517,7 @@ maxi_float_t maxiFilter::bandpass(maxi_float_t input,maxi_float_t cutoff1, maxi_
 void maxiMix::stereo(maxi_float_t input,std::vector<maxi_float_t>&two,maxi_float_t x) {
 	if (x>1) x=1;
 	if (x<0) x=0;
-	two[0]=input*sqrt(1.0-x);
+	two[0]=input*sqrt(1.0f-x);
 	two[1]=input*sqrt(x);
 //	return two;
 }
@@ -528,10 +528,10 @@ void maxiMix::quad(maxi_float_t input,std::vector<maxi_float_t>& four,maxi_float
 	if (x<0) x=0;
 	if (y>1) y=1;
 	if (y<0) y=0;
-	four[0]=input*sqrt((1.0-x)*y);
-	four[1]=input*sqrt((1.0-x)*(1.0-y));
+	four[0]=input*sqrt((1.0f-x)*y);
+	four[1]=input*sqrt((1.0f-x)*(1.0f-y));
 	four[2]=input*sqrt(x*y);
-	four[3]=input*sqrt(x*(1.0-y));
+	four[3]=input*sqrt(x*(1.0f-y));
 //	return(four);
 }
 
@@ -543,14 +543,14 @@ void maxiMix::ambisonic(maxi_float_t input,std::vector<maxi_float_t>&eight,maxi_
 	if (y<0) y=0;
 	if (z>1) y=1;
 	if (z<0) y=0;
-	eight[0]=input*(sqrt((1.0-x)*y)*1.0-z);
-	eight[1]=input*(sqrt((1.0-x)*(1.0-y))*1.0-z);
-	eight[2]=input*(sqrt(x*y)*1.0-z);
-	eight[3]=input*(sqrt(x*(1.0-y))*1.0-z);
-	eight[4]=input*(sqrt((1.0-x)*y)*z);
-	eight[5]=input*(sqrt((1.0-x)*(1.0-y))*z);
+	eight[0]=input*(sqrt((1.0f-x)*y)*1.0f-z);
+	eight[1]=input*(sqrt((1.0f-x)*(1.0f-y))*1.0f-z);
+	eight[2]=input*(sqrt(x*y)*1.0f-z);
+	eight[3]=input*(sqrt(x*(1.0f-y))*1.0f-z);
+	eight[4]=input*(sqrt((1.0f-x)*y)*z);
+	eight[5]=input*(sqrt((1.0f-x)*(1.0f-y))*z);
 	eight[6]=input*sqrt((x*y)*z);
-	eight[7]=input*sqrt((x*(1.0-y))*z);
+	eight[7]=input*sqrt((x*(1.0f-y))*z);
 //	return(eight);
 }
 // --------------------------------------------------------------------------------
@@ -715,7 +715,7 @@ bool maxiSample::save(string filename)
 
     vector<short> shortAmps(amplitudes.size());
     for(int i=0; i < shortAmps.size(); i++) {
-        shortAmps[i] = static_cast<short>(round(amplitudes[i] * 32767.0));
+        shortAmps[i] = static_cast<short>(round(amplitudes[i] * 32767.0f));
     }
     // write the wav file per the wav file format
     myFile.seekp (0, ios::beg);
@@ -760,7 +760,7 @@ maxi_float_t maxiSample::play() {
 }
 
 void maxiSample::setPosition(maxi_float_t newPos) {
-	position = maxiMap::clamp(newPos, 0.0, 1.0) * F64_ARRAY_SIZE(amplitudes);
+	position = maxiMap::clamp(newPos, 0.0, 1.0f) * F64_ARRAY_SIZE(amplitudes);
 }
 
 
@@ -778,7 +778,7 @@ maxi_float_t maxiSample::playAtSpeedBetweenPointsFromPos(maxi_float_t frequency,
 	if (end>=amplen) end=amplen-1;
 	long a,b;
 
-	if (frequency >0.) {
+	if (frequency >0.f) {
 		if (pos<start) {
 			pos=start;
 		}
@@ -831,7 +831,7 @@ maxi_float_t maxiSample::playAtSpeedBetweenPointsFromPos(maxi_float_t frequency,
 maxi_float_t maxiSample::play4(maxi_float_t frequency, maxi_float_t start, maxi_float_t end) {
 	maxi_float_t remainder;
 	maxi_float_t a,b,c,d,a1,a2,a3;
-	if (frequency >0.) {
+	if (frequency >0.f) {
 		if (position<start) {
 			position=start;
 		}
@@ -861,7 +861,7 @@ maxi_float_t maxiSample::play4(maxi_float_t frequency, maxi_float_t start, maxi_
 			d=F64_ARRAY_AT(amplitudes,0);
 		}
 		a1 = 0.5f * (c - a);
-		a2 = a - 2.5 * b + 2.f * c - 0.5f * d;
+		a2 = a - 2.5f * b + 2.f * c - 0.5f * d;
 		a3 = 0.5f * (d - a) + 1.5f * (b - c);
 		output = (((a3 * remainder + a2) * remainder + a1) * remainder + b);
 
@@ -893,7 +893,7 @@ maxi_float_t maxiSample::play4(maxi_float_t frequency, maxi_float_t start, maxi_
 			d=F64_ARRAY_AT(amplitudes,0);
 		}
 		a1 = 0.5f * (c - a);
-		a2 = a - 2.5 * b + 2.f * c - 0.5f * d;
+		a2 = a - 2.5f * b + 2.f * c - 0.5f * d;
 		a3 = 0.5f * (d - a) + 1.5f * (b - c);
 		output = (((a3 * remainder + a2) * -remainder + a1) * -remainder + b);
 
@@ -915,7 +915,7 @@ maxi_float_t maxiSample::playLoop(maxi_float_t start, maxi_float_t end) {
 
 maxi_float_t maxiSample::playUntil(maxi_float_t end) {
 	position++;
-	if (end > 1.0) end = 1.0;
+	if (end > 1.0f) end = 1.0;
 	if ((long) position<F64_ARRAY_SIZE(amplitudes) * end)
 		output = F64_ARRAY_AT(amplitudes,(long)position);
 	else {
@@ -937,7 +937,7 @@ maxi_float_t maxiSample::playOnce() {
 
 }
 
-// //Same as above but takes a speed value specified as a ratio, with 1.0 as original speed
+// //Same as above but takes a speed value specified as a ratio, with 1.0f as original speed
 maxi_float_t maxiSample::playOnceAtSpeed(maxi_float_t speed) {
 	maxi_float_t remainder = position - (long) position;
 	if ((long) position+1<F64_ARRAY_SIZE(amplitudes))
@@ -991,7 +991,7 @@ maxi_float_t maxiSample::loopSetPosOnZX(maxi_float_t trig, maxi_float_t pos) {
 
 maxi_float_t maxiSample::playUntilAtSpeed(maxi_float_t end, maxi_float_t speed) {
 	maxi_float_t remainder = position - (long) position;
-	if (end > 1.0) end = 1.0;
+	if (end > 1.0f) end = 1.0;
 	if ((long) position<F64_ARRAY_SIZE(amplitudes) * end)
 		output = ((1-remainder) * F64_ARRAY_AT(amplitudes,1+ (long) position) + remainder * 
 		F64_ARRAY_AT(amplitudes,2+(long) position));//linear interpolation
@@ -1155,7 +1155,7 @@ maxi_float_t maxiDyn::gate(maxi_float_t input, maxi_float_t threshold, long hold
 		releasephase=1;
 	}
 
-	if (releasephase==1 && amplitude>0.) {
+	if (releasephase==1 && amplitude>0.f) {
 		output=input*(amplitude*=release);
 
 	}
@@ -1182,14 +1182,14 @@ maxi_float_t maxiDyn::compressor(maxi_float_t input, maxi_float_t ratio, maxi_fl
 		releasephase=1;
 	}
 
-	if (releasephase==1 && currentRatio>0.) {
+	if (releasephase==1 && currentRatio>0.f) {
 		currentRatio*=release;
 	}
 
-	if (input>0.) {
-		output = input/(1.+currentRatio);
+	if (input>0.f) {
+		output = input/(1.f+currentRatio);
 	} else {
-		output = input/(1.+currentRatio);
+		output = input/(1.f+currentRatio);
 	}
 
 	return output*(1+log(ratio));
@@ -1213,25 +1213,25 @@ maxi_float_t maxiDyn::compress(maxi_float_t input) {
 		releasephase=1;
 	}
 
-	if (releasephase==1 && currentRatio>0.) {
+	if (releasephase==1 && currentRatio>0.f) {
 		currentRatio*=release;
 	}
 
-	if (input>0.) {
-		output = input/(1.+currentRatio);
+	if (input>0.f) {
+		output = input/(1.f+currentRatio);
 	} else {
-		output = input/(1.+currentRatio);
+		output = input/(1.f+currentRatio);
 	}
 
 	return output*(1+log(ratio));
 }
 
 void maxiDyn::setAttack(maxi_float_t attackMS) {
-	attack = pow( 0.01, 1.0 / ( attackMS * maxiSettings::sampleRate * 0.001 ) );
+	attack = pow( 0.01f, 1.0f / ( attackMS * maxiSettings::sampleRate * 0.001f ) );
 }
 
 void maxiDyn::setRelease(maxi_float_t releaseMS) {
-	release = pow( 0.01, 1.0 / ( releaseMS * maxiSettings::sampleRate * 0.001 ) );
+	release = pow( 0.01f, 1.0f / ( releaseMS * maxiSettings::sampleRate * 0.001f ) );
 }
 
 void maxiDyn::setThreshold(maxi_float_t thresholdI) {
@@ -1278,7 +1278,7 @@ maxi_float_t maxiEnv::ar(maxi_float_t input, maxi_float_t attack, maxi_float_t r
 		releasephase=1;
 	}
 
-	if (releasephase==1 && amplitude>0.) {
+	if (releasephase==1 && amplitude>0.f) {
 		output=input*(amplitude*=release);
 
 	}
@@ -1333,7 +1333,7 @@ maxi_float_t maxiEnv::adsr(maxi_float_t input, maxi_float_t attack, maxi_float_t
 		releasephase=1;
 	}
 
-	if (releasephase==1 && amplitude>0.) {
+	if (releasephase==1 && amplitude>0.f) {
 		output=input*(amplitude*=release);
 
 	}
@@ -1386,7 +1386,7 @@ maxi_float_t maxiEnv::adsr(maxi_float_t input, int trigger) {
 		releasephase=1;
 	}
 
-	if (releasephase==1 && amplitude>0.) {
+	if (releasephase==1 && amplitude>0.f) {
 		output=input*(amplitude*=release);
 
 	}
@@ -1396,11 +1396,11 @@ maxi_float_t maxiEnv::adsr(maxi_float_t input, int trigger) {
 
 
 void maxiEnv::setAttack(maxi_float_t attackMS) {
-	attack = 1-pow( 0.01, 1.0 / ( attackMS * maxiSettings::sampleRate * 0.001 ) );
+	attack = 1-pow( 0.01f, 1.0f / ( attackMS * maxiSettings::sampleRate * 0.001f ) );
 }
 
 void maxiEnv::setRelease(maxi_float_t releaseMS) {
-	release = pow( 0.01, 1.0 / ( releaseMS * maxiSettings::sampleRate * 0.001 ) );
+	release = pow( 0.01f, 1.0f / ( releaseMS * maxiSettings::sampleRate * 0.001f ) );
 }
 
 void maxiEnv::setSustain(maxi_float_t sustainL) {
@@ -1408,7 +1408,7 @@ void maxiEnv::setSustain(maxi_float_t sustainL) {
 }
 
 void maxiEnv::setDecay(maxi_float_t decayMS) {
-	decay = pow( 0.01, 1.0 / ( decayMS * maxiSettings::sampleRate * 0.001 ) );
+	decay = pow( 0.01f, 1.0f / ( decayMS * maxiSettings::sampleRate * 0.001f ) );
 }
 
 
@@ -1419,11 +1419,11 @@ maxi_float_t convert::mtof(int midinote) {
 
 
 template<> void maxiEnvelopeFollower::setAttack(maxi_float_t attackMS) {
-	attack = pow( 0.01, 1.0 / ( attackMS * maxiSettings::sampleRate * 0.001 ) );
+	attack = pow( 0.01f, 1.0f / ( attackMS * maxiSettings::sampleRate * 0.001f ) );
 }
 
 template<> void maxiEnvelopeFollower::setRelease(maxi_float_t releaseMS) {
-	release = pow( 0.01, 1.0 / ( releaseMS * maxiSettings::sampleRate * 0.001 ) );
+	release = pow( 0.01f, 1.0f / ( releaseMS * maxiSettings::sampleRate * 0.001f ) );
 }
 
 
@@ -1432,7 +1432,7 @@ maxiRatioSeq::maxiRatioSeq() {}
 maxiTrigger::maxiTrigger() {}
 maxiMap::maxiMap() {}
 maxiNonlinearity::maxiNonlinearity() {}
-maxiFilter::maxiFilter():x(0.0), y(0.0), z(0.0), c(0.0) {}
+maxiFilter::maxiFilter():x(0.0f), y(0.0f), z(0.0f), c(0.0f) {}
 maxiBiquad::maxiBiquad() {}
 maxiZeroCrossingDetector::maxiZeroCrossingDetector() {}
 maxiIndex::maxiIndex() {}

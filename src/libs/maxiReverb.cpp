@@ -2,8 +2,8 @@
 
 maxiReverbFilters::maxiReverbFilters()
 {
-    a = 0.0;
-    output = 0.0;
+    a = 0.0f;
+    output = 0.0f;
     delay_index = 0;
     feedback = 0.8;
     gain_cof = 0.85;
@@ -12,7 +12,7 @@ maxiReverbFilters::maxiReverbFilters()
 
 maxi_float_t maxiReverbFilters::twopoint(maxi_float_t input)
 {
-    a = 0.5 * (input + a);
+    a = 0.5f * (input + a);
     return a;
 }
 
@@ -50,11 +50,11 @@ maxi_float_t maxiReverbFilters::lpcombfb(maxi_float_t input, maxi_float_t size, 
     // used for freeverb emulation
     // low pass between delay output + feedback
     delay_size = size;
-    output = input + (fb * mf.lopass(delay_line[delay_index],(1.0-cutoff)));
+    output = input + (fb * mf.lopass(delay_line[delay_index],(1.0f-cutoff)));
     delay_line[delay_index] = output;
     delay_index != delay_size - 1 ? delay_index++ : delay_index = 0;
     return output;
-    return 0.0;
+    return 0.0f;
     
 }
 
@@ -116,7 +116,7 @@ maxi_float_t maxiReverbFilters::onetap(maxi_float_t input, maxi_float_t size)
 
 maxi_float_t maxiReverbFilters::tapd(maxi_float_t input,maxi_float_t size, maxi_float_t * taps,int numtaps)
 {
-    output = 0.0;
+    output = 0.0f;
     delay_size = size;
     for(int i = 0; i < numtaps ; i++)
     {
@@ -133,7 +133,7 @@ maxi_float_t maxiReverbFilters::tapd(maxi_float_t input,maxi_float_t size, maxi_
 
 maxi_float_t maxiReverbFilters::tapdwgain(maxi_float_t input,maxi_float_t size, maxi_float_t * taps,int numtaps,maxi_float_t * gain)
 {
-    output = 0.0;
+    output = 0.0f;
     delay_size = size;
     for(int i = 0; i < numtaps ; i++)
     {
@@ -150,7 +150,7 @@ maxi_float_t maxiReverbFilters::tapdwgain(maxi_float_t input,maxi_float_t size, 
 
 maxi_float_t maxiReverbFilters::tapdpos(maxi_float_t input,int size, int * taps,int numtaps)
 {
-    output = 0.0;
+    output = 0.0f;
     delay_size = size;
     for(int i = 0; i < numtaps ; i++)
     {
@@ -180,15 +180,15 @@ maxiReverbBase::maxiReverbBase()
     memset(feedbackcombfb, 0,dblsize*2);
     memset(lpcombcutoff,0,dblsize*2);
     // used to calculate delay times
-    numsamplesms = (float)maxiSettings::sampleRate/1000.0;
+    numsamplesms = (float)maxiSettings::sampleRate/1000.0f;
     output = 0.0;
     accumulator = 0.0;
     numtaps = numfilters;
     for(int i = 0 ; i < numtaps; i++){
-        taps[i] = 1.0/10.0;
+        taps[i] = 1.0f/10.0f;
         tapsgain[i] = 0.1;
     }
-    taps[0] = 0.5;
+    taps[0] = 0.5f;
     taps[1] = 0.2;
     tapdellength = maxiSettings::sampleRate/10;
     
@@ -313,8 +313,8 @@ void maxiReverbBase::setlpcombcutoff(maxi_float_t *cutoff,int numset)
 
 void maxiReverbBase::setlpcombcutoffall(maxi_float_t cutoff)
 {
-    if(cutoff >1.0) cutoff = 1.0;
-    if(cutoff < 0 ) cutoff = 0.0;
+    if(cutoff >1.0f) cutoff = 1.0;
+    if(cutoff < 0.f ) cutoff = 0.0f;
     for(int i = 0 ; i < numfilters; i++)
     {
         lpcombcutoff[i] = cutoff;
@@ -353,8 +353,8 @@ void maxiReverbBase::setcombweights(maxi_float_t *weights, int numset)
 void maxiReverbBase::setcombweightsall(maxi_float_t feedback)
 {
     // can expand this
-    if(feedback > 1.0) feedback = 1.0;
-    if(feedback < 0.0) feedback = 0.0;
+    if(feedback > 1.0f) feedback = 1.0;
+    if(feedback < 0.0f) feedback = 0.0;
     for(int i = 0; i < numfilters; i++){
         combgainweight[i] = feedback;
     }
@@ -438,7 +438,7 @@ maxi_float_t maxiFreeVerb::play(maxi_float_t input)
 maxi_float_t maxiFreeVerb::play(maxi_float_t input,maxi_float_t roomsize,maxi_float_t absorbtion)
 {
     // extends controllable freeverb parameters
-    setcombweightsall((roomsize*0.10) + 0.84);
+    setcombweightsall((roomsize*0.10f) + 0.84f);
     setlpcombcutoffall(absorbtion);
     maxi_float_t a = parallellpcomb(input,0, 8);
     maxi_float_t b = serialallpass(a,0, 44);
@@ -477,7 +477,7 @@ maxiFreeVerbStereo::maxiFreeVerbStereo() : maxiReverbBase() {
 maxi_float_t* maxiFreeVerbStereo::playStereo(maxi_float_t input, maxi_float_t roomsize, maxi_float_t absorbtion)
 {
     // Two seperate freeverb implens, each with different feedback/delay/filter lengths
-    setcombweightsall((roomsize*0.10) + 0.84);
+    setcombweightsall((roomsize*0.10f) + 0.84f);
     setlpcombcutoffall(absorbtion);
     maxi_float_t l1 = parallelcomb(input, 0, 8);
     maxi_float_t l2 = serialallpass(l1,0, 4);
@@ -543,8 +543,8 @@ maxi_float_t* maxiDattaroReverb::playStereo(maxi_float_t input) {
     // implementation of reverb designed by Jon Dattoro
     // https://ccrma.stanford.edu/~dattorro/EffectDesignPart1.pdf
     // Sigificantly more complex than the previous examples.
-    // 1. The inital reflctions are subject to more processing
-    // 2. Interaction and feedback between two channels
+    // 1.0f The inital reflctions are subject to more processing
+    // 2.f Interaction and feedback between two channels
     //    for great stereo reverb
     // 3. Low pass filters used throughout the structure
     //    to alter response

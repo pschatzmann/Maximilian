@@ -123,7 +123,7 @@ void FFT(int NumSamples,
 	int i, j, k, n;
 	int BlockSize, BlockEnd;
 	
-	double angle_numerator = 2.0 * M_PI;
+	float angle_numerator = 2.0f * (float)M_PI;
 	float tr, ti;                /* temp real, temp imaginary */
 	
 	if (!IsPowerOfTwo(NumSamples)) {
@@ -146,7 +146,7 @@ void FFT(int NumSamples,
 	for (i = 0; i < NumSamples; i++) {
 		j = FastReverseBits(i, NumBits);
 		RealOut[j] = RealIn[i];
-		ImagOut[j] = (ImagIn == NULL) ? 0.0 : ImagIn[i];
+		ImagOut[j] = (ImagIn == NULL) ? 0.0f : ImagIn[i];
 	}
 	
 	/*
@@ -156,7 +156,7 @@ void FFT(int NumSamples,
 	BlockEnd = 1;
 	for (BlockSize = 2; BlockSize <= NumSamples; BlockSize <<= 1) {
 		
-		double delta_angle = angle_numerator / (double) BlockSize;
+		float delta_angle = angle_numerator / (float) BlockSize;
 		
 		float sm2 = sin(-2 * delta_angle);
 		float sm1 = sin(-delta_angle);
@@ -242,11 +242,11 @@ void RealFFT(int NumSamples, float *RealIn, float *RealOut, float *ImagOut)
 	
 	FFT(Half, 0, tmpReal, tmpImag, RealOut, ImagOut);
 	
-	float wtemp = float (sin(0.5 * theta));
+	float wtemp = float (sin(0.5f * theta));
 	
-	float wpr = -2.0 * wtemp * wtemp;
+	float wpr = -2.0f * wtemp * wtemp;
 	float wpi = float (sin(theta));
-	float wr = 1.0 + wpr;
+	float wr = 1.0f + wpr;
 	float wi = wpi;
 	
 	int i3;
@@ -257,10 +257,10 @@ void RealFFT(int NumSamples, float *RealIn, float *RealOut, float *ImagOut)
 		
 		i3 = Half - i;
 		
-		h1r = 0.5 * (RealOut[i] + RealOut[i3]);
-		h1i = 0.5 * (ImagOut[i] - ImagOut[i3]);
-		h2r = 0.5 * (ImagOut[i] + ImagOut[i3]);
-		h2i = -0.5 * (RealOut[i] - RealOut[i3]);
+		h1r = 0.5f * (RealOut[i] + RealOut[i3]);
+		h1i = 0.5f * (ImagOut[i] - ImagOut[i3]);
+		h2r = 0.5f * (ImagOut[i] + ImagOut[i3]);
+		h2i = -0.5f * (RealOut[i] - RealOut[i3]);
 		
 		RealOut[i] = h1r + wr * h2r - wi * h2i;
 		ImagOut[i] = h1i + wr * h2i + wi * h2r;
@@ -309,11 +309,11 @@ void PowerSpectrum(int NumSamples, float *In, float *Out)
 	
 	FFT(Half, 0, tmpReal, tmpImag, RealOut, ImagOut);
 	
-	float wtemp = float (sin(0.5 * theta));
+	float wtemp = float (sin(0.5f * theta));
 	
-	float wpr = -2.0 * wtemp * wtemp;
+	float wpr = -2.0f * wtemp * wtemp;
 	float wpi = float (sin(theta));
-	float wr = 1.0 + wpr;
+	float wr = 1.0f + wpr;
 	float wi = wpi;
 	
 	int i3;
@@ -325,10 +325,10 @@ void PowerSpectrum(int NumSamples, float *In, float *Out)
 		
 		i3 = Half - i;
 		
-		h1r = 0.5 * (RealOut[i] + RealOut[i3]);
-		h1i = 0.5 * (ImagOut[i] - ImagOut[i3]);
-		h2r = 0.5 * (ImagOut[i] + ImagOut[i3]);
-		h2i = -0.5 * (RealOut[i] - RealOut[i3]);
+		h1r = 0.5f * (RealOut[i] + RealOut[i3]);
+		h1i = 0.5f * (ImagOut[i] - ImagOut[i3]);
+		h2r = 0.5f * (ImagOut[i] + ImagOut[i3]);
+		h2i = -0.5f * (RealOut[i] - RealOut[i3]);
 		
 		rt = h1r + wr * h2r - wi * h2i; //printf("Realout%i = %f",i,rt);total+=fabs(rt);
 		it = h1i + wr * h2i + wi * h2r; // printf("  Imageout%i = %f\n",i,it);
@@ -367,7 +367,7 @@ void WindowFunc(int whichFunction, int NumSamples, float *in)
 		for (i = 0; i < NumSamples / 2; i++) {
 			in[i] *= (i / (float) (NumSamples / 2));
 			in[i + (NumSamples / 2)] *=
-			(1.0 - (i / (float) (NumSamples / 2)));
+			(1.0f - (i / (float) (NumSamples / 2)));
 		}
 	}
 	
@@ -393,7 +393,7 @@ void fft::genWindow(int whichFunction, int NumSamples, float *window)
 		for (i = 0; i < NumSamples / 2; i++) {
 			window[i] = (i / (float) (NumSamples / 2));
 			window[i + (NumSamples / 2)] =
-			(1.0 - (i / (float) (NumSamples / 2)));
+			(1.0f - (i / (float) (NumSamples / 2)));
 		}
 	}
 	
@@ -522,10 +522,10 @@ void fft::powerSpectrum(int start, float *data, float *window, float *magnitude,
 
 void fft::convToDB(float *in, float *out) {
 	for (int i = 0; i < half; i++) {
-		if (in[i] < 0.000001){ // less than 0.1 nV
+		if (in[i] < 0.000001f){ // less than 0.1 nV
 			out[i] = 0; // out of range
 		} else {
-			out[i] = 20.0*log10(in[i] + 1);  // get to to db scale
+			out[i] = 20.0f*log10(in[i] + 1);  // get to to db scale
 		}		
 	}
 }
@@ -548,7 +548,7 @@ void fft::calcFFT_vdsp(float *data, float *window) {
     vDSP_fft_zrip(setupReal, &A, 1, log2n, FFT_FORWARD);
     
     //scale by 2 (see vDSP docs)
-    static float scale=0.5 ;
+    static float scale=0.5f ;
     vDSP_vsmul(A.realp, 1, &scale, A.realp, 1, half);
     vDSP_vsmul(A.imagp, 1, &scale, A.imagp, 1, half);
 }
@@ -577,7 +577,7 @@ void fft::convToDB_vdsp(float *in, float *out) {
 	float ref = 1.0;
 	vDSP_vdbcon(in, 1, &ref, out, 1, half, 1);
 	//get rid of any -infs
-	float vmin=0.0;
+	float vmin=0.0f;
 	float vmax=9999999.0;
 	vDSP_vclip(out, 1, &vmin, &vmax, out, 1, half);
 }
@@ -587,7 +587,7 @@ void fft::convToDB_vdsp(float *in, float *out) {
 void fft::polToCart(float *magnitude,float *phase) {
     /* get real and imag part */
     for (int i = 0; i < half; i++) {
-        //		float mag = pow(10.0, magnitude[i] / 20.0) - 1.0;
+        //		float mag = pow(10.0f, magnitude[i] / 20.0f) - 1.0;
         //		in_real[i] = mag *cos(phase[i]);
         //		in_img[i]  = mag *sin(phase[i]);
         in_real[i] = magnitude[i] *cos(phase[i]);
@@ -626,7 +626,7 @@ void fft::inversePowerSpectrum(int start, float *finalOut, float *window, float 
 
 void fft::polToCart_vdsp(float *magnitude,float *phase) {
     for (uint32_t i = 0; i < half; i++) {
-        //		polar[2*i] = pow(10.0, magnitude[i] / 20.0) - 1.0;
+        //		polar[2*i] = pow(10.0f, magnitude[i] / 20.0f) - 1.0;
         polar[2*i] = magnitude[i];
         polar[2*i + 1] = phase[i];
     }
@@ -640,7 +640,7 @@ void fft::calcIFFT_vdsp(float *finalOut, float *window) {
     vDSP_fft_zrip(setupReal, &A, 1, log2n, FFT_INVERSE);
     vDSP_ztoc(&A, 1, (COMPLEX*) &out_real[0], 2, half);
     
-    float scale = 1./n;
+    float scale = 1.f/n;
     vDSP_vsmul(&out_real[0], 1, &scale, &out_real[0], 1, n);
     
     //multiply by window

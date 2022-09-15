@@ -31,7 +31,8 @@ Permission has been granted to release this port under the WDL/IPlug license:
 #define CHEERP_EXPORT
 #endif
 
-
+#undef M_PI
+#undef TWO_PI
 
 class CHEERP_EXPORT PolyBLEP {
 public:
@@ -52,65 +53,67 @@ public:
         TRAPEZOID_VARIABLE
     };
 
-    PolyBLEP(double sampleRate);
+    PolyBLEP(float sampleRate);
 
     // virtual ~PolyBLEP();
 
-    void setFrequency(double freqInHz);
+    void setFrequency(float freqInHz);
 
-    void setSampleRate(double sampleRate);
+    void setSampleRate(float sampleRate);
 
     void setWaveform(Waveform waveform);
 
-    void setPulseWidth(double pw);
+    void setPulseWidth(float pw);
 
-    double get() const;
+    float get() const;
 
     void inc();
 
-    double getAndInc();
+    float getAndInc();
 
-    double getFreqInHz() const;
+    float getFreqInHz() const;
 
-    void sync(double phase);
+    void sync(float phase);
 
 protected:
+    const float M_PI = 3.14159265358979323846264338327950288f;
+    const float TWO_PI = M_PI*2;
     Waveform waveform;
-    double sampleRate;
-    double freqInSecondsPerSample;
-    double amplitude; // Frequency dependent gain [0.0..1.0]
-    double pulseWidth; // [0.0..1.0]
-    double t; // The current phase [0.0..1.0) of the oscillator.
+    float sampleRate;
+    float freqInSecondsPerSample;
+    float amplitude; // Frequency dependent gain [0.0..1.0]
+    float pulseWidth; // [0.0..1.0]
+    float t; // The current phase [0.0..1.0f) of the oscillator.
 
-    void setdt(double time);
+    void setdt(float time);
 
-    double sin() const;
+    float sin() const;
 
-    double cos() const;
+    float cos() const;
 
-    double half() const;
+    float half() const;
 
-    double full() const;
+    float full() const;
 
-    double tri() const;
+    float tri() const;
 
-    double tri2() const;
+    float tri2() const;
 
-    double trip() const;
+    float trip() const;
 
-    double trap() const;
+    float trap() const;
 
-    double trap2() const;
+    float trap2() const;
 
-    double sqr() const;
+    float sqr() const;
 
-    double sqr2() const;
+    float sqr2() const;
 
-    double rect() const;
+    float rect() const;
 
-    double saw() const;
+    float saw() const;
 
-    double ramp() const;
+    float ramp() const;
 };
 
 

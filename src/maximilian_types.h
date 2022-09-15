@@ -5,18 +5,13 @@
 #include <cstddef> // for size_t
 #include <limits>
 #include <string.h> // for memset
-#define USE_FLOAT
 #define USE_MAXVECTOR
 #undef min
 #undef max
 #undef PI
 #endif
 
-#ifdef USE_FLOAT
 typedef float maxi_float_t;
-#else
-typedef double maxi_float_t;
-#endif
 
 
 /// A simple audio data store implementation that can hold data from progmem
@@ -45,12 +40,12 @@ class maxi_vector {
         }
 
         maxi_float_t operator[](size_t idx) const {
-            static maxi_float_t undefined = 0.0;
+            static maxi_float_t undefined = 0.0f;
             return idx<len?data[idx]:undefined;
         }   
 
         maxi_float_t& operator[](size_t idx){
-            static maxi_float_t undefined = 0.0;
+            static maxi_float_t undefined = 0.0f;
             return idx<len?data[idx]:undefined;
         }   
 

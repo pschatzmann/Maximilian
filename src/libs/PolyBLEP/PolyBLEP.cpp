@@ -37,7 +37,9 @@ Permission has been granted to release this port under the WDL/IPlug license:
 #define fmin std::fmin
 #endif
 
-const double TWO_PI = 2 * M_PI;
+#undef TWO_PI
+#undef M_PI
+
 
 template<typename T>
 inline T square_number(const T &x) {
@@ -48,7 +50,7 @@ inline T square_number(const T &x) {
 // Synthesis" by Jari Kleimola, Victor Lazzarini, Joseph Timoney, and Vesa
 // Valimaki.
 // http://www.acoustics.hut.fi/publications/papers/smc2010-phaseshaping/
-inline double blep(double t, double dt) {
+inline float blep(float t, float dt) {
     if (t < dt) {
         return -square_number(t / dt - 1);
     } else if (t > 1 - dt) {
@@ -59,13 +61,13 @@ inline double blep(double t, double dt) {
 }
 
 // Derived from blep().
-inline double blamp(double t, double dt) {
+inline float blamp(float t, float dt) {
     if (t < dt) {
         t = t / dt - 1;
-        return -1 / 3.0 * square_number(t) * t;
+        return -1 / 3.0f * square_number(t) * t;
     } else if (t > 1 - dt) {
         t = (t - 1) / dt + 1;
-        return 1 / 3.0 * square_number(t) * t;
+        return 1 / 3.0f * square_number(t) * t;
     } else {
         return 0;
     }
@@ -76,37 +78,37 @@ inline int64_t bitwiseOrZero(const T &t) {
     return static_cast<int64_t>(t) | 0;
 }
 
-PolyBLEP::PolyBLEP(double sampleRate)
-        : sampleRate(sampleRate), amplitude(1.0), t(0.0) {
+PolyBLEP::PolyBLEP(float sampleRate)
+        : sampleRate(sampleRate), amplitude(1.0f), t(0.0f) {
     setSampleRate(sampleRate);
-    setFrequency(440.0);
+    setFrequency(440.0f);
     setWaveform(SINE);
-    setPulseWidth(0.5);
+    setPulseWidth(0.5f);
 }
 
-void PolyBLEP::setdt(double time) {
+void PolyBLEP::setdt(float time) {
     freqInSecondsPerSample = time;
 }
 
-void PolyBLEP::setFrequency(double freqInHz) {
+void PolyBLEP::setFrequency(float freqInHz) {
     setdt(freqInHz / sampleRate);
 }
 
-void PolyBLEP::setSampleRate(double sampleRate) {
-    const double freqInHz = getFreqInHz();
+void PolyBLEP::setSampleRate(float sampleRate) {
+    const float freqInHz = getFreqInHz();
     this->sampleRate = sampleRate;
     setFrequency(freqInHz);
 }
 
-double PolyBLEP::getFreqInHz() const {
+float PolyBLEP::getFreqInHz() const {
     return freqInSecondsPerSample * sampleRate;
 }
 
-void PolyBLEP::setPulseWidth(double pulseWidth) {
+void PolyBLEP::setPulseWidth(float pulseWidth) {
     this->pulseWidth = pulseWidth;
 }
 
-void PolyBLEP::sync(double phase) {
+void PolyBLEP::sync(float phase) {
     t = phase;
     if (t >= 0) {
         t -= bitwiseOrZero(t);
@@ -119,7 +121,7 @@ void PolyBLEP::setWaveform(Waveform waveform) {
     this->waveform = waveform;
 }
 
-double PolyBLEP::get() const {
+float PolyBLEP::get() const {
     if(getFreqInHz() >= sampleRate / 4) {
         return sin();
     } else switch (waveform) {
@@ -152,7 +154,7 @@ double PolyBLEP::get() const {
         case TRAPEZOID_VARIABLE:
             return trap2();
         default:
-            return 0.0;
+            return 0.0f;
     }
 }
 
@@ -161,48 +163,48 @@ void PolyBLEP::inc() {
     t -= bitwiseOrZero(t);
 }
 
-double PolyBLEP::getAndInc() {
-    const double sample = get();
+float PolyBLEP::getAndInc() {
+    const float sample = get();
     inc();
     return sample;
 }
 
-double PolyBLEP::sin() const {
+float PolyBLEP::sin() const {
     return amplitude * std::sin(TWO_PI * t);
 }
 
-double PolyBLEP::cos() const {
+float PolyBLEP::cos() const {
     return amplitude * std::cos(TWO_PI * t);
 }
 
-double PolyBLEP::half() const {
-    double t2 = t + 0.5;
+float PolyBLEP::half() const {
+    float t2 = t + 0.5f;
     t2 -= bitwiseOrZero(t2);
 
-    double y = (t < 0.5 ? 2 * std::sin(TWO_PI * t) - 2 / M_PI : -2 / M_PI);
+    float y = (t < 0.5f ? 2.0f * std::sin(TWO_PI * t) - 2.0f / M_PI : -2.0f / M_PI);
     y += TWO_PI * freqInSecondsPerSample * (blamp(t, freqInSecondsPerSample) + blamp(t2, freqInSecondsPerSample));
 
     return amplitude * y;
 }
 
-double PolyBLEP::full() const {
-    double _t = this->t + 0.25;
+float PolyBLEP::full() const {
+    float _t = this->t + 0.25f;
     _t -= bitwiseOrZero(_t);
 
-    double y = 2 * std::sin(M_PI * _t) - 4 / M_PI;
+    float y = 2.f * std::sin(M_PI * _t) - 4.f / M_PI;
     y += TWO_PI * freqInSecondsPerSample * blamp(_t, freqInSecondsPerSample);
 
     return amplitude * y;
 }
 
-double PolyBLEP::tri() const {
-    double t1 = t + 0.25;
+float PolyBLEP::tri() const {
+    float t1 = t + 0.25f;
     t1 -= bitwiseOrZero(t1);
 
-    double t2 = t + 0.75;
+    float t2 = t + 0.75f;
     t2 -= bitwiseOrZero(t2);
 
-    double y = t * 4;
+    float y = t * 4;
 
     if (y >= 3) {
         y -= 4;
@@ -215,15 +217,15 @@ double PolyBLEP::tri() const {
     return amplitude * y;
 }
 
-double PolyBLEP::tri2() const {
-    double pulseWidth = fmax(0.0001, fmin(0.9999, this->pulseWidth));
-    double t1 = t + 0.5 * pulseWidth;
+float PolyBLEP::tri2() const {
+    float pulseWidth = fmax(0.0001, fmin(0.9999, this->pulseWidth));
+    float t1 = t + 0.5f * pulseWidth;
     t1 -= bitwiseOrZero(t1);
 
-    double t2 = t + 1 - 0.5 * pulseWidth;
+    float t2 = t + 1 - 0.5f * pulseWidth;
     t2 -= bitwiseOrZero(t2);
 
-    double y = t * 2;
+    float y = t * 2;
 
     if (y >= 2 - pulseWidth) {
         y = (y - 2) / pulseWidth;
@@ -238,11 +240,11 @@ double PolyBLEP::tri2() const {
     return amplitude * y;
 }
 
-double PolyBLEP::trip() const {
-    double t1 = t + 0.75 + 0.5 * pulseWidth;
+float PolyBLEP::trip() const {
+    float t1 = t + 0.75f + 0.5f * pulseWidth;
     t1 -= bitwiseOrZero(t1);
 
-    double y;
+    float y;
     if (t1 >= pulseWidth) {
         y = -pulseWidth;
     } else {
@@ -251,37 +253,37 @@ double PolyBLEP::trip() const {
     }
 
     if (pulseWidth > 0) {
-        double t2 = t1 + 1 - 0.5 * pulseWidth;
+        float t2 = t1 + 1 - 0.5f * pulseWidth;
         t2 -= bitwiseOrZero(t2);
 
-        double t3 = t1 + 1 - pulseWidth;
+        float t3 = t1 + 1 - pulseWidth;
         t3 -= bitwiseOrZero(t3);
         y += 2 * freqInSecondsPerSample / pulseWidth * (blamp(t1, freqInSecondsPerSample) - 2 * blamp(t2, freqInSecondsPerSample) + blamp(t3, freqInSecondsPerSample));
     }
     return amplitude * y;
 }
 
-double PolyBLEP::trap() const {
-    double y = 4 * t;
+float PolyBLEP::trap() const {
+    float y = 4 * t;
     if (y >= 3) {
         y -= 4;
     } else if (y > 1) {
         y = 2 - y;
     }
     y = fmax(-1, fmin(1, 2 * y));
-    double t1 = t + 0.125;
+    float t1 = t + 0.125f;
     t1 -= bitwiseOrZero(t1);
 
-    double t2 = t1 + 0.5;
+    float t2 = t1 + 0.5f;
     t2 -= bitwiseOrZero(t2);
 
     // Triangle #1
     y += 4 * freqInSecondsPerSample * (blamp(t1, freqInSecondsPerSample) - blamp(t2, freqInSecondsPerSample));
 
-    t1 = t + 0.375;
+    t1 = t + 0.375f;
     t1 -= bitwiseOrZero(t1);
 
-    t2 = t1 + 0.5;
+    t2 = t1 + 0.5f;
     t2 -= bitwiseOrZero(t2);
 
     // Triangle #2
@@ -290,30 +292,30 @@ double PolyBLEP::trap() const {
     return amplitude * y;
 }
 
-double PolyBLEP::trap2() const {
-    double pulseWidth = fmin(0.9999, this->pulseWidth);
-    double scale = 1 / (1 - pulseWidth);
+float PolyBLEP::trap2() const {
+    float pulseWidth = fmin(0.9999, this->pulseWidth);
+    float scale = 1 / (1 - pulseWidth);
 
-    double y = 4 * t;
+    float y = 4 * t;
     if (y >= 3) {
         y -= 4;
     } else if (y > 1) {
         y = 2 - y;
     }
     y = fmax(-1, fmin(1, scale * y));
-    double t1 = t + 0.25 - 0.25 * pulseWidth;
+    float t1 = t + 0.25f - 0.25f * pulseWidth;
     t1 -= bitwiseOrZero(t1);
 
-    double t2 = t1 + 0.5;
+    float t2 = t1 + 0.5f;
     t2 -= bitwiseOrZero(t2);
 
     // Triangle #1
     y += scale * 2 * freqInSecondsPerSample * (blamp(t1, freqInSecondsPerSample) - blamp(t2, freqInSecondsPerSample));
 
-    t1 = t + 0.25 + 0.25 * pulseWidth;
+    t1 = t + 0.25f + 0.25f * pulseWidth;
     t1 -= bitwiseOrZero(t1);
 
-    t2 = t1 + 0.5;
+    t2 = t1 + 0.5f;
     t2 -= bitwiseOrZero(t2);
 
     // Triangle #2
@@ -322,47 +324,47 @@ double PolyBLEP::trap2() const {
     return amplitude * y;
 }
 
-double PolyBLEP::sqr() const {
-    double t2 = t + 0.5;
+float PolyBLEP::sqr() const {
+    float t2 = t + 0.5f;
     t2 -= bitwiseOrZero(t2);
 
-    double y = t < 0.5 ? 1 : -1;
+    float y = t < 0.5f ? 1 : -1;
     y += blep(t, freqInSecondsPerSample) - blep(t2, freqInSecondsPerSample);
 
     return amplitude * y;
 }
 
-double PolyBLEP::sqr2() const {
-    double t1 = t + 0.875 + 0.25 * (pulseWidth - 0.5);
+float PolyBLEP::sqr2() const {
+    float t1 = t + 0.875f + 0.25f * (pulseWidth - 0.5f);
     t1 -= bitwiseOrZero(t1);
 
-    double t2 = t + 0.375 + 0.25 * (pulseWidth - 0.5);
+    float t2 = t + 0.375f + 0.25f * (pulseWidth - 0.5f);
     t2 -= bitwiseOrZero(t2);
 
     // Square #1
-    double y = t1 < 0.5 ? 1 : -1;
+    float y = t1 < 0.5f ? 1 : -1;
 
     y += blep(t1, freqInSecondsPerSample) - blep(t2, freqInSecondsPerSample);
 
-    t1 += 0.5 * (1 - pulseWidth);
+    t1 += 0.5f * (1 - pulseWidth);
     t1 -= bitwiseOrZero(t1);
 
-    t2 += 0.5 * (1 - pulseWidth);
+    t2 += 0.5f * (1 - pulseWidth);
     t2 -= bitwiseOrZero(t2);
 
     // Square #2
-    y += t1 < 0.5 ? 1 : -1;
+    y += t1 < 0.5f ? 1 : -1;
 
     y += blep(t1, freqInSecondsPerSample) - blep(t2, freqInSecondsPerSample);
 
-    return amplitude * 0.5 * y;
+    return amplitude * 0.5f * y;
 }
 
-double PolyBLEP::rect() const {
-    double t2 = t + 1 - pulseWidth;
+float PolyBLEP::rect() const {
+    float t2 = t + 1 - pulseWidth;
     t2 -= bitwiseOrZero(t2);
 
-    double y = -2 * pulseWidth;
+    float y = -2 * pulseWidth;
     if (t < pulseWidth) {
         y += 2;
     }
@@ -372,21 +374,21 @@ double PolyBLEP::rect() const {
     return amplitude * y;
 }
 
-double PolyBLEP::saw() const {
-    double _t = t + 0.5;
+float PolyBLEP::saw() const {
+    float _t = t + 0.5f;
     _t -= bitwiseOrZero(_t);
 
-    double y = 2 * _t - 1;
+    float y = 2 * _t - 1;
     y -= blep(_t, freqInSecondsPerSample);
 
     return amplitude * y;
 }
 
-double PolyBLEP::ramp() const {
-    double _t = t;
+float PolyBLEP::ramp() const {
+    float _t = t;
     _t -= bitwiseOrZero(_t);
 
-    double y = 1 - 2 * _t;
+    float y = 1 - 2 * _t;
     y += blep(_t, freqInSecondsPerSample);
 
     return amplitude * y;

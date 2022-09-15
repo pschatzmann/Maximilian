@@ -12,6 +12,10 @@
 #pragma once
 //#pragma pack(16)
 
+#ifdef ARDUINO 
+#undef __APPLE_CC__
+#endif
+
 //#include "../maxi_emscr_new.h"
 //#include "maxiFFT.h"
 #include <math.h>
@@ -27,14 +31,14 @@ using namespace std;
 
 // implements this formula:
 // mel = 2595 log10(Hz/700 + 1)
-inline double hzToMel(double hz){
-	return 2595.0 * (log10(hz/700.0 + 1.0));
+inline float hzToMel(float hz){
+	return 2595.0f * (log10(hz/700.0f + 1.0f));
 }
 
 // implements this formula
 // Hz = 700 (10^(mel/2595) - 1)
-inline double melToHz(double mel){
-	return 700.0 * (pow(10, mel/2595.0) - 1.0);
+inline float melToHz(float mel){
+	return 700.0f * (powf(10, mel/2595.0f) - 1.0f);
 }
 
 template <class T>
@@ -97,7 +101,7 @@ private:
 #else
 	void dct(T *mfccs) {
 		for(int i=0; i < numCoeffs; i++) {
-			mfccs[i] = 0.0;
+			mfccs[i] = 0.0f;
 		}
 		for(int i=0; i < numCoeffs; i++ ) {
 			for(int j=0; j < numFilters; j++) {
@@ -115,9 +119,9 @@ private:
 	void melFilterAndLogSq_Part2(float *powerSpectrum);
 
 
-	void calcMelFilterBank(double sampleRate, int numBins) {
+	void calcMelFilterBank(float sampleRate, int numBins) {
 
-		double mel, dMel, maxMel, minMel, nyquist, binFreq, start, end, thisF, nextF, prevF;
+		float mel, dMel, maxMel, minMel, nyquist, binFreq, start, end, thisF, nextF, prevF;
 		int numValidBins;
 
 		// ignore bins over nyquist
@@ -160,7 +164,7 @@ private:
 					//cout << "MFCCMYK: filter at " <<thisF << " bin at " <<binFreq <<" coeff " <<melFilters[filter][bin] << endl;
 				}
 				else {
-					T height = 2.0 / (nextF - prevF);
+					T height = 2.0f / (nextF - prevF);
 
 					if (binFreq < thisF) {
 						// up
@@ -193,9 +197,9 @@ private:
 			{
 				int idx = i + (j * numCoeffs);
 				if(i == 0)
-					dctMatrix[idx]= w1 * cos(k * (i+1) * (j + 0.5));
+					dctMatrix[idx]= w1 * cos(k * (i+1) * (j + 0.5f));
 				else
-					dctMatrix[idx] = w2 * cos(k * (i+1) * (j + 0.5));
+					dctMatrix[idx] = w2 * cos(k * (i+1) * (j + 0.5f));
 			}
 		}
 
@@ -205,5 +209,5 @@ private:
 };
 
 
-typedef maxiMFCCAnalyser<double> maxiMFCC;
-//typedef maxiMFCCAnalyser<float> maxiFloatMFCC;
+typedef maxiMFCCAnalyser<float> maxiMFCC;
+//typedef maxiMFCCAnalyser<double> maxiFloatMFCC;

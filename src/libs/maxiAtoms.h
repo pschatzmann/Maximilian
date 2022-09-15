@@ -14,6 +14,10 @@
 #include <vector>
 #include "maxiGrains.h"
 
+#ifdef ARDUINO 
+#undef __APPLE_CC__
+#endif
+
 using namespace std;
 
 typedef vector<float> flArr;

@@ -112,7 +112,7 @@ maxi_float_t maxiSnare::play(){
 
     }
 
-    output=(tone.triangle(pitch*(0.1+(envOut*0.85)))+noise.noise())*envOut;
+    output=(tone.triangle(pitch*(0.1f+(envOut*0.85f)))+noise.noise())*envOut;
 
     if (envelope.trigger==1) {
         envelope.trigger=0;
@@ -295,8 +295,8 @@ maxi_float_t maxiSampler::play() {
 
             envOut[i]=envelopes[i].adsr(envOutGain[i],envelopes[i].trigger);
 
-          if (envOut[i]>0.) {
-              outputs[i]=samples[i].playOnZXAtSpeedFromOffset(pitchRatios[(int)pitch[i]+originalPitch]*((1./samples[i].getLength())*maxiSettings::sampleRate),0,samples[i].getLength())*envOut[i];
+          if (envOut[i]>0.f) {
+              outputs[i]=samples[i].playOnZXAtSpeedFromOffset(pitchRatios[(int)pitch[i]+originalPitch]*((1.f/samples[i].getLength())*maxiSettings::sampleRate),0,samples[i].getLength())*envOut[i];
             output+=outputs[i]/voices;
 
             if (envelopes[i].trigger==1 && !sustain) {

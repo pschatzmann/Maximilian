@@ -35,9 +35,12 @@
 
 #include "maxiMalloc.h"
 
-#ifndef M_PI
-#define	M_PI		3.14159265358979323846  /* pi */
+#ifdef ARDUINO 
+#undef __APPLE_CC__
 #endif
+
+#undef M_PI
+
 #include <vector>
 #ifdef __APPLE_CC__
 #include <Accelerate/Accelerate.h>
@@ -46,6 +49,7 @@
 
 
 class fft {
+const float	M_PI =	3.14159265358979323846f; /* pi */
 	
 public:
 //    fft();

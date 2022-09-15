@@ -52,10 +52,12 @@
 #include "libs/maxiMalloc.h"
 
 using namespace std;
-#ifndef PI
-#define PI 3.1415926535897932384626433832795
-#endif
-#define TWOPI 6.283185307179586476925286766559
+
+#undef PI
+#undef TWOPI
+
+#define PI 3.1415926535897932384626433832795f
+#define TWOPI 6.283185307179586476925286766559f
 
 //transpiling some functions to Javascript?
 #ifdef CHEERP
@@ -316,7 +318,7 @@ public:
 
     maxiLagExp()
     {
-        init(0.5, 0.0);
+        init(0.5, 0.0f);
     };
 
     maxiLagExp(T initAlpha, T initVal)
@@ -327,7 +329,7 @@ public:
     void init(T initAlpha, T initVal)
     {
         alpha = initAlpha;
-        alphaReciprocal = 1.0 - alpha;
+        alphaReciprocal = 1.0f - alpha;
         val = initVal;
     }
 
@@ -375,8 +377,8 @@ public:
     //zerocrossing
     maxi_float_t onZX(maxi_float_t input)
     {
-        maxi_float_t isZX = 0.0;
-        if ((previousValue <= 0.0 || firstTrigger) && input > 0)
+        maxi_float_t isZX = 0.0f;
+        if ((previousValue <= 0.0f || firstTrigger) && input > 0)
         {
             isZX = 1.0;
         }
@@ -563,8 +565,8 @@ public:
             recordPosition = start * F64_ARRAY_SIZE(amplitudes);
         if (recordEnabled)
         {
-            maxi_float_t currentSample = F64_ARRAY_AT(amplitudes,(int)recordPosition) / 32767.0;
-            newSample = (recordMix * currentSample) + ((1.0 - recordMix) * newSample);
+            maxi_float_t currentSample = F64_ARRAY_AT(amplitudes,(int)recordPosition) / 32767.0f;
+            newSample = (recordMix * currentSample) + ((1.0f - recordMix) * newSample);
             newSample *= loopRecordLag.value();
             amplitudes[(unsigned long)recordPosition] = newSample * 32767;
         }
@@ -577,7 +579,7 @@ public:
 
     maxi_float_t play();
 
-    maxi_float_t playLoop(maxi_float_t start, maxi_float_t end); // start and end are between 0.0 and 1.0
+    maxi_float_t playLoop(maxi_float_t start, maxi_float_t end); // start and end are between 0.0f and 1.0
 
     maxi_float_t playOnce();
     maxi_float_t playOnZX(maxi_float_t trigger);
@@ -589,7 +591,7 @@ public:
 
     maxi_float_t playOnceAtSpeed(maxi_float_t speed); //API CHANGE
 
-    void setPosition(maxi_float_t newPos); // between 0.0 and 1.0
+    void setPosition(maxi_float_t newPos); // between 0.0f and 1.0
 
     maxi_float_t playUntil(maxi_float_t end);
     maxi_float_t playUntilAtSpeed(maxi_float_t end, maxi_float_t speed);
@@ -733,7 +735,7 @@ public:
 
     static maxi_float_t msToSamps(maxi_float_t timeMs)
     {
-        return timeMs / 1000.0 * maxiSettings::sampleRate;
+        return timeMs / 1000.0f * maxiSettings::sampleRate;
     }
 };
 
@@ -748,7 +750,7 @@ public:
         {
             phase -= holdTimeSamples;
         }
-        if (phase < 1.0)
+        if (phase < 1.0f)
             holdValue = sigIn;
         phase++;
         return holdValue;
@@ -835,27 +837,27 @@ inline maxi_float_t maxiNonlinearity::softclip(maxi_float_t x)
     }
     else
     {
-        x = (2 / 3.0) * (x - pow(x, 3) / 3.0);
+        x = (2.0f / 3.0f) * (x - powf(x, 3) / 3.0f);
     }
     return x;
 }
 
 inline maxi_float_t maxiNonlinearity::fastatan(maxi_float_t x)
 {
-    return (x / (1.0 + 0.28 * (x * x)));
+    return (x / (1.0f + 0.28f * (x * x)));
 }
 
 inline maxi_float_t maxiNonlinearity::atanDist(const maxi_float_t in, const maxi_float_t shape)
 {
     maxi_float_t out;
-    out = (1.0 / atan(shape)) * atan(in * shape);
+    out = (1.0f / atan(shape)) * atan(in * shape);
     return out;
 }
 
 inline maxi_float_t maxiNonlinearity::fastAtanDist(const maxi_float_t in, const maxi_float_t shape)
 {
     maxi_float_t out;
-    out = (1.0 / fastatan(shape)) * fastatan(in * shape);
+    out = (1.0f / fastatan(shape)) * fastatan(in * shape);
     return out;
 }
 
@@ -881,7 +883,7 @@ inline maxi_float_t maxiFlanger::flange(const maxi_float_t input, const unsigned
     output = dl.dl(input, delay + (lfoVal * depth * delay) + 1, feedback);
     maxi_float_t normalise = (1 - fabs(output));
     output *= normalise;
-    return (output + input) / 2.0;
+    return (output + input) / 2.0f;
 }
 
 class maxiChorus
@@ -902,12 +904,12 @@ inline maxi_float_t maxiChorus::chorus(const maxi_float_t input, const unsigned 
     //this needs fixing
     maxi_float_t output1, output2;
     maxi_float_t lfoVal = lfo.noise();
-    lfoVal = lopass.lores(lfoVal, speed, 1.0) * 2.0;
+    lfoVal = lopass.lores(lfoVal, speed, 1.0f) * 2.0f;
     output1 = dl.dl(input, delay + (lfoVal * depth * delay) + 1, feedback);
-    output2 = dl2.dl(input, (delay + (lfoVal * depth * delay * 1.02) + 1) * 0.98, feedback * 0.99);
-    output1 *= (1.0 - fabs(output1));
-    output2 *= (1.0 - fabs(output2));
-    return (output1 + output2 + input) / 3.0;
+    output2 = dl2.dl(input, (delay + (lfoVal * depth * delay * 1.02f) + 1) * 0.98f, feedback * 0.99f);
+    output1 *= (1.0f - fabs(output1));
+    output2 *= (1.0f - fabs(output2));
+    return (output1 + output2 + input) / 3.0f;
 }
 
 template <typename T>
@@ -922,11 +924,11 @@ public:
     }
     void setAttack(T attackMS)
     {
-        attack = pow(0.01, 1.0 / (attackMS * maxiSettings::sampleRate * 0.001));
+        attack = pow(0.01f, 1.0f / (attackMS * maxiSettings::sampleRate * 0.001));
     }
     void setRelease(T releaseMS)
     {
-        release = pow(0.01, 1.0 / (releaseMS * maxiSettings::sampleRate * 0.001));
+        release = pow(0.01f, 1.0f / (releaseMS * maxiSettings::sampleRate * 0.001));
     }
     inline T play(T input)
     {
@@ -971,11 +973,11 @@ public:
  filter.setCutoff(param1);
  filter.setResonance(param2);
 
- w = filter.play(w, 0.0, 1.0, 0.0, 0.0);
+ w = filter.play(w, 0.0, 1.0, 0.0, 0.0f);
 
  or set everything together at once
 
- w = filter.setCutoff(param1).setResonance(param2).play(w, 0.0, 1.0, 0.0, 0.0);
+ w = filter.setCutoff(param1).setResonance(param2).play(w, 0.0, 1.0, 0.0, 0.0f);
 
  */
 class maxiSVF
@@ -1001,7 +1003,7 @@ public:
         maxi_float_t low, band, high, notch;
         maxi_float_t v1z = v1;
         maxi_float_t v2z = v2;
-        maxi_float_t v3 = w + v0z - 2.0 * v2z;
+        maxi_float_t v3 = w + v0z - 2.0f * v2z;
         v1 += g1 * v3 - g2 * v1z;
         v2 += g3 * v3 + g4 * v1z;
         v0z = w;
@@ -1018,13 +1020,13 @@ private:
         freq = _freq;
         res = _res;
         g = tan(PI * freq / maxiSettings::sampleRate);
-        damping = res == 0 ? 0 : 1.0 / res;
+        damping = res == 0 ? 0 : 1.0f / res;
         k = damping;
-        ginv = g / (1.0 + g * (g + k));
+        ginv = g / (1.0f + g * (g + k));
         g1 = ginv;
-        g2 = 2.0 * (g + k) * ginv;
+        g2 = 2.0f * (g + k) * ginv;
         g3 = g * ginv;
-        g4 = 2.0 * ginv;
+        g4 = 2.0f * ginv;
     }
 
     maxi_float_t v0z, v1, v2, g, damping, k, ginv, g1, g2, g3, g4;
@@ -1057,21 +1059,21 @@ public:
     inline void set(filterTypes filtType, maxi_float_t cutoff, maxi_float_t Q, maxi_float_t peakGain)
     {
         maxi_float_t norm = 0;
-        maxi_float_t V = pow(10.0, abs(peakGain) / 20.0);
+        maxi_float_t V = pow(10.0f, abs(peakGain) / 20.0f);
         maxi_float_t K = tan(PI * cutoff / maxiSettings::sampleRate);
         switch (filtType)
         {
         case LOWPASS:
-            norm = 1.0 / (1.0 + K / Q + K * K);
+            norm = 1.0f / (1.0f + K / Q + K * K);
             a0 = K * K * norm;
-            a1 = 2.0 * a0;
+            a1 = 2.0f * a0;
             a2 = a0;
-            b1 = 2.0 * (K * K - 1.0) * norm;
-            b2 = (1.0 - K / Q + K * K) * norm;
+            b1 = 2.0f * (K * K - 1.0f) * norm;
+            b2 = (1.0f - K / Q + K * K) * norm;
             break;
 
         case HIGHPASS:
-            norm = 1. / (1. + K / Q + K * K);
+            norm = 1.0f / (1.0f + K / Q + K * K);
             a0 = 1 * norm;
             a1 = -2 * a0;
             a2 = a0;
@@ -1080,81 +1082,81 @@ public:
             break;
 
         case BANDPASS:
-            norm = 1. / (1. + K / Q + K * K);
+            norm = 1.0f / (1.0f + K / Q + K * K);
             a0 = K / Q * norm;
             a1 = 0.;
             a2 = -a0;
-            b1 = 2. * (K * K - 1.) * norm;
-            b2 = (1. - K / Q + K * K) * norm;
+            b1 = 2.f * (K * K - 1.f) * norm;
+            b2 = (1.0f - K / Q + K * K) * norm;
             break;
 
         case NOTCH:
-            norm = 1. / (1. + K / Q + K * K);
-            a0 = (1. + K * K) * norm;
-            a1 = 2. * (K * K - 1.) * norm;
+            norm = 1.0f / (1.0f + K / Q + K * K);
+            a0 = (1.0f + K * K) * norm;
+            a1 = 2.f * (K * K - 1.f) * norm;
             a2 = a0;
             b1 = a1;
-            b2 = (1. - K / Q + K * K) * norm;
+            b2 = (1.0f - K / Q + K * K) * norm;
             break;
 
         case PEAK:
-            if (peakGain >= 0.0)
+            if (peakGain >= 0.0f)
             { // boost
-                norm = 1. / (1. + 1. / Q * K + K * K);
-                a0 = (1. + V / Q * K + K * K) * norm;
-                a1 = 2. * (K * K - 1.) * norm;
-                a2 = (1. - V / Q * K + K * K) * norm;
+                norm = 1.0f / (1.0f + 1.0f / Q * K + K * K);
+                a0 = (1.0f + V / Q * K + K * K) * norm;
+                a1 = 2.f * (K * K - 1.f) * norm;
+                a2 = (1.0f - V / Q * K + K * K) * norm;
                 b1 = a1;
-                b2 = (1. - 1. / Q * K + K * K) * norm;
+                b2 = (1.0f - 1.0f / Q * K + K * K) * norm;
             }
             else
             { // cut
-                norm = 1. / (1. + V / Q * K + K * K);
-                a0 = (1. + 1 / Q * K + K * K) * norm;
-                a1 = 2. * (K * K - 1) * norm;
-                a2 = (1. - 1. / Q * K + K * K) * norm;
+                norm = 1.0f / (1.0f + V / Q * K + K * K);
+                a0 = (1.0f + 1 / Q * K + K * K) * norm;
+                a1 = 2.f * (K * K - 1) * norm;
+                a2 = (1.0f - 1.0f / Q * K + K * K) * norm;
                 b1 = a1;
-                b2 = (1. - V / Q * K + K * K) * norm;
+                b2 = (1.0f - V / Q * K + K * K) * norm;
             }
             break;
         case LOWSHELF:
-            if (peakGain >= 0.)
+            if (peakGain >= 0.f)
             { // boost
-                norm = 1. / (1. + SQRT2 * K + K * K);
-                a0 = (1. + sqrt(2. * V) * K + V * K * K) * norm;
-                a1 = 2. * (V * K * K - 1.) * norm;
-                a2 = (1. - sqrt(2. * V) * K + V * K * K) * norm;
-                b1 = 2. * (K * K - 1.) * norm;
-                b2 = (1. - SQRT2 * K + K * K) * norm;
+                norm = 1.0f / (1.0f + SQRT2 * K + K * K);
+                a0 = (1.0f + sqrt(2.f * V) * K + V * K * K) * norm;
+                a1 = 2.f * (V * K * K - 1.f) * norm;
+                a2 = (1.0f - sqrt(2.f * V) * K + V * K * K) * norm;
+                b1 = 2.f * (K * K - 1.f) * norm;
+                b2 = (1.0f - SQRT2 * K + K * K) * norm;
             }
             else
             { // cut
-                norm = 1. / (1. + sqrt(2. * V) * K + V * K * K);
-                a0 = (1. + SQRT2 * K + K * K) * norm;
-                a1 = 2. * (K * K - 1.) * norm;
-                a2 = (1. - SQRT2 * K + K * K) * norm;
-                b1 = 2. * (V * K * K - 1.) * norm;
-                b2 = (1. - sqrt(2. * V) * K + V * K * K) * norm;
+                norm = 1.0f / (1.0f + sqrt(2.f * V) * K + V * K * K);
+                a0 = (1.0f + SQRT2 * K + K * K) * norm;
+                a1 = 2.f * (K * K - 1.f) * norm;
+                a2 = (1.0f - SQRT2 * K + K * K) * norm;
+                b1 = 2.f * (V * K * K - 1.f) * norm;
+                b2 = (1.0f - sqrt(2.f * V) * K + V * K * K) * norm;
             }
             break;
         case HIGHSHELF:
-            if (peakGain >= 0.)
+            if (peakGain >= 0.f)
             { // boost
-                norm = 1. / (1. + SQRT2 * K + K * K);
-                a0 = (V + sqrt(2. * V) * K + K * K) * norm;
-                a1 = 2. * (K * K - V) * norm;
-                a2 = (V - sqrt(2. * V) * K + K * K) * norm;
-                b1 = 2. * (K * K - 1) * norm;
-                b2 = (1. - SQRT2 * K + K * K) * norm;
+                norm = 1.0f / (1.0f + SQRT2 * K + K * K);
+                a0 = (V + sqrt(2.f * V) * K + K * K) * norm;
+                a1 = 2.f * (K * K - V) * norm;
+                a2 = (V - sqrt(2.f * V) * K + K * K) * norm;
+                b1 = 2.f * (K * K - 1) * norm;
+                b2 = (1.0f - SQRT2 * K + K * K) * norm;
             }
             else
             { // cut
-                norm = 1. / (V + sqrt(2. * V) * K + K * K);
-                a0 = (1. + SQRT2 * K + K * K) * norm;
-                a1 = 2. * (K * K - 1.) * norm;
-                a2 = (1. - SQRT2 * K + K * K) * norm;
-                b1 = 2. * (K * K - V) * norm;
-                b2 = (V - sqrt(2. * V) * K + K * K) * norm;
+                norm = 1.0f / (V + sqrt(2.f * V) * K + K * K);
+                a0 = (1.0f + SQRT2 * K + K * K) * norm;
+                a1 = 2.f * (K * K - 1.f) * norm;
+                a2 = (1.0f - SQRT2 * K + K * K) * norm;
+                b1 = 2.f * (K * K - V) * norm;
+                b2 = (V - sqrt(2.f * V) * K + K * K) * norm;
             }
             break;
         }
@@ -1163,7 +1165,7 @@ public:
 private:
     maxi_float_t a0 = 0, a1 = 0, a2 = 0, b1 = 0, b2 = 0;
     filterTypes filterType;
-    const maxi_float_t SQRT2 = sqrt(2.0);
+    const maxi_float_t SQRT2 = sqrt(2.0f);
     maxi_float_t v[3] = {0, 0, 0};
 };
 
@@ -1175,9 +1177,9 @@ public:
     {
         xfader = maxiMap::clamp(xfader, -1, 1);
         maxi_float_t xfNorm = maxiMap::linlin(xfader, -1, 1, 0, 1);
-        maxi_float_t gainCh1 = sqrt(1.0 - xfNorm);
+        maxi_float_t gainCh1 = sqrt(1.0f - xfNorm);
         maxi_float_t gainCh2 = sqrt(xfNorm);
-        vector<maxi_float_t> output(ch1.size(), 0.0);
+        vector<maxi_float_t> output(ch1.size(), 0.0f);
         for (size_t i = 0; i < output.size(); i++)
         {
             output[i] = (ch1[i] * gainCh1) + (ch2[i] * gainCh2);
@@ -1202,7 +1204,7 @@ public:
         {
             if (trigEnable && !triggered)
             {
-                triggered = (trigger > 0.0 && lastTrigVal <= 0.0);
+                triggered = (trigger > 0.0f && lastTrigVal <= 0.0f);
                 lineValue = lineStart;
             }
             if (triggered)
@@ -1234,14 +1236,14 @@ public:
         lineStart = start;
         lineEnd = end;
         maxi_float_t lineMag = end - start;
-        maxi_float_t durInSamples = durationMs / 1000.0 * maxiSettings::sampleRate;
+        maxi_float_t durInSamples = durationMs / 1000.0f * maxiSettings::sampleRate;
         inc = lineMag / durInSamples;
         oneShot = isOneShot;
         reset();
     }
     inline void triggerEnable(maxi_float_t on)
     {
-        trigEnable = on > 0.0;
+        trigEnable = on > 0.0f;
     }
     inline bool isLineComplete()
     {
@@ -1340,7 +1342,7 @@ public:
     inline maxi_float_t getPhase() { return phase; }
 
 private:
-    maxi_float_t phase = 0.0;
+    maxi_float_t phase = 0.0f;
     maxi_float_t dt = TWOPI / maxiSettings::sampleRate;
 };
 
@@ -1380,7 +1382,7 @@ public:
 
     maxi_float_t play(maxi_float_t freq, maxi_float_t K)
     {
-        maxi_float_t mix = 0.0;
+        maxi_float_t mix = 0.0f;
         //gather phases
         for (size_t i = 0; i < phases.size(); i++)
         {
@@ -1425,7 +1427,7 @@ public:
 
     maxi_float_t play(maxi_float_t freq, maxi_float_t K)
     {
-        maxi_float_t mix = 0.0;
+        maxi_float_t mix = 0.0f;
         //gather phases
         if (update)
         {
@@ -1580,7 +1582,7 @@ public:
 
     static maxi_float_t toTrigSignal(const bitsig t)
     {
-        return t > 0 ? 1.0 : -1.0;
+        return t > 0 ? 1.0f : -1.0;
     }
 
     static bitsig fromSignal(const maxi_float_t t)
@@ -1633,7 +1635,7 @@ public:
                 indexSig = 0;
             if (indexSig > 1)
                 indexSig = 1;
-            size_t arrayIndex = static_cast<size_t>(floor(indexSig * 0.99999999 * values.size()));
+            size_t arrayIndex = static_cast<size_t>(floor(indexSig * 0.99999999f * values.size()));
             value = values[arrayIndex];
         }
         return value;
@@ -1661,12 +1663,12 @@ public:
         {
             accumulatedTime += F64_ARRAY_AT(times,i);
             maxi_float_t normalisedTime = accumulatedTime / sum;
-            if (normalisedTime == 1.0)
-                normalisedTime = 0.0;
+            if (normalisedTime == 1.0f  )
+                normalisedTime = 0.0f;
             if (prevPhase > phase)
             {
                 //wrapping point
-                prevPhase = -1.0 / maxiSettings::sampleRate;
+                prevPhase = -1.0f / maxiSettings::sampleRate;
             }
             if ((prevPhase <= normalisedTime && phase > normalisedTime))
             {

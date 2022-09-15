@@ -24,7 +24,7 @@ using namespace std;
 
 //convert to Bark scale (Zwicker, 1961)
 inline maxi_float_t hzToBark(maxi_float_t hz) {
-    return 13.0*atan(hz/1315.8) + 3.5*atan(pow((hz/7518.0),2));
+    return 13.0f * atanf(hz/1315.8f) + 3.5f*atan(powf((hz/7518.0f),2));
 }
 
 inline maxi_float_t binToHz(unsigned int bin, unsigned int sR, unsigned int bS) {

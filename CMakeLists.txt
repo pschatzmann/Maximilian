@@ -23,7 +23,8 @@ file(GLOB_RECURSE SRC_LIST_CPP CONFIGURE_DEPENDS  "${PROJECT_SOURCE_DIR}/src/*.c
 # define libraries
 add_library (maximilian ${SRC_LIST_CPP})
 
-target_compile_definitions(maximilian PUBLIC -DIS_DESKTOP )
+target_compile_definitions(maximilian PUBLIC -DIS_DESKTOP -DARDUINO )
+target_compile_options(maximilian PRIVATE -Wno-deprecated -Wdouble-promotion)
 
 # define location for header files
 target_include_directories(maximilian PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src )
