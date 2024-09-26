@@ -98,13 +98,11 @@ public:
 
 	maxiGrainWindowCache() {
 		cacheSize = maxiSettings::sampleRate / 2.0f; //allocate mem for up to 500ms grains
-		cache = (maxi_float_t**) maxi_malloc(cacheSize * sizeof(maxi_float_t*));
-		for(int i=0; i < cacheSize; i++) {
-			cache[i] = NULL;
-		}
+		// esp32 avoid allocation in constructor because psram is not available yet!
 	}
 
 	~maxiGrainWindowCache() {
+		if (cache == nullptr) return;
 		for(int i=0; i < cacheSize; i++) {
 			if(NULL != cache[i]) {
 				free(cache[i]);
@@ -114,6 +112,7 @@ public:
 	}
 
 	maxi_float_t* getWindow(const unsigned int length) {
+		alloc();
 		if (NULL == cache[length]) {
 			cache[length] = (maxi_float_t*) maxi_malloc(length * sizeof(maxi_float_t));
 			for(int i=0; i < length; i++) {
@@ -124,7 +123,16 @@ public:
 	}
 
 private:
-	maxi_float_t** cache;
+	maxi_float_t** cache = nullptr;
+
+	void alloc() {
+		if (cache == nullptr) {
+			cache = (maxi_float_t**) maxi_malloc(cacheSize * sizeof(maxi_float_t*));
+			for(int i=0; i < cacheSize; i++) {
+				cache[i] = NULL;
+			}
+		}
+	}
 
 };
 
