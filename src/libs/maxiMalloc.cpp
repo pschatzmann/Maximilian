@@ -22,6 +22,8 @@ void* maxi_malloc(size_t size){
         log_e("Free PSRAM: %d", ESP.getFreePsram());
         log_e("Total heap: %d", ESP.getHeapSize());
         log_e("Free heap: %d", ESP.getFreeHeap());
+        log_e("Max alloc heap: %d", ESP.getMaxAllocHeap());
+
         log_e("Error: malloc failed for size %d\n", size);
     }
     // print stack trace
