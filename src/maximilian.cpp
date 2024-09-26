@@ -33,8 +33,8 @@
 
 #include "maximilian.h"
 #include "math.h"
+#include "assert.h"
 #include <iterator>
-
 #include <sstream>
 /*  Maximilian can be configured to load ogg vorbis format files using the
  *   loadOgg() method.
@@ -674,8 +674,12 @@ bool maxiSample::read()
         }
 
         // read the data chunk
+		int sample_count = myDataSize/2; 
+		cout << "sample_count: " << sample_count << endl;;
         vector<short> shortAmps;
-        shortAmps.resize(myDataSize/2);
+        shortAmps.resize(sample_count);
+		assert(shortAmps.size() == myDataSize/2);
+
         inFile.seekg(filePos, ios::beg);
         inFile.read((char*)shortAmps.data(), myDataSize);
         inFile.close(); // close the input file
@@ -688,8 +692,9 @@ bool maxiSample::read()
                 position++;
             }
         }
-        amplitudes.resize(shortAmps.size());
-        for(int i=0; i < shortAmps.size(); i++) {
+        amplitudes.resize(sample_count);
+		assert(amplitudes.size() == sample_count);
+        for(int i=0; i < sample_count; i++) {
             amplitudes[i] = shortAmps[i] / 32767.0;
         }
         position = amplitudes.size();

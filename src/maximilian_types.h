@@ -1,6 +1,6 @@
 #pragma once
-
-#ifdef ARDUINO
+#include "libs/maxiMalloc.h"
+//#ifdef ARDUINO
 #include "Arduino.h"
 #include <cstddef> // for size_t
 #include <limits>
@@ -9,7 +9,7 @@
 #undef min
 #undef max
 #undef PI
-#endif
+//#endif
 
 typedef float maxi_float_t;
 
@@ -21,7 +21,7 @@ class maxi_vector {
         }
         ~maxi_vector(){
             if (!is_const && data!=nullptr){
-                delete[]data;
+                free(data);
             }
         }
 
@@ -53,7 +53,7 @@ class maxi_vector {
             if (!is_const){
                 memset((void*)data,0,len*sizeof(maxi_float_t));
             } else {
-                Serial.println("Clear: resize not supported");
+                Serial.println("Error: clear not supported");
             }
         } 
 
@@ -63,8 +63,10 @@ class maxi_vector {
 
         void resize(size_t len){
             if (!is_const){
-                if (data!=nullptr) delete[]data;
-                data = new maxi_float_t[len];
+                if (data!=nullptr) free(data);
+                data = (maxi_float_t*) maxi_malloc(len * sizeof(maxi_float_t)); 
+                memset(data, 0, len * sizeof(maxi_float_t));
+                this->len = len;
             } else {
                 Serial.println("Error: resize not supported");
             }
