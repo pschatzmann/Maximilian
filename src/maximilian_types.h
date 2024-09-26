@@ -1,15 +1,15 @@
 #pragma once
 #include "libs/maxiMalloc.h"
-//#ifdef ARDUINO
-#include "Arduino.h"
-#include <cstddef> // for size_t
-#include <limits>
-#include <string.h> // for memset
-#define USE_MAXVECTOR
-#undef min
-#undef max
-#undef PI
-//#endif
+#ifdef ARDUINO
+# include "Arduino.h"
+# include <cstddef> // for size_t
+# include <limits>
+# include <string.h> // for memset
+# define USE_MAXVECTOR
+# undef min
+# undef max
+# undef PI
+#endif
 
 typedef float maxi_float_t;
 
