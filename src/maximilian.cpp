@@ -676,7 +676,8 @@ bool maxiSample::read()
         // read the data chunk
 		int sample_count = myDataSize/2; 
 		cout << "sample_count: " << sample_count << endl;;
-        vector<short> shortAmps;
+        //std::vector<short> shortAmps; 
+		DECLARE_F64_ARRAY(shortAmps);
         shortAmps.resize(sample_count);
 		assert(shortAmps.size() == myDataSize/2);
 
