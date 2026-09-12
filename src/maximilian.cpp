@@ -697,7 +697,7 @@ bool maxiSample::read()
 
     }else {
         //        cout << "ERROR: Could not load sample: " <<myPath << endl; //This line seems to be hated by windows
-        printf("ERROR: Could not load sample.");
+        fprintf(stderr,"ERROR: Could not load sample.");
 
     }
 

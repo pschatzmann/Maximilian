@@ -12,7 +12,8 @@
 
 void* maxi_malloc(size_t size){
     void *result = nullptr;
-    if (size >= MAXI_PSRAM_LIMIT && ESP.getPsramSize()>0) {
+    fprintf(stderr, "maxi_malloc %d - \n", size);
+    if (size >= MAXI_PSRAM_LIMIT && ESP.getPsramSize() > 0) {
         // fprintf(stdout, "-> maxi_malloc: psram %d\n", size);
         result = ps_malloc(size);
         if (result==nullptr){
