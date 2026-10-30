@@ -27,6 +27,7 @@ void* maxi_malloc(size_t size){
     //     assert(result!=nullptr);
     //     return result;
     // }
+    log_w("-> maxi_malloc: ps_malloc failed for %d\n", size);
 
     // fprintf(stdout, "-> maxi_malloc: %d\n", size);
     result = malloc(size);
